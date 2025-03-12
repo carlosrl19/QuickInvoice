@@ -27,7 +27,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" validate="name" maxlength="55" name="client_name" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ\s]/g, '')" value="{{ $client->client_name }}" id="client_name" class="form-control @error('client_name') is-invalid @enderror" autocomplete="off" />
+                                <input type="text" maxlength="55" name="client_name" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ\s]/g, '')" value="{{ $client->client_name }}" id="client_name" class="form-control @error('client_name') is-invalid @enderror" autocomplete="off" />
                                 @error('client_name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -82,7 +82,7 @@
                         <div class="col">
                             <div class="form-floating">
                                 <textarea oninput="this.value = this.value.toUpperCase()" class="clamp_text_sm form-control @error('client_address') is-invalid @enderror" autocomplete="off" maxlength="255"
-                                    name="client_address" id="client_address" style="resize: none; height: 100px;">{{ $client->client_address }}</textarea>
+                                    name="client_address" id="client_address" rows="6" style="resize: none; height: 100px;">{{ $client->client_address }}</textarea>
                                 @error('client_address')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

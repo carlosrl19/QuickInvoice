@@ -1,0 +1,41 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('loans', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('client_id');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->string('loan_code', 10);
+            $table->integer('loan_payment_type'); // 1: Diario, 2: Semanal, 3: Quincenal, 4: Mensual
+            $table->decimal('loan_amount', 10,2);
+            $table->decimal('loan_down_payment', 10,2); // Prima
+            $table->decimal('loan_quote_value', 10,2); // loan_total / loan_quote_number
+            $table->decimal('loan_tax', 5,2);
+            $table->decimal('loan_total', 10,2); // loan_amount + (loan_amount * loan_tax)
+            $table->date('loan_start_date');
+            $table->date('loan_end_date');
+            $table->integer('loan_quote_number');
+            $table->integer('loan_status')->default(1); // 1: En proceso, 0: Finalizado/Pagado
+            $table->string('loan_description', 600);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('loans');
+    }
+};

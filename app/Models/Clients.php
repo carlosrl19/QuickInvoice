@@ -14,4 +14,11 @@ class Clients extends Model
         'client_phone2',
         'client_address',
     ];
+
+    // Relationships
+    public function loans()
+    {
+        return $this->hasMany(Loans::class, 'moneylender_id')
+            ->onDelete('cascade');
+    }
 }

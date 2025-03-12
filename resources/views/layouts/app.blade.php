@@ -99,20 +99,8 @@
     <!-- jQuery Scrollbar -->
     <script src="{{ Storage::url('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
 
-    <!-- Chart JS -->
-    <script src="{{ Storage::url('assets/js/plugin/chart.js/chart.min.js') }}"></script>
-
-    <!-- jQuery Sparkline -->
-    <script src="{{ Storage::url('assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}"></script>
-
-    <!-- Chart Circle -->
-    <script src="{{ Storage::url('assets/js/plugin/chart-circle/circles.min.js') }}"></script>
-
     <!-- Datatables -->
     <script src="{{ Storage::url('assets/js/plugin/datatables/datatables.min.js') }}"></script>
-
-    <!-- Bootstrap Notify -->
-    <script src="{{ Storage::url('assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 
     <!-- Sweet Alert -->
     <script src="{{ Storage::url('assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script>

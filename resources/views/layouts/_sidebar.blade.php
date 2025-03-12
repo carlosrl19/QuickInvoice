@@ -23,7 +23,7 @@
            </div>
            <!-- End Logo Header -->
        </div>
-       <div class="sidebar-wrapper scrollbar scrollbar-inner">
+       <div class="sidebar-wrapper">
            <div class="sidebar-content">
                <ul class="nav nav-secondary">
                    <li class="nav-item">
@@ -42,6 +42,30 @@
                        <a href="{{ route('clients.index') }}">
                            <x-heroicon-o-users style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Clientes</span>
+                       </a>
+                   </li>
+                   <li class="nav-section">
+                       <span class="sidebar-mini-icon">
+                           <i class="fa fa-ellipsis-h"></i>
+                       </span>
+                       <h4 class="text-section">MODULO INVENTARIO</h4>
+                   </li>
+                   <li class="nav-item">
+                       <a href="{{ route('services.index') }}">
+                           <x-heroicon-o-bolt style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                           <span class="sub-item">Servicios</span>
+                       </a>
+                   </li>
+                   <li class="nav-section">
+                       <span class="sidebar-mini-icon">
+                           <i class="fa fa-ellipsis-h"></i>
+                       </span>
+                       <h4 class="text-section">MODULO FACTURACIÓN</h4>
+                   </li>
+                   <li class="nav-item">
+                       <a href="{{ route('loans.index') }}">
+                           <x-heroicon-o-book-open style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                           <span class="sub-item">Préstamos</span>
                        </a>
                    </li>
                </ul>
