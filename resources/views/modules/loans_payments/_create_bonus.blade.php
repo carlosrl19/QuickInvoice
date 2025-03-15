@@ -1,16 +1,16 @@
 <div class="modal fade" id="bonus_payment_{{ $loan->id }}" data-bs-backdrop="static" data-bs-keyboard="false"
     tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content" style="border: 2px solid #52524E">
             <div class="modal-header">
-                <p class="modal-title fw-bold">Nuevo abono / <small>#{{ $loan->loan_code }}</small></p>
+                <p class="modal-title fw-bold">Nuevo abono / <small>#{{ $loan->loan_code_number }}</small></p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="{{ route('loan_payments.bonus_payment', $loan->id)}}" method="POST">
                     @csrf
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-12">
                             <input type="hidden" name="loan_id" value="{{ $loan->id }}">
                             <input type="hidden" name="client_id" value="{{ $loan->client->id }}">
                             <input type="hidden" name="loan_old_debt" value="1"> <!-- Controller calculate this -->
@@ -36,16 +36,19 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3 align-items-end">
-                                <div class="col">
-                                    <div class="form-floating">
+                            <!-- Payment img -->
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-3">
+                                    <div class="image-upload-container w-100">
+                                        <label for="loan_payment_img" class="image-upload-label w-100">
+                                            <x-heroicon-o-cloud-arrow-up style="width: 20px; height: 20px;" /> Subir comprobante(s)
+                                        </label>
                                         <input multiple type="file" accept="image/*"
-                                            class="input-form form-control @error('loan_payment_img') is-invalid @enderror"
-                                            id="loan_payment_img" name="loan_payment_img[]" alt="payment-proof"
-                                            onchange="carouselLoanBonusViewer(event, '{{ $loan->id }}')">
-                                        <label for="loan_payment_img">Comprobante(s) de pago ( Opcional pero recomendado
-                                            )</label>
+                                            class="image-upload-input d-none @error('loan_payment_img') is-invalid @enderror"
+                                            id="loan_payment_img" name="loan_payment_img[]"
+                                            onchange="carouselLoanPaymentsBonusViewer(event, '{{ $loan->id }}')">
                                     </div>
+                                    <div id="image-preview-bonus-container" class="image-preview-bonus-container"></div>
                                 </div>
                             </div>
 
@@ -77,58 +80,13 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Carrusel -->
-                        <div class="col-6 mb-3">
-                            <div class="card" style="padding: 5px; min-height: 90%; max-height: 90%;">
-                                <div class="card-body">
-                                    <h5 class="clamp_text_sm text-center" style="color: gray; font-weight: 400;">
-                                        Visualizador (clic en la imagen para expandir)</h5>
-                                    <div id="carousel-controls-{{ $loan->id }}" class="carousel slide" data-bs-ride="carousel">
-                                        <div class="carousel-inner" id="carousel-loan-bonus-images-{{ $loan->id }}">
-                                            <div class="carousel-item active">
-                                                <img class="d-block w-100" alt=""
-                                                    src="{{ asset('static/transfer-receipt.png')}}"
-                                                    style="min-height: 100%; max-height: 100%;">
-                                            </div>
-                                        </div>
-
-                                        <a class="carousel-control-prev" href="#carousel-controls-{{ $loan->id }}" role="button"
-                                            data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Anterior</span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#carousel-controls-{{ $loan->id }}" role="button"
-                                            data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Siguiente</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Modal para vista previa ampliada -->
-                        <div class="modal modal-blur fade" id="previewImageLoanBonusModal-{{ $loan->id}}" data-bs-backdrop="static"
-                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="imagePreviewLoanBonusLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="imagePreviewLoanBonusLabel">Vista previa del
-                                            comprobante</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img id="previewImageLoanBonus-{{ $loan->id}}" src="" alt="" class="img-fluid">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Custom input file -->
+<link rel="stylesheet" href="{{ Storage::url('css/loan_payments_custom_input_file.css') }}">
+<script src="{{ Storage::url('customjs/loans/loan_payment_bonus_custom_input_file.js') }}"></script>

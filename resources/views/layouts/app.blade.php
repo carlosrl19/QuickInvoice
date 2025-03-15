@@ -70,7 +70,7 @@
                     </div>
 
                     @if ($errors->any())
-                    <div class="alert alert-danger alert-dismissible" data-bs-auto-dismiss="3000">
+                    <div class="alert alert-danger alert-dismissible">
                         <button type="button" class="close" data-bs-dismiss="alert" aria-hidden="true">×</button>
                         <p class="text-danger fw-bold">
                             <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px; color: red" />&nbsp;

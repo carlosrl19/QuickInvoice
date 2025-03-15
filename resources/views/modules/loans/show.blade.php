@@ -36,7 +36,7 @@
 @endsection
 
 @section('title')
-Préstamos
+Créditos
 @endsection
 
 @section('breadcrumb')
@@ -50,19 +50,15 @@ Préstamos
         <i class="icon-arrow-right"></i>
     </li>
     <li class="nav-item">
-        <a href="#">Préstamos</a>
+        <a href="#">Créditos</a>
     </li>
     <li class="separator">
         <i class="icon-arrow-right"></i>
     </li>
     <li class="nav-item fw-bold">
-        <a href="#">#{{ $loan->loan_code }}</a>
+        <a href="#">#{{ $loan->loan_code_number }}</a>
     </li>
 </ul>
-@endsection
-
-@section('pretitle')
-Listado de préstamos
 @endsection
 
 @section('create')
@@ -81,124 +77,121 @@ Listado de préstamos
     <x-heroicon-o-document-text style="width: 20px; height: 20px; color: white" />
     &nbsp;Historial de pagos
 </a>
-
-<a href="{{ route('loans.index')}}" class="btn btn-sm btn-dark clamp_text">
-    <x-heroicon-o-arrow-uturn-left style="width: 20px; height: 20px; color: white" />
-    &nbsp;Volver
-</a>
 @endsection
 
 @section('content')
 <div class="row">
-    <div class="col-3 d-none d-lg-block">
-        <div class="card" style="border-left: 2px solid blue; border-top-left-radius: 0px;">
-            <div class="card-header bg-primary text-white fw-bold">
-                Información del préstamo
-            </div>
-            <div class="card-body">
-                <div class="row mb-3 align-items-end">
-                    <div class="table-responsive">
-                        <table class="display table table-responsive">
-                            <tbody>
-                                <tr>
-                                    <td><strong>Cliente:</strong></td>
-                                    <td class="text-muted">
-                                        <strong>{{ $loan->client->client_name }}</strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Documento</strong></td>
-                                    <td class="text-muted">{{ $loan->client->client_document }}</td>
-                                </tr>
-                                <tr>
-                                    @if($loan->client->client_phone2 == '')
-                                    <td><strong>Teléfono</strong></td>
-                                    <td class="text-muted">{{ $loan->client->client_phone1 }}</td>
-                                    @else
-                                    <td><strong>Teléfonos</strong></td>
-                                    <td class="text-muted">{{ $loan->client->client_phone1 }}, {{ $loan->client->client_phone2 }}</td>
-                                    @endif
-                                </tr>
-                                <tr>
-                                    <td><strong>Código préstamo</strong></td>
-                                    <td class="text-muted">{{ $loan->loan_code }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Fecha creación</strong></td>
-                                    <td class="text-muted">{{ $loan->created_at }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Tipo de pago</strong></td>
-                                    <td class="text-muted">
-                                        @if ($loan->loan_payment_type == 1)
-                                        <span>DIARIO</span>
-                                        @elseif ($loan->loan_payment_type == 2)
-                                        <span>SEMANAL</span>
-                                        @elseif ($loan->loan_payment_type == 3)
-                                        <span>QUINCENAL</span>
-                                        @else
-                                        <span>MENSUAL</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Fecha primer pago</strong></td>
-                                    <td class="text-muted">{{ $loan->loan_start_date }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Fecha último pago (previsto)</strong></td>
-                                    <td class="text-muted">{{ $loan->loan_end_date }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Préstamo</strong></td>
-                                    <td class="text-muted">L. {{ number_format($loan->loan_amount, 2) }}
-                                        ({{ number_format($loan->loan_tax, 0) }}%)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Prima</strong></td>
-                                    <td class="text-muted">L. {{ number_format($loan->loan_down_payment, 2) }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Total a pagar</strong></td>
-                                    <td class="text-muted">L. {{ number_format($loan->loan_total, 2) }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Nº cuotas</strong></td>
-                                    <td class="text-muted">{{ $loan->loan_quote_number }} x {{ number_format($loan->loan_quote_value, 2) }} c/u</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Pagado</strong></td>
-                                    <td class="text-muted">L. {{ number_format($loan_payment_amount_sum, 2) }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Deuda actual</strong></td>
-                                    <td class="text-muted">L. {{ number_format($actual_debt, 2) }}</td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td><strong>Comentarios</strong></td>
-                                    <td class="text-muted">{{ $loan->loan_description }}</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header fw-bold">
+            <p class="offcanvas-title fw-bold" id="offcanvasExampleLabel">Información del préstamo</p>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="table-responsive">
+                <table class="display table table-responsive">
+                    <tbody>
+                        <tr>
+                            <td><strong>Cliente:</strong></td>
+                            <td class="text-muted">
+                                <strong>{{ $loan->client->client_name }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Documento</strong></td>
+                            <td class="text-muted">{{ $loan->client->client_document }}</td>
+                        </tr>
+                        <tr>
+                            @if($loan->client->client_phone2 == '')
+                            <td><strong>Teléfono</strong></td>
+                            <td class="text-muted">{{ $loan->client->client_phone1 }}</td>
+                            @else
+                            <td><strong>Teléfonos</strong></td>
+                            <td class="text-muted">{{ $loan->client->client_phone1 }}, {{ $loan->client->client_phone2 }}</td>
+                            @endif
+                        </tr>
+                        <tr>
+                            <td><strong>Código préstamo</strong></td>
+                            <td class="text-muted">{{ $loan->loan_code_number }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha creación</strong></td>
+                            <td class="text-muted">{{ $loan->created_at }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tipo de pago</strong></td>
+                            <td class="text-muted">
+                                @if ($loan->loan_payment_type == 1)
+                                <span>DIARIO</span>
+                                @elseif ($loan->loan_payment_type == 2)
+                                <span>SEMANAL</span>
+                                @elseif ($loan->loan_payment_type == 3)
+                                <span>QUINCENAL</span>
+                                @else
+                                <span>MENSUAL</span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha primer pago</strong></td>
+                            <td class="text-muted">{{ $loan->loan_start_date }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha último pago (previsto)</strong></td>
+                            <td class="text-muted">{{ $loan->loan_end_date }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Préstamo</strong></td>
+                            <td class="text-muted">L. {{ number_format($loan->loan_amount, 2) }}
+                                ({{ number_format($loan->loan_interest, 0) }}%)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Prima</strong></td>
+                            <td class="text-muted">L. {{ number_format($loan->loan_down_payment, 2) }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total a pagar</strong></td>
+                            <td class="text-muted">L. {{ number_format($loan->loan_total, 2) }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nº cuotas</strong></td>
+                            <td class="text-muted">{{ $loan->loan_quote_number }} x {{ number_format($loan->loan_quote_value, 2) }} c/u</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pagado</strong></td>
+                            <td class="text-muted">L. {{ number_format($loan_payment_amount_sum, 2) }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Deuda actual</strong></td>
+                            <td class="text-muted">L. {{ number_format($actual_debt, 2) }}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Comentarios</strong></td>
+                            <td class="text-muted">{{ $loan->loan_description }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
     </div>
 
-    <div class="col-xl-9 col-lg-9">
+    <div class="col-xl-12 col-lg-12">
         <div class="card">
             <div class="card-header fw-bold d-flex justify-content-between align-items-center">
-                <span>Historial de pagos</span>
+                <span>
+                    <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                        <x-heroicon-o-information-circle style="width: 25px; height: 25px; color: lightgray" />
+                    </a>
+                    &nbsp;Historial de pagos / <span class="op-3">#{{ $loan->loan_code_number }} / {{ $loan->client->client_name }}</span>
+                </span>
                 <div>
-                    @if($actual_debt < $loan->loan_quote_value)
+                    @if($actual_debt > 0 && $actual_debt < $loan->loan_quote_value)
                         <a class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#bonus_payment_{{ $loan->id }}">
                             <x-heroicon-o-plus style="width: 20px; height: 20px; color: white" />
                             &nbsp;Nuevo abono
                         </a>
-                        @else
+                    @elseif($actual_debt > 0 && $actual_debt >= $loan->loan_quote_value)
                         <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#quote_payment_{{ $loan->id }}">
                             <x-heroicon-o-plus style="width: 20px; height: 20px; color: white" />
                             &nbsp;Nuevo pago
@@ -207,7 +200,7 @@ Listado de préstamos
                             <x-heroicon-o-plus style="width: 20px; height: 20px; color: white" />
                             &nbsp;Nuevo abono
                         </a>
-                        @endif
+                    @endif
                 </div>
             </div>
             <div class="card-body">
@@ -241,12 +234,12 @@ Listado de préstamos
                                             @foreach (json_decode($loan_payment->loan_payment_img) as $image)
                                             <div class="mx-2 my-1">
                                                 <a class="loan_payment_img" data-gall="loan_payment_gallery"
-                                                    title="# RP{{ $loan_payment->loan_payment_doc_number }} -> P #{{ $loan->loan_code }} - {{ $loan->client->client_name }}"
+                                                    title="# RP{{ $loan_payment->loan_payment_doc_number }} -> P #{{ $loan->loan_code_number }} - {{ $loan->client->client_name }}"
                                                     data-fitview="true"
-                                                    href="{{ Storage::url('uploads/loan_payments/' . $loan->loan_code . '/' . $image) }}">
+                                                    href="{{ Storage::url('uploads/loan_payments/' . $loan->loan_code_number . '/' . $image) }}">
                                                     <img id="image-preview"
                                                         style="border: 1px solid #e3e3e3; border-radius: 5px; padding: 5px;"
-                                                        src="{{ Storage::url('uploads/loan_payments/' . $loan->loan_code . '/' . $image) }}"
+                                                        src="{{ Storage::url('uploads/loan_payments/' . $loan->loan_code_number . '/' . $image) }}"
                                                         alt="" width="30" height="30">
                                                 </a>
                                             </div>
@@ -278,7 +271,7 @@ Listado de préstamos
                                 @endforeach
                             </tbody>
                             <tfoot>
-                                <tr class="clamp_text_sm text-muted text-center">
+                                <tr class="text-muted text-center">
                                     <td colspan="5"></td>
                                     @if($actual_debt == 0.00)
                                     <td>---</td>
@@ -286,8 +279,8 @@ Listado de préstamos
                                         <span class="fw-bold text-white">PAGADO</span>
                                     </td>
                                     @else
-                                    <td colspan="2" class="bg-danger fw-bold text-white">TOTAL DEUDA</td>
-                                    <td class="bg-danger">
+                                    <td colspan="2" class="bg-dark fw-bold text-white">TOTAL DEUDA</td>
+                                    <td class="bg-dark">
                                         <span class="fw-bold text-white">L.
                                             {{ number_format($actual_debt, 2) }}</span>
                                     </td>

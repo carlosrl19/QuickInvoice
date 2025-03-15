@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <p class="modal-title fw-bold" id="pdfModalLabel">Solicitud de crédito #{{ $loan->loan_code }}</p>
+                <p class="modal-title fw-bold" id="pdfModalLabel">Solicitud de crédito #{{ $loan->loan_code_number }}</p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -20,7 +20,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <p class="modal-title fw-bold" id="pdfRequestLabel">Plan de pagos #{{ $loan->loan_code }}</p>
+                <p class="modal-title fw-bold" id="pdfRequestLabel">Plan de pagos #{{ $loan->loan_code_number }}</p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -36,7 +36,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <p class="modal-title fw-bold" id="pdfPaymentHistoryLabel">Historial de pagos #{{ $loan->loan_code }}</p>
+                <p class="modal-title fw-bold" id="pdfPaymentHistoryLabel">Historial de pagos #{{ $loan->loan_code_number }}</p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

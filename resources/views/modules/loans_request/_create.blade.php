@@ -2,21 +2,23 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content" style="border: 2px solid #52524E">
             <div class="modal-header" style="background-color: #A0C878; color: #fff">
-                <h5 class="modal-title">Agregar nuevo préstamo</h5>
+                <p class="modal-title fw-bold">Crear nueva solicitud de préstamo</p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="{{ route('loans.store')}}" method="POST">
                     @csrf
-                    <input type="hidden" name="loan_status" value="1">
-                    <input type="hidden" name="loan_code" value="{{ $loan_code }}">
+                    <input type="hidden" name="loan_status" value="0"> <!-- Controller get this -->
+                    <input type="hidden" name="loan_request_status" value="0"> <!-- Controller get this -->
+                    <input type="hidden" name="loan_code_number" value="892739213"> <!-- Controller get this -->
+                    <input type="hidden" name="loan_request_number" value="892739213"> <!-- Controller get this -->
 
-                    <!-- Amount / Tax -->
+                    <!-- Client / Payment type -->
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
                                 <select class="tom-select  @error('client_id') is-invalid @enderror" id="client_id_select" name="client_id">
-                                    <option value="" selected disabled>Seleccione el prestamista</option>
+                                    <option value="" selected disabled>Seleccione el cliente</option>
                                     @foreach ($clients as $client)
                                     <option value="{{ $client->id }}" {{ old('client_id') == $client->id ? 'selected' : '' }}>{{ $client->client_name }}</option>
                                     @endforeach
@@ -48,11 +50,11 @@
                         </div>
                     </div>
 
-                    <!-- Amount, quotes, down payment and taxes -->
+                    <!-- Amount / quotes -->
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="number" name="loan_amount" step="any" id="loan_amount" class="form-control @error('loan_amount') is-invalid @enderror" />
+                                <input type="number" name="loan_amount" step="any" id="loan_amount" value="{{ old('loan_amount') }}" class="form-control @error('loan_amount') is-invalid @enderror" />
                                 @error('loan_amount')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -64,7 +66,7 @@
 
                         <div class="col">
                             <div class="form-floating">
-                                <input type="number" name="loan_quote_number" min="1" id="loan_quote_number" class="form-control @error('loan_quote_number') is-invalid @enderror" />
+                                <input type="number" name="loan_quote_number" min="1" id="loan_quote_number" value="{{ old('loan_quote_number') }}" class="form-control @error('loan_quote_number') is-invalid @enderror" />
                                 @error('loan_quote_number')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -75,22 +77,23 @@
                         </div>
                     </div>
 
+                    <!-- Down payment / interest -->
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="number" name="loan_tax" min="0" max="100" id="loan_tax" class="form-control @error('loan_tax') is-invalid @enderror" />
-                                @error('loan_tax')
+                                <input type="number" name="loan_interest" min="0" max="100" id="loan_interest" value="{{ old('loan_interest') }}" class="form-control @error('loan_interest') is-invalid @enderror" />
+                                @error('loan_interest')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
-                                <label for="loan_tax">Intereses del préstamo <span class="text-danger">*</span></label>
+                                <label for="loan_interest">Intereses del préstamo <span class="text-danger">*</span></label>
                             </div>
                         </div>
 
                         <div class="col">
                             <div class="form-floating">
-                                <input type="number" name="loan_down_payment" value="0.00" step="any" id="loan_down_payment" class="form-control @error('loan_down_payment') is-invalid @enderror" />
+                                <input type="number" name="loan_down_payment" value="0.00" step="any" id="loan_down_payment" value="{{ old('loan_down_payment') }}" class="form-control @error('loan_down_payment') is-invalid @enderror" />
                                 @error('loan_down_payment')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -105,7 +108,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="number" style="background-color: #ffffff !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" readonly name="loan_total" min="1" id="loan_total" class="form-control @error('loan_total') is-invalid @enderror" />
+                                <input type="number" value="{{ old('loan_total') }}" style="background-color: #ffffff !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" readonly name="loan_total" min="1" id="loan_total" class="form-control @error('loan_total') is-invalid @enderror" />
                                 @error('loan_total')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -116,7 +119,7 @@
                         </div>
                         <div class="col">
                             <div class="form-floating">
-                                <input type="number" style="background-color: #ffffff !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" readonly name="loan_quote_value" min="1" id="loan_quote_value" class="form-control @error('loan_quote_value') is-invalid @enderror" />
+                                <input type="number" value="{{ old('loan_quote_value') }}" style="background-color: #ffffff !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" readonly name="loan_quote_value" min="1" id="loan_quote_value" class="form-control @error('loan_quote_value') is-invalid @enderror" />
                                 @error('loan_quote_value')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -240,7 +243,7 @@
         const loanAmountInput = document.getElementById('loan_amount');
         const loanDownAmountInput = document.getElementById('loan_down_payment');
         const loanQuoteNumberInput = document.getElementById('loan_quote_number');
-        const loanTaxInput = document.getElementById('loan_tax');
+        const loanTaxInput = document.getElementById('loan_interest');
         const loanQuoteValueInput = document.getElementById('loan_quote_value');
         const loanTotalValueInput = document.getElementById('loan_total');
 

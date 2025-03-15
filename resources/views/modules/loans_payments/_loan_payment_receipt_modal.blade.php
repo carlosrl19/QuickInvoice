@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <p class="modal-title fw-bold" id="pdfReceiptLabel">Recibo de pago #{{ $loan->loan_code }}</p>
+                <p class="modal-title fw-bold" id="pdfReceiptLabel">Recibo de pago #{{ $loan->loan_code_number }}</p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

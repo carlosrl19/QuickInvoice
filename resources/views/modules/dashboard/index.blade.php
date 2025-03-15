@@ -4,10 +4,6 @@
 Dashboard
 @endsection
 
-@section('pretitle')
-Administrador
-@endsection
-
 @section('content')
 <div class="row row-card-no-pd">
     <div class="col-12 col-sm-6 col-md-6 col-xl-3">

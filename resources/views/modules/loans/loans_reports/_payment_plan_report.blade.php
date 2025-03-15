@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8" />
-	<title>#PP-{{ $loan->loan_code }}</title>
+	<title>#PP-{{ $loan->loan_code_number }}</title>
 
 	<style>
 		body {
@@ -155,7 +155,7 @@
 		</div>
 
 		<div>
-			<strong class="subtitle_2">PLAN DE PAGOS - PRESTAMO #{{ $loan->loan_code }}</strong> <br />
+			<strong class="subtitle_2">PLAN DE PAGOS - PRESTAMO #{{ $loan->loan_code_number }}</strong> <br />
 		</div>
 
 		@php

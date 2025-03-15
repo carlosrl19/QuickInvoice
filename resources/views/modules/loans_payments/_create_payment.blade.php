@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content" style="border: 2px solid #52524E">
             <div class="modal-header" style="background-color: #A0C878; color: #fff">
-                <p class="modal-title fw-bold">Nuevo pago de cuota / <small>#{{ $loan->loan_code }}</small></p>
+                <p class="modal-title fw-bold">Nuevo pago de cuota / <small>#{{ $loan->loan_code_number }}</small></p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -21,14 +21,7 @@
                             <div class="row mb-3">
                                 <div class="col">
                                     <div class="form-floating">
-                                        <input type="text" style="background-color: #ffffff !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" readonly class="text-muted input-form form-control" value="#{{ $loan->loan_code }}">
-                                        <label for="loan_code">Codigo préstamo <span
-                                                class="text-danger">*</span></label>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-floating">
-                                        <input type="number" style="background-color: #ffffff !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" readonly name="loan_payment_amount" step="any" value="{{ $loan->loan_quote_value }}" id="loan_payment_amount" class="input-form form-control @error('loan_payment_amount') is-invalid @enderror" />
+                                        <input type="number" style="background-color: #ffffff !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" readonly name="loan_payment_amount" step="any" value="{{ $loan->loan_quote_value }}" id="loan_payment_amount" class="form-control @error('loan_payment_amount') is-invalid @enderror" />
                                         @error('loan_payment_amount')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -36,6 +29,17 @@
                                         @enderror
                                         <label for="loan_payment_amount">Monto del pago <span
                                                 class="text-danger">*</span></label>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="form-floating">
+                                        @php
+                                        $loan_payment_amount_sum = App\Models\LoanPayments::where('loan_id', $loan->id)->sum('loan_payment_amount');
+                                        $actual_debt = $loan->loan_total - $loan_payment_amount_sum;
+                                        @endphp
+                                        <input type="text" id="actual_debt" class="form-control" readonly style=" background-color: #ffffff !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" value="{{ number_format($actual_debt,2) }}">
+                                        <label for="actual_debt">Deuda actual <span class="text-danger">*</span></label>
                                     </div>
                                 </div>
                             </div>
@@ -87,5 +91,5 @@
 </div>
 
 <!-- Custom input file -->
-<link rel="stylesheet" href="{{ Storage::url('css/loan_paymentscustom_input_file.css') }}">
+<link rel="stylesheet" href="{{ Storage::url('css/loan_payments_custom_input_file.css') }}">
 <script src="{{ Storage::url('customjs/loans/loan_payment_custom_input_file.js') }}"></script>

@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8" />
-	<title>#SC-{{ $loan->loan_code }}</title>
+	<title>#SC-{{ $loan->loan_code_number }}</title>
 
 	<style>
 		body {
@@ -155,7 +155,7 @@
 		</div>
 
 		<div>
-			<strong class="subtitle_2">HISTORIAL DE PAGOS - PRESTAMO #{{ $loan->loan_code }}</strong> <br />
+			<strong class="subtitle_2">HISTORIAL DE PAGOS - PRESTAMO #{{ $loan->loan_code_number }}</strong> <br />
 		</div>
 
 		<table>

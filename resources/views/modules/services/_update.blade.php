@@ -40,7 +40,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <textarea oninput="this.value = this.value.toUpperCase()" class="clamp_text_sm form-control @error('service_description') is-invalid @enderror" autocomplete="off" maxlength="255"
+                                <textarea oninput="this.value = this.value.toUpperCase()" class="form-control @error('service_description') is-invalid @enderror" autocomplete="off" maxlength="255"
                                     name="service_description" rows="6" id="service_description" style="resize: none; height: 100px;">{{ $service->service_description }}</textarea>
                                 @error('service_description')
                                 <span class="invalid-feedback" role="alert">

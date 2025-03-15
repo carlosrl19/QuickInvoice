@@ -13,4 +13,10 @@ class Services extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function pos_details()
+    {
+        return $this->hasMany(PosDetails::class, 'service_id')
+            ->onDelete('cascade');
+    }
 }

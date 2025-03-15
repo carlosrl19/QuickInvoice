@@ -179,7 +179,7 @@
                 @else
                 <span class="text_header_sm">TELEFONOS: {{ $loan->client->client_phone1 }}, {{ $loan->client->client_phone2 }}</span><br />
                 @endif
-                <span class="text_header_sm">REFERENCIA: <strong>#{{ $loan->loan_code }}</strong></span><br />
+                <span class="text_header_sm">REFERENCIA: <strong>#{{ $loan->loan_code_number }}</strong></span><br />
             </div>
         </div>
 
@@ -193,7 +193,7 @@
             <tbody>
                 <tr style="text-align: left !important;">
                     <td>
-                        Abono al préstamo #{{ $loan->loan_code }} | Int. Corriente: 0.00 | Mora: 0.00<br>
+                        Abono al préstamo #{{ $loan->loan_code_number }} | Int. Corriente: 0.00 | Mora: 0.00<br>
                         Capital: L. {{ number_format($loan_payment->loan_payment_amount, 2) }}<br>
                         Saldo Anterior: L. {{ number_format($loan_payment->loan_old_debt,2) }}<br>
                         Nuevo Saldo: L. {{ number_format($loan_payment->loan_new_debt,2) }}

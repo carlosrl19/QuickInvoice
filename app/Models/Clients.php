@@ -18,7 +18,13 @@ class Clients extends Model
     // Relationships
     public function loans()
     {
-        return $this->hasMany(Loans::class, 'moneylender_id')
+        return $this->hasMany(Loans::class, 'client_id')
+            ->onDelete('cascade');
+    }
+
+    public function pos()
+    {
+        return $this->hasMany(Pos::class, 'client_id')
             ->onDelete('cascade');
     }
 }

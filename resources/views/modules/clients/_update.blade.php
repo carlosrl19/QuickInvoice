@@ -81,7 +81,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <textarea oninput="this.value = this.value.toUpperCase()" class="clamp_text_sm form-control @error('client_address') is-invalid @enderror" autocomplete="off" maxlength="255"
+                                <textarea oninput="this.value = this.value.toUpperCase()" class="form-control @error('client_address') is-invalid @enderror" autocomplete="off" maxlength="255"
                                     name="client_address" id="client_address" rows="6" style="resize: none; height: 100px;">{{ $client->client_address }}</textarea>
                                 @error('client_address')
                                 <span class="invalid-feedback" role="alert">

@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8" />
-	<title>#SC-{{ $loan->loan_code }}</title>
+	<title>#SC-{{ $loan->loan_code_number }}</title>
 </head>
 
 <body>
@@ -149,7 +149,7 @@
 			</div>
 
 			<div class="mt-2">
-				<span class="text_sm">Monto:&nbsp;L. {{ number_format($loan->loan_amount,2) }} ({{ number_format($loan->loan_tax,0)}}%)</span> <br />
+				<span class="text_sm">Monto:&nbsp;L. {{ number_format($loan->loan_amount,2) }} ({{ number_format($loan->loan_interest,0)}}%)</span> <br />
 				<span class="text_sm">Prima:&nbsp;L. {{ number_format($loan->loan_down_payment,2) }}</span> <br />
 				<span class="text_sm">Monto a financiar:&nbsp;L. {{ number_format($loan->loan_total,2) }}</span> <br />
 				@if($loan->loan_payment_type == 1)
@@ -197,7 +197,7 @@
 					<td>N/A</td>
 					<td>1</td>
 					<td>{{ number_format($loan->loan_amount,2) }}</td>
-					<td>{{ number_format($loan->loan_tax,0) }}%</td>
+					<td>{{ number_format($loan->loan_interest,0) }}%</td>
 					<td>{{ number_format($loan->loan_total,2) }}</td>
 				</tr>
 				<tr>

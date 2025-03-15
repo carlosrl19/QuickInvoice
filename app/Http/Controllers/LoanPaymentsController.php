@@ -35,7 +35,7 @@ class LoanPaymentsController extends Controller
             $imageNames = [];
             if ($request->hasFile('loan_payment_img')) {
                 $images = $request->file('loan_payment_img');
-                $path = 'public/uploads/loan_payments/' . $loan->loan_code . '/'; // Define the path
+                $path = 'public/uploads/loan_payments/' . $loan->loan_code_number . '/'; // Define the path
 
                 foreach ($images as $image) {
                     $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
@@ -119,7 +119,7 @@ class LoanPaymentsController extends Controller
 
             DB::commit();
 
-            return redirect()->back()->with('success', 'Registro creado exitosamente.');
+            return redirect()->back()->with('success_payment', 'Registro creado exitosamente.');
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -141,9 +141,12 @@ class LoanPaymentsController extends Controller
             $imageNames = [];
             if ($request->hasFile('loan_payment_img')) {
                 $images = $request->file('loan_payment_img');
+                $path = 'public/uploads/loan_payments/' . $loan->loan_code_number . '/'; // Define the path
+
                 foreach ($images as $image) {
                     $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
-                    $image->move(public_path('../public_html/images/loan_payments/'), $imageName);
+                    // Use move() with the correct path
+                    $image->move(storage_path('app/' . $path), $imageName);
                     $imageNames[] = $imageName;
                 }
             }
@@ -219,7 +222,7 @@ class LoanPaymentsController extends Controller
 
             DB::commit();
 
-            return redirect()->back()->with('success', 'Registro creado exitosamente.');
+            return redirect()->back()->with('success_payment', 'Registro creado exitosamente.');
         } catch (\Exception $e) {
             DB::rollBack();
 

@@ -19,20 +19,16 @@ Servicios
     <li class="separator">
         <i class="icon-arrow-right"></i>
     </li>
-    <li class="nav-item">
+    <li class="nav-item d-none d-xl-inline d-lg-inline">
         <a href="#">Servicios</a>
     </li>
-    <li class="separator">
+    <li class="separator d-none d-xl-inline d-lg-inline">
         <i class="icon-arrow-right"></i>
     </li>
     <li class="nav-item fw-bold">
         <a href="#">Listado principal de servicios</a>
     </li>
 </ul>
-@endsection
-
-@section('pretitle')
-Listado de servicios
 @endsection
 
 @section('create')
