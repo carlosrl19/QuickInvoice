@@ -15,6 +15,17 @@
 
                     <!-- Client / Payment type -->
                     <div class="row mb-3">
+                        <div class="col" id="seller_select_container">
+                            <select class="tom-select" id="seller_id_select" name="seller_id">
+                                <option value="" selected disabled>Seleccione el vendedor</option>
+                                @foreach ($sellers as $seller)
+                                <option value="{{ $seller->id }}" {{ $seller->id == 1 ? 'selected' : '' }}>{{ $seller->seller_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
                                 <select class="tom-select  @error('client_id') is-invalid @enderror" id="client_id_select" name="client_id">
@@ -81,7 +92,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="number" name="loan_interest" min="0" max="100" id="loan_interest" value="{{ old('loan_interest') }}" class="form-control @error('loan_interest') is-invalid @enderror" />
+                                <input type="number" name="loan_interest" min="0" max="100" value="0.00" id="loan_interest" value="{{ old('loan_interest') }}" class="form-control @error('loan_interest') is-invalid @enderror" />
                                 @error('loan_interest')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

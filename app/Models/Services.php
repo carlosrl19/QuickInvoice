@@ -16,7 +16,6 @@ class Services extends Model
 
     public function pos_details()
     {
-        return $this->hasMany(PosDetails::class, 'service_id')
-            ->onDelete('cascade');
+        return $this->hasMany(PosDetails::class, 'service_id');
     }
 }

@@ -8,6 +8,7 @@ class Loans extends Model
 {
     protected $fillable = [
         'client_id',
+        'seller_id',
         'loan_code_number',
         'loan_request_number',
         'loan_payment_type',
@@ -30,6 +31,11 @@ class Loans extends Model
     public function client()
     {
         return $this->belongsTo(Clients::class, 'client_id');
+    }
+
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class, 'seller_id');
     }
 
     public function loan_payment()

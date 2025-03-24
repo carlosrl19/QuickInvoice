@@ -14,7 +14,9 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // Loan Requests
             'client_id' => 'required|numeric|exists:clients,id',
+            'seller_id' => 'required|numeric|exists:sellers,id',
             'loan_code_number' => 'required|string|min:9|max:9|regex:/^[a-zA-Z0-9]+$/|unique:loans,loan_code_number',
             'loan_request_number' => 'required|string|min:9|max:9|regex:/^[a-zA-Z0-9]+$/|unique:loans,loan_request_number',
             'loan_payment_type' => 'required|min:1|max:4',
@@ -34,10 +36,19 @@ class StoreRequest extends FormRequest
     public function messages()
     {
         return [
+            /***************************
+             * Loan Request messages
+             ****************************/
+
             // Client id messages
             'client_id.required' => 'El cliente es obligatorio.',
             'client_id.numeric' => 'El id del cliente solo debe contener números (dev.request).',
             'client_id.exists' => 'El cliente seleccionado no existe en la base de datos.',
+
+            // Seller id messages
+            'seller_id.required' => 'El cliente es obligatorio.',
+            'seller_id.numeric' => 'El id del cliente solo debe contener números (dev.request).',
+            'seller_id.exists' => 'El cliente seleccionado no existe en la base de datos.',
 
             // Loan code messages
             'loan_code_number.required' => 'El código del préstamo es obligatorio.',

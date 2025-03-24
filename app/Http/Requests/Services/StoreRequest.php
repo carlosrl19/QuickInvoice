@@ -15,7 +15,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'service_name' => 'required|string|min:3|max:55|regex:/^[^\d]+$/|unique:services',
-            'service_nomenclature' => 'required|string|min:2|max:5|regex:/^[^\d]+$/|unique:services',
+            'service_nomenclature' => 'required|string|min:2|max:6|regex:/^[^\d]+$/|unique:services',
             'service_description' => 'nullable|string|min:3|max:155',
         ];
     }

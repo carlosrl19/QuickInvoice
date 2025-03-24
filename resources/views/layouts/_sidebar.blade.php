@@ -1,26 +1,7 @@
    <div class="sidebar" data-background-color="dark">
        <div class="sidebar-logo">
            <!-- Logo Header -->
-           <div class="logo-header" data-background-color="dark">
-               <a href="#" class="logo">
-                   <img
-                       src="{{ Storage::url('assets/img/kaiadmin/logo_light.svg') }}"
-                       alt="navbar brand"
-                       class="navbar-brand"
-                       height="20" />
-               </a>
-               <div class="nav-toggle">
-                   <button class="btn btn-toggle toggle-sidebar">
-                       <i class="gg-menu-right"></i>
-                   </button>
-                   <button class="btn btn-toggle sidenav-toggler">
-                       <i class="gg-menu-left"></i>
-                   </button>
-               </div>
-               <button class="topbar-toggler more">
-                   <i class="gg-more-vertical-alt"></i>
-               </button>
-           </div>
+           @include('layouts._logo_header')
            <!-- End Logo Header -->
        </div>
        <div class="sidebar-wrapper">
@@ -73,10 +54,33 @@
                            <x-heroicon-o-banknotes style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Solicitud de créditos</span>
                        </a>
-                       <a href="{{ route('loans.index') }}">
+                   </li>
+                   <li class="nav-item">
+                       <a data-bs-toggle="collapse" href="#base">
                            <x-heroicon-o-book-open style="width: 20px; height: 20px; color: gray;" class="me-2" />
-                           <span class="sub-item">Créditos</span>
+                           <p>Créditos</p>
+                           <span class="caret"></span>
                        </a>
+                       <div class="collapse" id="base">
+                           <ul class="nav nav-collapse">
+                               <a href="{{ route('loans.index') }}">
+                                   <x-heroicon-o-book-open style="width: 20px; height: 20px; color: lightgreen;" class="me-2 op-5" />
+                                   <span class="sub-item">Créditos vigentes</span>
+                               </a>
+                               <a href="{{ route('loans.loans_paid_index') }}">
+                                   <x-heroicon-o-book-open style="width: 20px; height: 20px; color: lightblue;" class="me-2 op-5" />
+                                   <span class="sub-item">Créditos cancelados</span>
+                               </a>
+                               <a href="{{ route('loans.loans_rejected_index') }}">
+                                   <x-heroicon-o-book-open style="width: 20px; height: 20px; color: red;" class="me-2 op-5" />
+                                   <span class="sub-item">Créditos rechazados</span>
+                               </a>
+                               <a href="{{ route('loans.loans_cancelled_index') }}">
+                                   <x-heroicon-o-book-open style="width: 20px; height: 20px; color: orange;" class="me-2 op-5" />
+                                   <span class="sub-item">Créditos anulados</span>
+                               </a>
+                           </ul>
+                       </div>
                    </li>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">

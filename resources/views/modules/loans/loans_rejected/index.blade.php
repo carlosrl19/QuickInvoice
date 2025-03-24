@@ -6,7 +6,7 @@
 @endsection
 
 @section('title')
-Créditos vigentes
+Créditos rechazados
 @endsection
 
 @section('breadcrumb')
@@ -26,7 +26,7 @@ Créditos vigentes
         <i class="icon-arrow-right"></i>
     </li>
     <li class="nav-item fw-bold">
-        <a href="#">Listado principal de créditos</a>
+        <a href="#">Listado principal de créditos rechazados</a>
     </li>
 </ul>
 @endsection
@@ -40,6 +40,7 @@ Créditos vigentes
                     <table id="dt_loans_index" class="display table table-responsive table-striped">
                         <thead>
                             <tr>
+                                <th>Fecha rechazado</th>
                                 <th>Crédito #</th>
                                 <th>Solicitud</th>
                                 <th>Estado</th>
@@ -50,12 +51,14 @@ Créditos vigentes
                                 <th>Monto préstamo</th>
                                 <th>Nº Cuotas</th>
                                 <th>Pendiente</th>
-                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($loans as $loan)
                             <tr>
+                                <td>
+                                    {{ $loan->updated_at }}
+                                </td>
                                 <td>
                                     {{ $loan->loan_code_number }}
                                 </td>
@@ -63,12 +66,8 @@ Créditos vigentes
                                     {{ $loan->loan_request_number }}
                                 </td>
                                 <td>
-                                    @if($loan->loan_status == 0)
-                                    <span class="badge bg-dark fw-bold">SOLICITUD EN ESPERA</span>
-                                    @elseif($loan->loan_status == 1)
-                                    <span class="badge bg-warning fw-bold">EN PROCESO</span>
-                                    @elseif($loan->loan_status == 2)
-                                    <span class="badge bg-success fw-bold">PAGADO</span>
+                                    @if($loan->loan_request_status == 2)
+                                    <span class="badge bg-danger fw-bold">SOLICITUD RECHAZADA</span>
                                     @endif
                                 </td>
                                 <td>
@@ -79,7 +78,7 @@ Créditos vigentes
                                 </td>
                                 <td class="text-danger">
                                     <?php
-                                    $loan_payment_amount_sum = App\Models\LoanPayments::where('loan_id', $loan->id)->sum('loan_payment_amount');
+                                    $loan_payment_amount_sum = App\Models\LoanPayments::where('loan_id', $loan->id)->sum('loan_quote_payment_amount');
                                     $actual_debt = $loan->loan_total - $loan_payment_amount_sum;
                                     ?>
                                     L. {{ number_format($actual_debt, 2) }}
@@ -92,20 +91,6 @@ Créditos vigentes
                                 </td>
                                 <td>{{ $loan->loan_quote_number }} cuotas</td>
                                 <td>L. {{ number_format($loan->loan_total, 2) }}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary btn-border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Más acciones
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{ route('loans.loan_receipt_delivery_show', $loan->id) }}">Factura</a>
-                                        <a class="dropdown-item" href="{{ route('loans.show', $loan->id) }}">Estado de cuenta</a>
-                                        <div role="separator" class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Ajustes</a>
-                                        <a class="dropdown-item" href="#">Modificar precios</a>
-                                        <div role="separator" class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Anular</a>
-                                    </div>
-                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -117,7 +102,7 @@ Créditos vigentes
 </div>
 
 <!-- Include -->
-@include('modules.loans._sweet_alerts')
+@include('modules.loans.loans_rejected._sweet_alerts')
 @endsection
 
 @section('scripts')

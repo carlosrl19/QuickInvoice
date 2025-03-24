@@ -12,7 +12,8 @@ class Pos extends Model
         'sale_total_amount',
         'sale_discount',
         'sale_tax',
-        'sale_payment',
+        'sale_isv_amount',
+        'sale_payment_received',
         'sale_payment_change',
         'sale_payment_type'
     ];
@@ -30,6 +31,6 @@ class Pos extends Model
 
     public function pos_details()
     {
-        return $this->hasMany(PosDetails::class, 'sale_id')->onDelete('cascade');
+        return $this->hasMany(PosDetails::class, 'sale_id');
     }
 }

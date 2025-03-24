@@ -53,8 +53,10 @@
         title: "Exito",
         text: "{{ session('success') }}",
         icon: "success",
+        allowOutsideClick: false,
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000,
+        timerProgressBar: true,
     })
 </script>
 @endif
@@ -65,7 +67,10 @@
         title: "Error",
         text: "{{ session('error')  }}",
         icon: "error",
-        timer: 2500
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
     })
 </script>
 @endif

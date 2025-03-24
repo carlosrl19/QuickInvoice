@@ -44,13 +44,13 @@ class UpdateRequest extends FormRequest
             'seller_document.min' => 'El doc. del vendedor debe contener al menos :min caracteres.',
             'seller_document.max' => 'El doc. del vendedor no puede exceder :max caracteres.',
 
-            // Seller phone1 messages
-            'seller_phone.required' => 'El Nº teléfono principal es obligatorio.',
-            'seller_phone.unique' => 'El Nº teléfono principal ya existe.',
-            'seller_phone.string' => 'El Nº teléfono principal solo debe contener números.',
-            'seller_phone.regex' => 'El Nº teléfono principal no puede contener letras ni símbolos.',
-            'seller_phone.min' => 'El Nº teléfono principal debe contener al menos :min letras.',
-            'seller_phone.max' => 'El Nº teléfono principal no puede exceder :max caracteres.',
+            // Seller phone messages
+            'seller_phone.required' => 'El Nº teléfono es obligatorio.',
+            'seller_phone.unique' => 'El Nº teléfono ya existe.',
+            'seller_phone.string' => 'El Nº teléfono solo debe contener números.',
+            'seller_phone.regex' => 'El Nº teléfono no puede contener letras ni símbolos.',
+            'seller_phone.min' => 'El Nº teléfono debe contener al menos :min letras.',
+            'seller_phone.max' => 'El Nº teléfono no puede exceder :max caracteres.',
         ];
     }
 }

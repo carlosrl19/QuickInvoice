@@ -23,7 +23,7 @@ class StoreRequest extends FormRequest
             'sale_total_amount' => 'required|numeric|min:0.01',
             'sale_discount' => 'required|numeric|min:0|max:100',
             'sale_tax' => 'required|numeric|min:0|max:100',
-            'sale_payment' => 'required|numeric|min:0.01|gte:sale_total_amount',
+            'sale_payment_received' => 'required|numeric|min:0.01|gte:sale_total_amount',
             'sale_payment_type' => 'required|numeric|in:1,2,3',
             'sale_payment_change' => 'required|numeric|min:0',
 
@@ -72,10 +72,10 @@ class StoreRequest extends FormRequest
             'sale_tax.max' => 'El ISV no puede ser mayor que :max%.',
 
             // Sale payment type messages
-            'sale_payment.required' => 'El pago de la venta es obligatorio.',
-            'sale_payment.numeric' => 'El pago de la venta debe ser un número.',
-            'sale_payment.min' => 'El pago de la venta debe ser al menos L. :min',
-            'sale_payment.gte' => 'El pago de la venta debe ser mayor o igual a :min',
+            'sale_payment_received.required' => 'El pago de la venta es obligatorio.',
+            'sale_payment_received.numeric' => 'El pago de la venta debe ser un número.',
+            'sale_payment_received.min' => 'El pago de la venta debe ser al menos L. :min',
+            'sale_payment_received.gte' => 'El pago de la venta debe ser mayor o igual a :min',
 
             // Sale payment messages
             'sale_payment_type.required' => 'El tipo de pago es obligatorio.',

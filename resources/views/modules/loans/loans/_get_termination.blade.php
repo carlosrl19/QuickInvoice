@@ -21,10 +21,10 @@
                             @php
                             $loan_debt = DB::table('loan_payments')
                             ->where('loan_id', $loan->id)
-                            ->sum('loan_payment_amount')
+                            ->sum('loan_quote_payment_amount')
                             @endphp
 
-                            <input type="hidden" name="loan_payment_amount" value="{{$loan->loan_total - $loan_debt}}">
+                            <input type="hidden" name="loan_quote_payment_amount" value="{{$loan->loan_total - $loan_debt}}">
                             <input type="hidden" name="loan_new_debt" value="{{$loan->loan_total - $loan_debt}}">
                             <div class="row mb-3 align-items-end">
                                 <div class="col">
@@ -111,19 +111,6 @@
                                             class="img-fluid">
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3 align-items-end">
-                        <div class="col">
-                            <div class="form-floating">
-                                <input multiple type="file" accept="image/*"
-                                    class="form-control @error('loan_payment_img') is-invalid @enderror"
-                                    id="loan_payment_img" name="loan_payment_img[]" alt="payment-proof"
-                                    onchange="carouselLoanTerminationViewer(event, '{{ $loan->id }}')">
-                                <label for="loan_payment_img">Comprobante(s) de pago <span
-                                        class="text-danger">*</span></label>
                             </div>
                         </div>
                     </div>

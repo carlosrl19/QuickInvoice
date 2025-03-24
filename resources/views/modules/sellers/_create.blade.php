@@ -34,7 +34,9 @@
                                 <label for="seller_document">Nº identidad <span class="text-danger">*</span></label>
                             </div>
                         </div>
-                        
+                    </div>
+
+                    <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
                                 <input type="text" oninput="this.value = this.value.replace(/\D/g, '')" minlength="8" maxlength="8" name="seller_phone" value="{{ old('seller_phone') }}" id="seller_phone" class="form-control @error('seller_phone') is-invalid @enderror" autocomplete="off">

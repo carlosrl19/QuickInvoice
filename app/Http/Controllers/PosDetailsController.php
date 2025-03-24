@@ -7,14 +7,40 @@ use App\Models\PosDetails;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Luecano\NumeroALetras\NumeroALetras;
 
 class PosDetailsController extends Controller
 {
-    public function details_report($id)
+    public function pos_details_show($id)
     {
         $sale = Pos::findOrFail($id);
-        $pos_details = PosDetails::where('sale_id', $sale->id);
+
+        return view('modules.pos_details._sale_details_show', compact(
+            'sale',
+        ));
+    }
+
+    public function pos_details_report($id)
+    {
+        $sale = Pos::findOrFail($id);
+        $pos_details = PosDetails::where('sale_id', $sale->id)->get();
         $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+
+        // Obtener el monto del pago con centavos
+        $monto = $sale->sale_total_amount;
+
+        // Separar la parte entera y la parte decimal
+        $parteEntera = floor($monto);
+        $parteCentavos = round(($monto - $parteEntera) * 100);
+
+        // Formateador de números a letras
+        $formatter = new NumeroALetras();
+        $sale_amount_letras = $formatter->toWords($parteEntera);
+
+        // Agregar la parte de los centavos a la cadena de letras
+        if ($parteCentavos > 0) {
+            $sale_amount_letras .= " CON $parteCentavos/100 CENTAVOS";
+        }
 
         // Configurar el locale en Carbon
         Carbon::setLocale('es');
@@ -40,10 +66,11 @@ class PosDetailsController extends Controller
         $pdf = new Dompdf($options);
 
         // Cargar el contenido de la vista en Dompdf
-        $pdf->loadHtml(view('modules.pos_details._sale_details_report', compact(
-            'pos',
+        $pdf->loadHtml(view('modules.pos_details.pos_details_report._sale_details_report', compact(
+            'sale',
             'pos_details',
             'todayDate',
+            'sale_amount_letras',
             'dia',
             'mes',
             'anio',

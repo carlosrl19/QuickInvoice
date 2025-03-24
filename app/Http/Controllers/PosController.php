@@ -39,7 +39,8 @@ class PosController extends Controller
                 'sale_total_amount' => $request->input('sale_total_amount'),
                 'sale_discount' => $request->input('sale_discount'),
                 'sale_tax' => $request->input('sale_tax'),
-                'sale_payment' => $request->input('sale_payment'),
+                'sale_isv_amount' => $request->input('sale_isv_amount'),
+                'sale_payment_received' => $request->input('sale_payment_received'),
                 'sale_payment_type' => $request->input('sale_payment_type'),
                 'sale_payment_change' => $request->input('sale_payment_change'),
             ]);

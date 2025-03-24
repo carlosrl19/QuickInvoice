@@ -47,20 +47,29 @@ Clientes
                     <table id="dt_clients_index" class="display table table-responsive table-striped">
                         <thead>
                             <tr>
+                                <th>Acciones</th>
+                                <th>Código cliente</th>
                                 <th>Nombre cliente</th>
                                 <th>Documento</th>
                                 <th>Tipo cliente</th>
                                 <th>Teléfono 1</th>
                                 <th>Teléfono 2</th>
                                 <th>Domicilio</th>
-                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($clients as $client)
                             <tr>
                                 <td>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#update_client{{ $client->id }}">
+                                    <a href="#" class="badge bg-danger text-white" id="delete_client{{ $client->id }}">
+                                        <x-heroicon-o-trash style="width: 20px; height: 20px; color: white;" />
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ $client->client_code }}
+                                </td>
+                                <td>
+                                    <a href="{{ route('clients.edit', $client->id) }}">
                                         {{ $client->client_name }}
                                     </a>
                                 </td>
@@ -83,15 +92,7 @@ Clientes
                                         {{ $client->client_address ?? 'N/A' }}
                                     </span>
                                 </td>
-                                <td>
-                                    <a href="#" class="badge bg-danger text-white" id="delete_client{{ $client->id }}">
-                                        <x-heroicon-o-trash style="width: 20px; height: 20px; color: white;" />
-                                    </a>
-                                </td>
                             </tr>
-
-                            <!-- Update/Delete include -->
-                            @include('modules.clients._update')
                             @include('modules.clients._sweet_alerts')
                             @endforeach
                         </tbody>

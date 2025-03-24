@@ -10,6 +10,7 @@
             text: "Está seguro de continuar?",
             icon: "warning",
             showCancelButton: true,
+            allowOutsideClick: false,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             cancelButtonText: "Cancelar",
@@ -34,6 +35,7 @@
             `,
             icon: "warning",
             showCancelButton: true,
+            allowOutsideClick: false,
             confirmButtonColor: "#d33",
             cancelButtonColor: "#3085d6",
             cancelButtonText: "Cancelar",
@@ -53,8 +55,10 @@
         title: "Exito",
         text: "{{ session('success') }}",
         icon: "success",
+        allowOutsideClick: false,
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000,
+        timerProgressBar: true,
     })
 </script>
 @endif
@@ -65,7 +69,10 @@
         title: "Error",
         text: "{{ session('error')  }}",
         icon: "error",
-        timer: 2500
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
     })
 </script>
 @endif

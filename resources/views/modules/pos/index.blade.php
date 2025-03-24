@@ -35,16 +35,22 @@ POS
                     <table id="dt_pos_index" class="display table table-responsive table-striped">
                         <thead>
                             <tr>
+                                <th>Detalles</th>
                                 <th>Fecha</th>
                                 <th>Tipo pago</th>
                                 <th>Total</th>
                                 <th>Vendedor</th>
-                                <th>Detalles</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($pos_sales as $sale)
                             <tr>
+                                <td>
+                                    <a href="{{ route('pos_details.pos_details_show', $sale->id) }}" class="btn btn-sm btn-primary btn-border">
+                                        <x-heroicon-o-document-text style="width: 20px; height: 20px; color: #2f77f0" />
+                                        Factura
+                                    </a>
+                                </td>
                                 <td>
                                     {{ $sale->created_at }}
                                 </td>
@@ -74,11 +80,6 @@ POS
                                 </td>
                                 <td>
                                     {{ $sale->seller->seller_name }}
-                                </td>
-                                <td>
-                                    <a href="#" class="badge bg-secondary" data-bs-toggle="modal" data-bs-target="#sale_details{{ $sale->id }}">
-                                        <x-heroicon-o-document-text style="width: 20px; height: 20px; color: white" />
-                                    </a>
                                 </td>
                             </tr>
 

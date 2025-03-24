@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoanPayments\StoreRequest;
-use App\Http\Requests\LoanPayments\StoreBonusRequest;
 use App\Models\LoanPayments;
 use App\Models\Loans;
 use Carbon\Carbon;
@@ -12,221 +11,125 @@ use Illuminate\Support\Facades\Storage;
 
 class LoanPaymentsController extends Controller
 {
+    private function getTodayDate()
+    {
+        return Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+    }
+
     public function index()
     {
         $loan_payment = LoanPayments::get();
 
-        return view('modules.loan_payments.index', compact(
+        return view('modules.loans.loan_payments.index', compact(
             'loan_payment',
         ));
     }
 
-    public function loan_quote_payment(StoreRequest $request)
+    public function new_pay($id)
     {
-        DB::beginTransaction();
+        $loan = Loans::findOrFail($id);
+        $loan_payments = LoanPayments::where('loan_id', $loan->id)->get();
+        $loan_payments_sum = LoanPayments::where('loan_id', $loan->id)->where('loan_quote_payment_status', 1)->sum('loan_quote_payment_amount');
+        $actual_debt = $loan->loan_total - $loan_payments_sum;
 
-        try {
-            $loan = Loans::findOrFail($request->loan_id);
-            $loan_payments_sum = LoanPayments::where('loan_id', $loan->id)->sum('loan_payment_amount');
-            $actual_debt = $loan->loan_total - $loan_payments_sum;
-            $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+        // Calcular mora para cada cuota y actualizar en la base de datos
+        foreach ($loan_payments as $payment) {
+            try {
+                if (Carbon::now() > Carbon::parse($payment->loan_quote_payment_date) && $payment->loan_quote_payment_status == 0 || $payment->loan_quote_payment_status == 2) {
+                    // Calcular días desde la fecha de vencimiento
+                    $dueDate = Carbon::parse($payment->loan_quote_payment_date);
+                    $now = Carbon::now();
 
-            // Procesar y guardar las imágenes
-            $imageNames = [];
-            if ($request->hasFile('loan_payment_img')) {
-                $images = $request->file('loan_payment_img');
-                $path = 'public/uploads/loan_payments/' . $loan->loan_code_number . '/'; // Define the path
+                    if ($now > $dueDate) {
+                        $daysSinceDueDate = abs($now->diffInDays($dueDate));
+                    } else {
+                        $daysSinceDueDate = 0; // Si la fecha de vencimiento es posterior a la fecha actual
+                    }
 
-                foreach ($images as $image) {
-                    $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
-                    // Use move() with the correct path
-                    $image->move(storage_path('app/' . $path), $imageName);
-                    $imageNames[] = $imageName;
+                    // Calcular mora por día
+                    $dailyArrears = 10; // Mora por día
+
+                    $mora = $daysSinceDueDate * $dailyArrears;
+
+                    // Asegurarse de que la mora sea positiva
+                    $mora = max($mora, 0);
+
+                    LoanPayments::where('id', $payment->id)->update([
+                        'loan_quote_arrears' => $mora,
+                        'loan_quote_payment_status' => 2,
+                    ]);
                 }
+            } catch (\Exception $e) {
+                // Mostrar o registrar el error
+                return redirect()->back()->with("error", "Error al actualizar el pago: " . $e->getMessage());
             }
-
-            // Valor pago
-            $paymentAmount = $request->input('loan_payment_amount');
-
-            // Convierte el array de nombres de imágenes a JSON
-            $loanImg = !empty($imageNames) ? json_encode($imageNames) : null;
-
-            // Contar los pagos existentes
-            $loan_payments_count = LoanPayments::where('loan_id', $loan->id)->count();
-
-            // Generar el número de documento
-
-            // Generar el número de documento con formato XX-XXXXX
-            $lastPaymentDocNumber = LoanPayments::where('loan_id', $loan->id)->max('loan_payment_doc_number');
-            $newDocNumber = str_pad(($lastPaymentDocNumber ? intval(substr($lastPaymentDocNumber, 3)) + 1 : 1), 5, '0', STR_PAD_LEFT); // 5 es la longitud final para la parte numérica
-            $formattedDocNumber = "{$loan->id}-{$newDocNumber}";
-
-            // Validar si no hay pagos
-            if ($loan_payments_count == 0) {
-                $loan_old_debt = $loan->loan_total; // Asignar el monto del préstamo a loan_old_debt
-                $loan_new_debt = $loan->loan_total - $paymentAmount;
-
-                // Crea el pago
-                $loan_payment = LoanPayments::create([
-                    'loan_id' => $request->input('loan_id'),
-                    'loan_payment_amount' => $paymentAmount,
-                    'loan_payment_date' => $todayDate,
-                    'loan_payment_comment' => $request->input('loan_payment_comment'),
-                    'loan_old_debt' => $loan_old_debt,
-                    'loan_new_debt' => $loan_new_debt,
-                    'loan_payment_img' => $loanImg,
-                    'loan_payment_type' => $request->input('loan_payment_type'),
-                    'loan_payment_doc_number' => $formattedDocNumber,
-                ]);
-            } else {
-                // Calculate new debt
-                $loan_old_debt = $loan_payments_sum;
-                $loan_new_debt = $loan->loan_total - ($loan_old_debt + $paymentAmount);
-
-                // Crea el pago
-                $loan_payment = LoanPayments::create([
-                    'loan_id' => $request->input('loan_id'),
-                    'loan_payment_amount' => $paymentAmount,
-                    'loan_payment_date' => $todayDate,
-                    'loan_payment_comment' => $request->input('loan_payment_comment'),
-                    'loan_old_debt' => $loan->loan_total - $loan_old_debt,
-                    'loan_new_debt' => $loan_new_debt,
-                    'loan_payment_img' => $loanImg,
-                    'loan_payment_type' => $request->input('loan_payment_type'),
-                    'loan_payment_doc_number' => $formattedDocNumber,
-                ]);
-            }
-
-            // Validar si la deuda queda en 0.00 para cambiar el estado del préstamo
-            if ($loan_new_debt == 0.00) {
-                // Actualizar el estado del prestamo
-                DB::table('loans')->where([
-                    ['id', '=', $loan->id],
-                ])->update([
-                    'loan_status' => 0,
-                ]);
-            }
-
-            // Validar que no se pueda dejar una deuda negativa
-            if ($loan_new_debt < 0.00) {
-                return redirect()->back()->withErrors(['error' => 'El monto a pagar no puede ser mayor a L. ' . number_format($actual_debt, 2) . '.'])->withInput();
-            }
-
-            // Validar que no sea mayor a la deuda
-            if ($paymentAmount > $actual_debt) {
-                return redirect()->back()->withErrors(['error' => 'El monto a pagar no puede ser mayor a L. ' . number_format($actual_debt, 2) . '.'])->withInput();
-            }
-
-            DB::commit();
-
-            return redirect()->back()->with('success_payment', 'Registro creado exitosamente.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
         }
+
+        // Volver a obtener los registros actualizados
+        $loan_payments = LoanPayments::where('loan_id', $loan->id)->get();
+
+        // Calcular el total a pagar para la cuota pendiente
+        $pendingPayment = $loan_payments->where('loan_quote_payment_status', '!=', 1)->first();
+        if ($pendingPayment) {
+            $totalToPay = $pendingPayment->loan_quote_payment_amount + $pendingPayment->loan_quote_arrears;
+        } else {
+            $totalToPay = 0;
+        }
+
+        return view('modules.loans.loans_payments.create', compact(
+            'loan',
+            'loan_payments',
+            'actual_debt',
+            'totalToPay',
+        ));
     }
 
-    public function loan_bonus_payment(StoreBonusRequest $request)
+    public function loan_payment_creation(StoreRequest $request)
     {
         DB::beginTransaction();
 
         try {
             $loan = Loans::findOrFail($request->loan_id);
-            $loan_payments_sum = LoanPayments::where('loan_id', $loan->id)->sum('loan_payment_amount');
-            $actual_debt = $loan->loan_total - $loan_payments_sum;
-            $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
 
-            // Procesar y guardar las imágenes
-            $imageNames = [];
-            if ($request->hasFile('loan_payment_img')) {
-                $images = $request->file('loan_payment_img');
-                $path = 'public/uploads/loan_payments/' . $loan->loan_code_number . '/'; // Define the path
+            // Buscar la cuota más antigua pendiente
+            $loanPayment = LoanPayments::where('loan_id', $loan->id)
+                ->where('loan_quote_payment_status', '!=', 1) // Que sea atrasado o pendiente
+                ->orderBy('loan_quote_payment_date') // Ordenar por fecha de vencimiento
+                ->first();
 
-                foreach ($images as $image) {
-                    $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
-                    // Use move() with the correct path
-                    $image->move(storage_path('app/' . $path), $imageName);
-                    $imageNames[] = $imageName;
-                }
+            if (!$loanPayment) {
+                return back()->with('error', 'No hay cuotas pendientes para este préstamo.');
             }
 
-            // Valor pago
-            $paymentAmount = $request->input('loan_payment_amount');
+            // Actualizar el estado de la cuota
+            $loanPayment->update([
+                'loan_quote_payment_status' => 1, // Pagado
+                'loan_quote_payment_comment' => 'Cuota pagada',
+                'loan_quote_payment_mode' => $request->input('loan_quote_payment_mode'),
+                'loan_quote_payment_received' => $request->input('loan_quote_payment_received'),
+                'loan_quote_payment_change' => $request->input('loan_quote_payment_change'),
+                'updated_at' => $this->getTodayDate(),
+            ]);
 
-            // Convierte el array de nombres de imágenes a JSON
-            $loanImg = !empty($imageNames) ? json_encode($imageNames) : null;
+            // Verificar si todas las cuotas están pagadas
+            $pendingPayments = LoanPayments::where('loan_id', $loan->id)
+                ->where('loan_quote_payment_status', '!=', 1)
+                ->count();
 
-            // Contar los pagos existentes
-            $loan_payments_count = LoanPayments::where('loan_id', $loan->id)->count();
-
-            // Generar el número de documento con formato XX-XXXXX
-            $lastPaymentDocNumber = LoanPayments::where('loan_id', $loan->id)->max('loan_payment_doc_number');
-            $newDocNumber = str_pad(($lastPaymentDocNumber ? intval(substr($lastPaymentDocNumber, 3)) + 1 : 1), 5, '0', STR_PAD_LEFT); // 5 es la longitud final para la parte numérica
-            $formattedDocNumber = "{$loan->id}-{$newDocNumber}";
-
-            // Validar si no hay pagos
-            if ($loan_payments_count == 0) {
-                $loan_old_debt = $loan->loan_total; // Asignar el monto del préstamo a loan_old_debt
-                $loan_new_debt = $loan->loan_total - $paymentAmount;
-
-                // Crea el pago
-                $loan_payment = LoanPayments::create([
-                    'loan_id' => $request->input('loan_id'),
-                    'loan_payment_amount' => $paymentAmount,
-                    'loan_payment_date' => $$todayDate,
-                    'loan_payment_comment' => $request->input('loan_payment_comment'),
-                    'loan_old_debt' => $loan_old_debt,
-                    'loan_new_debt' => $loan_new_debt,
-                    'loan_payment_img' => $loanImg,
-                    'loan_payment_type' => $request->input('loan_payment_type'),
-                    'loan_payment_doc_number' => $formattedDocNumber,
+            if ($pendingPayments === 0) {
+                // Actualizar el estado del préstamo si todas las cuotas están pagadas
+                $loan->update([
+                    'loan_status' => 2, // Finalizado / Pagado
+                    'updated_at' => $this->getTodayDate(),
                 ]);
-            } else {
-                // Calculate new debt
-                $loan_old_debt = $loan_payments_sum;
-                $loan_new_debt = $loan->loan_total - ($loan_old_debt + $paymentAmount);
-
-                // Crea el pago
-                $loan_payment = LoanPayments::create([
-                    'loan_id' => $request->input('loan_id'),
-                    'loan_payment_amount' => $paymentAmount,
-                    'loan_payment_date' => $$todayDate,
-                    'loan_payment_comment' => $request->input('loan_payment_comment'),
-                    'loan_old_debt' => $loan->loan_total - $loan_old_debt,
-                    'loan_new_debt' => $loan_new_debt,
-                    'loan_payment_img' => NULL,
-                    'loan_payment_type' => $request->input('loan_payment_type'),
-                    'loan_payment_doc_number' => $formattedDocNumber,
-                ]);
-            }
-
-            // Validar si la deuda queda en 0.00 para cambiar el estado del préstamo
-            if ($loan_new_debt == 0.00) {
-                DB::table('loans')->where([
-                    ['id', '=', $loan->id],
-                ])->update([
-                    'loan_status' => 0,
-                ]);
-            }
-
-            // Validar que no se pueda dejar una deuda negativa
-            if ($loan_new_debt < 0.00) {
-                return redirect()->back()->withErrors(['error' => 'El monto a abonar no puede ser mayor a L. ' . number_format($actual_debt, 2) . '.'])->withInput();
-            }
-
-            // Validar que no sea mayor a la deuda
-            if ($paymentAmount > $actual_debt) {
-                return redirect()->back()->withErrors(['error' => 'El monto a abonar no puede ser mayor a L. ' . number_format($actual_debt, 2) . '.'])->withInput();
             }
 
             DB::commit();
 
-            return redirect()->back()->with('success_payment', 'Registro creado exitosamente.');
+            return redirect()->back()->with('success_payment', 'Cuota pagada exitosamente.');
         } catch (\Exception $e) {
             DB::rollBack();
-
-            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
+            return back()->with('error', 'Ocurrió un error al confirmar el registro: ' . $e->getMessage())->withInput();
         }
     }
 }

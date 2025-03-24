@@ -47,15 +47,20 @@ Servicios
                     <table id="dt_services_index" class="display table table-responsive table-striped">
                         <thead>
                             <tr>
+                                <th>Acciones</th>
                                 <th>Nombre servicio</th>
                                 <th>Nomenclatura</th>
                                 <th>Detalles</th>
-                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($services as $service)
                             <tr>
+                                <td>
+                                    <a href="#" class="badge bg-danger text-white" id="delete_service{{ $service->id }}">
+                                        <x-heroicon-o-trash style="width: 20px; height: 20px; color: white;" />
+                                    </a>
+                                </td>
                                 <td>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#update_service{{ $service->id }}">
                                         {{ $service->service_name }}
@@ -70,11 +75,6 @@ Servicios
                                     <span class="{{ $service->service_description ? 'text-dark':'text-muted op-3' }}">
                                         {{ $service->service_description ?? 'N/A' }}
                                     </span>
-                                </td>
-                                <td>
-                                    <a href="#" class="badge bg-danger text-white" id="delete_service{{ $service->id }}">
-                                        <x-heroicon-o-trash style="width: 20px; height: 20px; color: white;" />
-                                    </a>
                                 </td>
                             </tr>
 

@@ -11,7 +11,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" maxlength="55" name="service_name" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ\s]/g, '')" value="{{ old('service_name') }}" id="service_name" class="form-control @error('service_name') is-invalid @enderror" autocomplete="off" />
+                                <input type="text" maxlength="55" name="service_name" value="{{ old('service_name') }}" id="service_name" class="form-control @error('service_name') is-invalid @enderror" autocomplete="off" />
                                 @error('service_name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -25,7 +25,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" maxlength="5" name="service_nomenclature" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ\s]/g, '')" value="{{ old('service_nomenclature') }}" id="service_nomenclature" class="form-control @error('service_nomenclature') is-invalid @enderror" autocomplete="off" />
+                                <input type="text" maxlength="6" name="service_nomenclature" oninput="this.value = this.value.toCapitalize().replace(/[0-9]/g, '')" value="{{ old('service_nomenclature') }}" id="service_nomenclature" class="form-control @error('service_nomenclature') is-invalid @enderror" autocomplete="off" />
                                 @error('service_nomenclature')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

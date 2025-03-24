@@ -26,7 +26,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" maxlength="5" name="service_nomenclature" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ\s]/g, '')" value="{{ $service->service_nomenclature }}" id="service_nomenclature" class="form-control @error('service_nomenclature') is-invalid @enderror" autocomplete="off" />
+                                <input type="text" maxlength="6" name="service_nomenclature" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ\s]/g, '')" value="{{ $service->service_nomenclature }}" id="service_nomenclature" class="form-control @error('service_nomenclature') is-invalid @enderror" autocomplete="off" />
                                 @error('service_nomenclature')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

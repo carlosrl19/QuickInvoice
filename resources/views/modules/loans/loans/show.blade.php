@@ -73,9 +73,9 @@ Créditos
     &nbsp;Plan de pagos
 </a>
 
-<a href="#" data-bs-toggle="modal" data-bs-target="#loan_history_payments{{ $loan->id }}" class="btn btn-sm btn-warning text-white">
+<a href="#" data-bs-toggle="modal" data-bs-target="#loan_account_statement{{ $loan->id }}" class="btn btn-sm btn-warning text-white">
     <x-heroicon-o-document-text style="width: 20px; height: 20px; color: white" />
-    &nbsp;Historial de pagos
+    &nbsp;Estado de cuenta
 </a>
 @endsection
 
@@ -183,7 +183,7 @@ Créditos
                     <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
                         <x-heroicon-o-information-circle style="width: 25px; height: 25px; color: lightgray" />
                     </a>
-                    &nbsp;Historial de pagos / <span class="op-3">#{{ $loan->loan_code_number }} / {{ $loan->client->client_name }}</span>
+                    &nbsp;Estado de cuenta / <span class="op-3">#{{ $loan->loan_code_number }} / {{ $loan->client->client_name }}</span>
                 </span>
                 <div>
                     @if($actual_debt > 0 && $actual_debt < $loan->loan_quote_value)
@@ -210,7 +210,6 @@ Créditos
                             <thead>
                                 <tr class="text-center">
                                     <th>RECIBO</th>
-                                    <th>COMPR.</th>
                                     <th>FECHA</th>
                                     <th>TIPO DE PAGO</th>
                                     <th>COMENTARIO</th>
@@ -228,26 +227,6 @@ Créditos
                                             <x-heroicon-o-printer style="width: 20px; height: 20px; color: white" />
                                         </a>
                                     </td>
-                                    <td>
-                                        @if ($loan_payment->loan_payment_img)
-                                        <div class="d-flex flex-wrap justify-content-center">
-                                            @foreach (json_decode($loan_payment->loan_payment_img) as $image)
-                                            <div class="mx-2 my-1">
-                                                <a class="loan_payment_img" data-gall="loan_payment_gallery"
-                                                    title="# RP{{ $loan_payment->loan_payment_doc_number }} -> P #{{ $loan->loan_code_number }} - {{ $loan->client->client_name }}"
-                                                    data-fitview="true"
-                                                    href="{{ Storage::url('uploads/loan_payments/' . $loan->loan_code_number . '/' . $image) }}">
-                                                    <img id="image-preview"
-                                                        style="border: 1px solid #e3e3e3; border-radius: 5px; padding: 5px;"
-                                                        src="{{ Storage::url('uploads/loan_payments/' . $loan->loan_code_number . '/' . $image) }}"
-                                                        alt="" width="30" height="30">
-                                                </a>
-                                            </div>
-                                            @endforeach
-                                        </div>
-                                        @else
-                                        <span class="text-muted">N/D</span>
-                                        @endif
                                     <td>{{ $loan_payment->loan_payment_date }}</td>
                                     <td>
                                         @if($loan_payment->loan_payment_type == 0)
@@ -262,17 +241,17 @@ Créditos
                                         </span>
                                     </td>
                                     <td>L. {{ number_format($loan_payment->loan_old_debt, 2) }}</td>
-                                    <td>L. {{ number_format($loan_payment->loan_payment_amount, 2) }}</td>
+                                    <td>L. {{ number_format($loan_payment->loan_quote_payment_amount, 2) }}</td>
                                     <td>L. {{ number_format($loan_payment->loan_new_debt, 2) }}</td>
                                 </tr>
 
                                 <!-- Include -->
-                                @include('modules.loans_payments._loan_payment_receipt_modal')
+                                @include('modules.loans.loans_payments._loan_payment_receipt_modal')
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr class="text-muted text-center">
-                                    <td colspan="5"></td>
+                                    <td colspan="4"></td>
                                     @if($actual_debt == 0.00)
                                     <td>---</td>
                                     <td class="bg-success">
@@ -297,10 +276,10 @@ Créditos
 </div>
 
 <!-- Include -->
-@include('modules.loans._sweet_alerts')
-@include('modules.loans_payments._create_payment')
-@include('modules.loans_payments._create_bonus')
-@include('modules.loans.pdf_viewer')
+@include('modules.loans.loans._sweet_alerts')
+@include('modules.loans.loans_payments._create_payment')
+@include('modules.loans.loans_payments._create_bonus')
+@include('modules.loans.loans.pdf_viewer')
 @endsection
 
 @section('scripts')

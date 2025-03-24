@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>#CE-{{ $loan->loan_code_number }}</title>
+    <title>#RP-{{ $loan_payment->loan_payment_doc_number }}</title>
 
     <style>
         body {
@@ -163,81 +163,60 @@
 
         <div class="information">
             <div>
-                <span class="text_header_sm">LUGAR: SAN PEDRO SULA, CORTÉS</span><br />
-                <span CLASS="text_header_sm">FECHA: {{ Carbon\Carbon::parse($loan->created_at)->format('d/m/Y H:i:s a') }}</span>
+                <strong>LUGAR Y FECHA:</strong><br />
+                <span class="text_header_sm"> SAN PEDRO SULA, CORTÉS, HONDURAS</span><br />
+                <span>{{ $loan->created_at }}</span>
             </div>
 
             <br>
 
             <div>
-                <span class="text_header_sm">Cliente: <strong>{{ $loan->client->client_name }}</strong></span><br />
+                <strong>CLIENTE:</strong> <br />
+                <span class="text_header_sm">{{ $loan->client->client_name }}</span><br />
                 <span class="text_header_sm">DOCUMENTO: {{ $loan->client->client_document }}</span><br />
-                <span class="text_header_sm">REFERENCIA: <strong>#{{ $loan->loan_request_number }}</strong></span><br />
+                @if( $loan->client->client_phone2 == '')
+                <span class="text_header_sm">TELEFONO: {{ $loan->client->client_phone1 }}</span><br />
+                @else
+                <span class="text_header_sm">TELEFONOS: {{ $loan->client->client_phone1 }}, {{ $loan->client->client_phone2 }}</span><br />
+                @endif
+                <span class="text_header_sm">REFERENCIA: <strong>#{{ $loan->loan_code_number }}</strong></span><br />
             </div>
         </div>
 
         <table class="payment-details">
             <thead>
                 <tr>
-                    <th>Cant.</th>
-                    <th>Producto / Código</th>
-                    <th>Serie #</th>
-                    <th>Desc.</th>
-                    <th style="text-align: right !important;">Precio</th>
-                    <th style="text-align: right !important;">Total</th>
+                    <th>Descripción</th>
+                    <th>Total</th>
                 </tr>
             </thead>
             <tbody>
                 <tr style="text-align: left !important;">
-                    <td>1</td>
-                    <td>{{ $loan->loan_description }}</td>
-                    <td>N/A</td>
-                    <td>0.00%</td>
-                    <td style="text-align: right !important;">L. {{ number_format($loan->loan_total,2) }}</td>
-                    <td style="text-align: right !important;">L. {{ number_format($loan->loan_total,2) }}</td>
+                    <td>
+                        Abono al préstamo #{{ $loan->loan_code_number }} | Int. Corriente: 0.00 | Mora: 0.00<br>
+                        Capital: L. {{ number_format($loan_payment->loan_quote_payment_amount, 2) }}<br>
+                        Saldo Anterior: L. {{ number_format($loan_payment->loan_old_debt,2) }}<br>
+                        Nuevo Saldo: L. {{ number_format($loan_payment->loan_new_debt,2) }}
+                    </td>
+                    <td>L. {{ number_format($loan_payment->loan_quote_payment_amount, 2) }}</td>
                 </tr>
                 <tr style="text-align: left !important;">
-                    <td></td>
                     <td>---- ULTIMA LÍNEA ----</td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                 </tr>
                 <tr style="text-align: right !important; font-weight: bold">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Descuento:</td>
+                    <td>Total</td>
+                    <td>L. {{ number_format($loan_payment->loan_quote_payment_amount, 2) }}</td>
+                </tr>
+                <tr style="text-align: right !important; font-weight: bold">
+                    <td>Cambio</td>
                     <td>L. 0.00</td>
-                </tr>
-                <tr style="text-align: right !important; font-weight: bold">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Total:</td>
-                    <td>L. {{ number_format($loan->loan_total, 2) }}</td>
                 </tr>
             </tbody>
         </table>
 
         <div class="receipt-footer">
-            <p style="font-size: 10px">Fecha vencimiento: {{ \Carbon\Carbon::parse($loan->loan_end_date)->format('d/m/Y') }} Crédito a {{ $loan->loan_quote_number }}
-                @if($loan->loan_payment_type == 1)
-                días
-                @elseif($loan->loan_payment_type == 2)
-                semanas
-                @elseif($loan->loan_payment_type == 3)
-                quincenas
-                @elseif($loan->loan_payment_type == 4)
-                meses
-                @else
-                <strong class="text-danger">(?)</strong>
-                @endif
-            </p>
-            <p style="font-size: 14px"><strong>Comprobante de entrega #{{ $loan->loan_request_number }}</strong></p>
+            <p style="font-size: 14px"><strong>Recibo de pago # RP{{ $loan_payment->loan_payment_doc_number }}</strong></p>
             <p>SON: {{ $loan_amount_letras }} EXACTO</p>
             <p style="font-size: 8px"><strong>NOTA: EL IMPORTE TOTAL DE ESTA FACTURA DEVENGARÁ EL 3% MENSUAL DESPUÉS DE LA FECHA DE VENCIMIENTO</strong></p>
         </div>

@@ -15,7 +15,11 @@ class Seller extends Model
     // Relationships
     public function pos()
     {
-        return $this->hasMany(Pos::class, 'seller_id')
-            ->onDelete('cascade');
+        return $this->hasMany(Pos::class, 'seller_id');
+    }
+
+    public function loan()
+    {
+        return $this->hasMany(Loans::class, 'seller_id');
     }
 }

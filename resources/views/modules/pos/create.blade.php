@@ -41,9 +41,9 @@ POS
             <div class="card-body">
                 <form id="pos_creation" action="{{ route('pos.store') }}" method="POST" novalidate autocomplete="off" spellcheck="false">
                     @csrf
-                    <input type="hidden" name="sale_total_amount" id="sale_total_amount" value=""> <!-- Controller get this -->
                     <input type="hidden" name="sale_discount" id="sale_discount" value="0"> <!-- Controller get this -->
-                    <input type="hidden" name="sale_tax" id="sale_tax" value="0"> <!-- Controller get this -->
+                    <input type="hidden" name="sale_tax" id="sale_tax" value="15"> <!-- Controller get this -->
+                    <input type="hidden" name="sale_isv_amount" id="sale_isv_amount" value="0"> <!-- Controller get this -->
 
                     <div class="row">
                         <!-- Col izquierda -->
@@ -54,35 +54,51 @@ POS
                                     <div class="row mb-3">
                                         <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12" id="client_select_container">
                                             <label for="client_id">Cliente:</label>
-                                            <select class="tom-select" id="client_id_select" name="client_id">
+                                            <select class="tom-select-no-dropdown @error('client_id') is-invalid @enderror" id="client_id_select" name="client_id">
                                                 <option value="" selected disabled>Seleccione el cliente</option>
                                                 @foreach ($clients as $client)
-                                                <option value="{{ $client->id }}">{{ $client->client_name }}</option>
+                                                <option value="{{ $client->id }}" {{ old('client_id') == $client->id ? 'selected' : '' }}>{{ $client->client_name }}</option>
                                                 @endforeach
                                             </select>
+                                            @error('client_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                         <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12" id="seller_select_container">
                                             <label for="seller_id">Vendedor:</label>
-                                            <select class="tom-select" id="seller_id_select" name="seller_id">
+                                            <select class="tom-select @error('seller_id') is-invalid @enderror" id="seller_id_select" name="seller_id">
                                                 <option value="" selected disabled>Seleccione el vendedor</option>
                                                 @foreach ($sellers as $seller)
                                                 <option value="{{ $seller->id }}" {{ $seller->id == 1 ? 'selected' : '' }}>{{ $seller->seller_name }}</option>
                                                 @endforeach
                                             </select>
+                                            @error('seller_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                         <!-- Selección de servicio -->
                                         <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12" id="service_select_container">
                                             <label for="service_id">Servicio:</label>
                                             <div class="input-group">
-                                                <select class="tom-select w-75" id="service_id_select" name="service_id">
+                                                <select class="tom-select-no-dropdown w-75 @error('service_id') is-invalid @enderror" id="service_id_select" name="service_id">
                                                     <option value="" selected disabled>Seleccione los productos o servicios</option>
                                                     @foreach ($services as $service)
-                                                    <option value="{{ $service->id }}" data-price="{{ $service->price }}">{{ $service->service_name }}</option>
+                                                    <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}
+                                                        data-price="{{ $service->price }}">{{ $service->service_nomenclature }} - {{ $service->service_name }}</option>
                                                     @endforeach
                                                 </select>
                                                 <button type="button" class="btn btn-sm btn-primary" id="add_service_button">
                                                     <x-heroicon-o-plus style="width: 20px; height: 20px; color: white" />
                                                 </button>
+                                                @error('service_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -133,33 +149,87 @@ POS
                                                 </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+                                </div>
 
-                                        <!-- Botones -->
-                                        <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#sale_payment_modal" class="btn btn-success">
-                                                <x-heroicon-o-cursor-arrow-ripple style="width: 25px; height: 25px; color: white" />
-                                                Cobrar
-                                            </a>
-                                            <a href="#" class="btn bg-warning text-white" id="sale_clear">
-                                                <x-heroicon-o-backspace style="width: 25px; height: 25px; color: white" />
-                                                Limpiar
-                                            </a>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <select class="tom-select-no-search @error('sale_payment_type') is-invalid @enderror" name="sale_payment_type">
+                                                <option value="0" selected disabled>Seleccione el tipo de pago</option>
+                                                <option value="3" {{ old('sale_payment_type') == '3' ? 'selected' : '' }}>DEPOSITO</option>
+                                                <option value="1" {{ old('sale_payment_type') == '1' ? 'selected' : '' }}>EFECTIVO</option>
+                                                <option value="2" {{ old('sale_payment_type') == '2' ? 'selected' : '' }}>TARJETA</option>
+                                            </select>
+                                            @error('sale_payment_type')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div class="form-floating">
+                                                <input type="number" value="" style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
+                                                    readonly name="sale_total_amount" id="sale_total_amount" class="form-control" autocomplete="off" />
+                                                <label for="sale_total_amount">Total a pagar <span class="text-danger">*</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div class="form-floating">
+                                                <input type="number" min="0" name="sale_payment_received" value="" id="sale_payment_received" class="form-control" autocomplete="off" />
+                                                @error('sale_payment_received')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                                <label for="sale_payment_received">Recibido <span class="text-danger">*</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div class="form-floating">
+                                                <input type="number" value="" style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
+                                                    readonly name="sale_payment_change" min="0" id="sale_payment_change" class="form-control" autocomplete="off" />
+                                                @error('sale_payment_change')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                                <label for="sale_payment_change">Cambio <span class="text-danger">*</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Botones -->
+                                    <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                        <button type="submit" class="btn btn-success">
+                                            <x-heroicon-o-cursor-arrow-ripple style="width: 25px; height: 25px; color: white" />
+                                            Cobrar
+                                        </button>
+                                        <a href="#" class="btn bg-warning text-white" id="sale_clear">
+                                            <x-heroicon-o-backspace style="width: 25px; height: 25px; color: white" />
+                                            Limpiar
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- SweetAlert Include -->
-                    @include('modules.pos_details._sale_payment_modal')
-                    <!--</div> Este div que cierra el form está dentro del modal -->
+                </form>
             </div>
         </div>
     </div>
 </div>
 
 @include('modules.pos._sweet_alerts')
-
 @endsection
 
 @section('scripts')

@@ -8,14 +8,19 @@ class LoanPayments extends Model
 {
     protected $fillable = [
         'loan_id',
-        'loan_payment_doc_number',
-        'loan_payment_amount',
+        'loan_quote_payment_doc_number',
+        'loan_quote_payment_amount',
         'loan_old_debt',
         'loan_new_debt',
-        'loan_payment_date',
-        'loan_payment_comment',
-        'loan_payment_img',
-        'loan_payment_type'
+        'loan_quote_arrears',
+        'loan_quote_payment_date',
+        'loan_quote_payment_comment',
+        'loan_quote_payment_status',
+        'loan_quote_payment_mode',
+        'loan_quote_payment_received',
+        'loan_quote_payment_change',
+        'created_at',
+        'updated_at',
     ];
 
     // Relationships

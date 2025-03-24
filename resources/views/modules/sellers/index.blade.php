@@ -47,15 +47,20 @@ Vendedores
                     <table id="dt_clients_index" class="display table table-responsive table-striped">
                         <thead>
                             <tr>
+                                <th>Acciones</th>
                                 <th>Nombre vendedor</th>
                                 <th>Documento</th>
                                 <th>Teléfono</th>
-                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($sellers as $seller)
                             <tr>
+                                <td>
+                                    <a href="#" class="badge bg-danger text-white" id="delete_seller{{ $seller->id }}">
+                                        <x-heroicon-o-trash style="width: 20px; height: 20px; color: white;" />
+                                    </a>
+                                </td>
                                 <td>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#update_seller{{ $seller->id }}">
                                         {{ $seller->seller_name }}
@@ -66,11 +71,6 @@ Vendedores
                                 </td>
                                 <td>
                                     {{ $seller->seller_phone }}
-                                </td>
-                                <td>
-                                    <a href="#" class="badge bg-danger text-white" id="delete_seller{{ $seller->id }}">
-                                        <x-heroicon-o-trash style="width: 20px; height: 20px; color: white;" />
-                                    </a>
                                 </td>
                             </tr>
 

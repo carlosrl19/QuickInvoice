@@ -43,6 +43,12 @@ class ServicesController extends Controller
     public function destroy($id)
     {
         $service = Services::findOrFail($id);
+
+        // Verifica si el servicio tiene ventas asociadas
+        if ($service->pos_details()->exists()) {
+            return back()->with("error", "No se puede eliminar el servicio porque tiene ventas registradas.");
+        }
+
         try {
             $service->delete();
             return redirect()->route("services.index")->with("success", "Registro eliminado exitosamente.");

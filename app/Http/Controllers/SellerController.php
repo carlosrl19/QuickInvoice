@@ -42,6 +42,12 @@ class SellerController extends Controller
     public function destroy($id)
     {
         $seller = Seller::findOrFail($id);
+
+        // Verifica si el vendedor tiene ventas asociadas
+        if ($seller->pos()->exists()) {
+            return back()->with("error", "No se puede eliminar el vendedor porque tiene ventas registradas.");
+        }
+
         try {
             $seller->delete();
             return redirect()->route("sellers.index")->with("success", "Registro eliminado exitosamente.");
