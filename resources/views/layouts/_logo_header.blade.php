@@ -1,7 +1,15 @@
 <div class="logo-header" data-background-color="dark">
-    <a href="#" class="logo">
-        <img src="{{ Storage::url('assets/img/kaiadmin/favicon.png') }}" alt="navbar brand" class="navbar-brand" height="48" />
-        <span class="text-white fw-bold">{{ config('app.name') }}</span>
+    <a href="#" class="logo text-white">
+        @php
+        $settings = App\Models\Settings::first();
+        $iconPath = $settings && Storage::url('sys_config/img/' . $settings->system_icon) ? Storage::url('sys_config/img/' . $settings->system_icon) : asset('assets/img/kaiadmin/favicon.png');
+        @endphp
+
+        <img src="{{ $iconPath }}" alt="" class="navbar-brand" height="48" />
+
+        <span class="text-white fw-bold">
+            {{ $settings && $settings->show_system_name == 1 ? $settings->show_system_name : config('app.name') }}
+        </span>
     </a>
     <div class="nav-toggle">
         <button class="btn btn-toggle toggle-sidebar">

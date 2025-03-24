@@ -21,7 +21,7 @@ class SellerController extends Controller
             Seller::create($request->all());
             return redirect()->route('sellers.index')->with('success', 'Registro creado exitosamente.');
         } catch (\Exception $e) {
-            return back()->with("error", "Ocurrió un error al crear el registro.")->withInput();
+            return back()->with("error", "Ocurrió un error al crear el registro.")->withInput()->withErrors($e->getMessage());
         }
     }
 

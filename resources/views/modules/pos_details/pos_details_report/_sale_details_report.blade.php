@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>#FV-{{ $sale->id }}</title>
+    <title>Factura #{{ $sale->id }}</title>
 
     <style>
         body {
@@ -13,7 +13,7 @@
         }
 
         .container {
-            margin-top: -37px
+            margin-top: -37px;
         }
 
         .divider {
@@ -61,7 +61,7 @@
     </style>
 </head>
 
-<header style="margin-top: -20px">
+<header style="margin-top: -20px; display: flex; justify-content: space-between; align-items: center; position: relative;">
     <div style="width: 48%;">
         <h3>Inversiones Robenior</h3>
         <div class="divider"></div>
@@ -87,31 +87,35 @@
             Fecha: {{ Carbon\Carbon::parse($sale->created_at)->format('d/m/Y H:i:s a') }}
         </span><br>
     </div>
-    <div style="width: 100%;">
-        <img style="margin-left: 84%; margin-top: -25.7%" src="../public/storage/static/logo-rounded.png" width="80" height="80"><br>
-        <img style="margin-left: 80%; margin-top: -17.2%" src="../public/storage/static/logo-letters.jpg" width="138" height="40">
+
+    <!-- Imagen posicionada a la derecha -->
+    <div style="position: absolute; top: 20; right: 20; opacity: 0.8;">
+        <img src="{{ public_path('../storage/app/public/sys_config/img/' . $settings->logo_company) ?? public_path('../storage/app/public/assets/img/kaiadmin/favicon.png') }}" alt="" style="min-width: 90px; min-height: 90px; max-width: 180px; max-height: 100px" />
     </div>
 </header>
 
 <body>
     <div class="container">
-        <!-- Client information -->
-        <div style="width: 45%; border: 1px solid #000; border-radius: 5px; padding: 10px;">
-            <p style="font-weight: bolder; font-size: 11pt; margin-top: -2px;">Cliente:</p>
-            <p style="font-size: 8.5pt; margin-top: -3px;">{{ $sale->client->client_code }} - {{ $sale->client->client_name }}</p>
-            <p style="font-size: 8.5pt; margin-top: -8px;">R.T.N.: {{ $sale->client->client_document }}</p><br>
-            <span style="font-size: 8.5pt;">Comentario: Vendedor: {{ $sale->seller->seller_name }}</span>
-        </div>
+        <!-- Client and Exonerated Information Container -->
+        <div style="position: relative; width: 100%; margin-top: 40px; height: 130px;">
+            <!-- Client information -->
+            <div style="position: absolute; left: 0; width: 45%; border: 1px solid #000; border-radius: 5px; padding: 10px;">
+                <p style="font-weight: bolder; font-size: 11pt; margin-top: -2px;">Cliente:</p>
+                <p style="font-size: 8.5pt; margin-top: -3px;">{{ $sale->client->client_code }} - {{ $sale->client->client_name }}</p>
+                <p style="font-size: 8.5pt; margin-top: -8px;">R.T.N.: {{ $sale->client->client_document }}</p><br>
+                <span style="font-size: 8.5pt;">Comentario: Vendedor: {{ $sale->seller->seller_name }}</span>
+            </div>
 
-        <!-- Exonerated information -->
-        <div style="float: right; margin-top: -131px; width: 45%; height: 115px; border: 1px solid #000; border-radius: 5px; padding: 10px">
-            <p style="font-size: 8.5pt; margin-top: -2px; letter-spacing: -0.5px">DATOS DEL ADQUIRIENTE EXONERADO</p>
-            <p style="font-size: 8.5pt; margin-top: -3px;">No. correlativo de orden de compra exenta:</p>
-            <p style="font-size: 8.5pt; border-bottom: 1px solid #000; width: 50%;"></p>
-            <p style="font-size: 8.5pt; margin-top: -3px;">No. correlativo de constancia registro exonerado:</p>
-            <p style="font-size: 8.5pt; border-bottom: 1px solid #000; width: 50%;"></p>
-            <p style="font-size: 8.5pt; margin-top: -3px;">No. identificativo del registro de la SAG:</p>
-            <p style="font-size: 8.5pt; border-bottom: 1px solid #000; width: 50%;"></p>
+            <!-- Exonerated information -->
+            <div style="position: absolute; right: 0; width: 45%; height: 115px; border: 1px solid #000; border-radius: 5px; padding: 10px;">
+                <p style="font-size: 8.5pt; margin-top: -2px; letter-spacing: -0.5px">DATOS DEL ADQUIRIENTE EXONERADO</p>
+                <p style="font-size: 8.5pt; margin-top: -3px;">No. correlativo de orden de compra exenta:</p>
+                <p style="font-size: 8.5pt; border-bottom: 1px solid #000; width: 50%;"></p>
+                <p style="font-size: 8.5pt; margin-top: -3px;">No. correlativo de constancia registro exonerado:</p>
+                <p style="font-size: 8.5pt; border-bottom: 1px solid #000; width: 50%;"></p>
+                <p style="font-size: 8.5pt; margin-top: -3px;">No. identificativo del registro de la SAG:</p>
+                <p style="font-size: 8.5pt; border-bottom: 1px solid #000; width: 50%;"></p>
+            </div>
         </div>
 
         <div class="invoice-box">

@@ -100,6 +100,18 @@
                            <span class="sub-item">POS</span>
                        </a>
                    </li>
+                   <li class="nav-section">
+                       <span class="sidebar-mini-icon">
+                           <i class="fa fa-ellipsis-h"></i>
+                       </span>
+                       <h4 class="text-section">AJUSTES DEL SISTEMA</h4>
+                   </li>
+                   <li class="nav-item">
+                       <a href="{{ route('settings.index') }}">
+                           <x-heroicon-o-cog-6-tooth style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                           <span class="sub-item">Configuración</span>
+                       </a>
+                   </li>
                </ul>
            </div>
        </div>

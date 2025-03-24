@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pos;
 use App\Models\PosDetails;
+use App\Models\Settings;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -25,6 +26,7 @@ class PosDetailsController extends Controller
         $sale = Pos::findOrFail($id);
         $pos_details = PosDetails::where('sale_id', $sale->id)->get();
         $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+        $settings = Settings::select('logo_company')->first();
 
         // Obtener el monto del pago con centavos
         $monto = $sale->sale_total_amount;
@@ -70,6 +72,7 @@ class PosDetailsController extends Controller
             'sale',
             'pos_details',
             'todayDate',
+            'settings',
             'sale_amount_letras',
             'dia',
             'mes',
@@ -85,7 +88,7 @@ class PosDetailsController extends Controller
         // Renderizar el PDF
         $pdf->render();
 
-        $fileName = 'DETALLES DE VENTA #' . $sale->id . ' (' . $dia . ' ' . $mes . ' del ' . $anio . ').pdf';
+        $fileName = 'FACTURA #' . $sale->id . '.pdf';
 
         return response($pdf->output(), 200)
             ->header('Content-Type', 'application/pdf')

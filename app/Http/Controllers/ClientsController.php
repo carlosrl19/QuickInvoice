@@ -44,7 +44,7 @@ class ClientsController extends Controller
             ]);
             return back()->with("success", "Registro creado exitosamente.");
         } catch (\Exception $e) {
-            return back()->with("error", "Ocurrió un error al crear el registro.")->withInput();
+            return back()->with("error", "Ocurrió un error al crear el registro.")->withInput()->withErrors($e->getMessage());
         }
     }
 

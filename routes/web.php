@@ -57,3 +57,6 @@ Route::get('pos-details/{id}/report', 'App\Http\Controllers\PosDetailsController
 
 // Rutas de vendedores
 Route::resource('sellers', 'App\Http\Controllers\SellerController')->names('sellers');
+
+// Rutas de ajustes
+Route::resource('settings', 'App\Http\Controllers\SettingsController')->names('settings');
