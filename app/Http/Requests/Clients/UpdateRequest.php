@@ -19,7 +19,7 @@ class UpdateRequest extends FormRequest
             'client_name' => 'required|string|min:3|max:55|regex:/^[^\d]+$/|unique:clients,client_name,' . $clientId . '',
             'client_code' => 'required|string|min:9|max:9|regex:/^[a-zA-Z0-9]+$/|unique:clients,client_code,' . $clientId . '',
             'client_document' => 'required|string|min:13|max:14|regex:/^[0-9]+$/|unique:clients,client_document,' . $clientId . '',
-            'client_type' => 'required|string|min:7|max:8|regex:/^[^\d]+$/',
+            'client_type' => 'required|string|min:1|max:1|regex:/^[^\d]+$/',
             'client_phone1' => 'required|string|min:8|max:11|regex:/^[0-9]+$/|unique:clients,client_phone1,' . $clientId . '',
             'client_phone2' => 'nullable|string|min:8|max:11|regex:/^[0-9]+$/|unique:clients,client_phone2,' . $clientId . '',
             'client_birthdate' => 'nullable|date:Y-m-d',
@@ -28,7 +28,7 @@ class UpdateRequest extends FormRequest
             'client_job_length' => 'nullable|numeric|min:1|',
             'client_phone_work' => 'nullable|string|min:8|max:8|regex:/^[0-9]+$/',
             'client_last_job' => 'nullable|string|min:3|max:55|regex:/^[^\d]+$/',
-            'client_email' => 'nullable|email|min:3|max:55|unique:clients.client_email,' . $clientId . '',
+            'client_email' => 'nullable|email|min:3|max:55|unique:clients,client_email,' . $clientId . '',
             'client_own_business' => 'nullable|numeric|in:0,1',
             'client_exonerated' => 'nullable|numeric|in:0,1',
             'client_status' => 'nullable|numeric|in:0,1',
@@ -67,8 +67,8 @@ class UpdateRequest extends FormRequest
             'client_type.required' => 'El tipo de cliente es obligatorio.',
             'client_type.string' => 'El tipo de cliente solo debe contener letras.',
             'client_type.regex' => 'El tipo de cliente no puede contener números ni símbolos.',
-            'client_type.min' => 'El tipo de cliente debe contener al menos :min caracteres.',
-            'client_type.max' => 'El tipo de cliente no puede exceder :max caracteres.',
+            'client_type.min' => 'El tipo de cliente debe contener al menos :min caracter.',
+            'client_type.max' => 'El tipo de cliente no puede exceder :max caracter.',
 
             // Client phone1 messages
             'client_phone1.required' => 'El Nº teléfono principal es obligatorio.',

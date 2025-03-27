@@ -16,11 +16,13 @@ return new class extends Migration
             $table->string('logo_company')->nullable();
             $table->string('system_icon')->nullable();
             $table->boolean('show_system_name')->default(1)->nullable();
-            $table->string('company_name')->nullable();
-            $table->string('company_rtn')->nullable();
-            $table->string('company_phone')->nullable();
-            $table->string('company_email')->nullable();
-            $table->string('company_address')->nullable();
+            $table->string('company_name', 25)->nullable();
+            $table->string('company_cai', 37)->nullable(); // 32 + 5 guiones
+            $table->string('company_rtn', 14)->nullable();
+            $table->string('company_phone', 9)->nullable(); // 8 + 1 guión
+            $table->string('company_email', 50)->nullable();
+            $table->string('company_address', 75)->nullable();
+            $table->string('company_short_address', 35)->nullable();
             $table->timestamps();
         });
     }

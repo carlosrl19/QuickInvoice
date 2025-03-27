@@ -35,9 +35,9 @@ POS
 @endsection
 
 @section('create')
-<a class="btn btn-sm btn-label-info btn-round me-2" href="{{ route('pos.exonerated_sale') }}">
-    <x-heroicon-o-eye-slash style="width: 20px; height: 20px;" class="bg-label-info" />
-    <span class="sub-item">Exonerar sin ISV</span>
+<a class="btn btn-sm btn-label-info btn-round me-2" href="{{ route('pos.create') }}">
+    <x-heroicon-o-eye style="width: 20px; height: 20px;" class="bg-label-info" />
+    <span class="sub-item">Nueva venta gravada</span>
 </a>
 @endsection
 
@@ -45,20 +45,17 @@ POS
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header bg-primary text-white fw-bold">
-                REGISTRO DE NUEVA VENTA GRAVADA (G)
+            <div class="card-header bg-danger text-white fw-bold">
+                REGISTRO DE NUEVA VENTA EXONERADA (E)
             </div>
             <div class="card-body">
-                <form id="pos_creation" action="{{ route('pos.store') }}" method="POST" novalidate autocomplete="off" spellcheck="false">
+                <form id="pos_creation" action="{{ route('pos.store_exonerated') }}" method="POST" novalidate autocomplete="off" spellcheck="false">
                     @csrf
                     <input type="hidden" name="sale_discount" id="sale_discount" value="0"> <!-- Controller get this -->
                     <input type="hidden" name="sale_tax" id="sale_tax" value="0"> <!-- Controller get this -->
                     <input type="hidden" name="sale_isv_amount" id="sale_isv_amount" value="0"> <!-- Controller get this -->
                     <input type="hidden" name="folio_id" id="folio_id" value="1"> <!-- Controller get this -->
-                    <input type="hidden" name="exempt_purchase_order_correlative" id="exempt_purchase_order_correlative" value="000000000000"> <!-- Controller get this -->
-                    <input type="hidden" name="exonerated_certificate" id="exonerated_certificate" value="00000000000"> <!-- Controller get this -->
                     <input type="hidden" name="folio_invoice_number" id="folio_invoice_number" value="000-000-00-00000000"> <!-- Controller get this -->
-                    <input type="hidden" id="sale_exempt_tax" name="sale_exempt_tax"> <!-- Controller get this -->
 
                     <div class="row">
                         <!-- Col izquierda -->
@@ -147,10 +144,6 @@ POS
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
                             <div class="row mb-3">
                                 <div class="col-xl-12 col-lg-12 col-sm-12" id="service_select_container">
-                                    <div class="col" title="Seleccione esta opción para convertir a venta exenta de impuestos.">
-                                        <input style="font-size: clamp(0.9rem, 3vw, 1.1rem)" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                        <label class="form-check-label" for="flexCheckDefault">&nbsp;Venta exenta de I.S.V.</label>
-                                    </div>
                                     <div class="table-responsive">
                                         <table class="display table table-responsive table-primary">
                                             <thead>
@@ -175,7 +168,7 @@ POS
                                     <div class="row mb-3 d-none">
                                         <div class="col">
                                             <select class="tom-select-no-search @error('sale_type') is-invalid @enderror" id="sale_type_select" name="sale_type">
-                                                <option value="G" selected readonly>TIPO DE VENTA: NORMAL</option>
+                                                <option value="E" {{ old('sale_type') == 'E' ? 'selected' : '' }}>TIPO DE VENTA: EXENTA</option>
                                             </select>
                                             @error('sale_type')
                                             <span class="invalid-feedback" role="alert">
@@ -185,11 +178,34 @@ POS
                                         </div>
                                     </div>
 
-                                    <div class="row mb-3">
-                                        <div style="height: 30px; position: relative;" id="sale_exempt_isv_text" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 d-none">
-                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                                                <x-heroicon-o-check-circle style="width: 20px; height: 20px; color: white;" />
-                                                VENTA EXENTA DE I.S.V
+                                    <!-- Sale type exenta options -->
+                                    <div id="exenta_option_selected">
+                                        <div class="row mb-3">
+                                            <div class="col">
+                                                <div class="form-floating">
+                                                    <input type="text" maxlength="12" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')" class="form-control @error('exempt_purchase_order_correlative') is-invalid @enderror"
+                                                        value="{{ old('exempt_purchase_order_correlative') }}" name="exempt_purchase_order_correlative" id="exempt_purchase_order_correlative">
+                                                    <label for="exempt_purchase_order_correlative">Nº Correlativo orden de compra exenta <span class="text-danger">*</span></label>
+                                                    @error('exempt_purchase_order_correlative')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col">
+                                                <div class="form-floating">
+                                                    <input type="text" maxlength="11" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')" class="form-control @error('exonerated_certificate') is-invalid @enderror"
+                                                        value="{{ old(key: 'exonerated_certificate') }}" name="exonerated_certificate" id="exonerated_certificate">
+                                                    <label for="exonerated_certificate">Nº Correlativo orden de constancia registro exonerado <span class="text-danger">*</span></label>
+                                                    @error('exonerated_certificate')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -213,13 +229,8 @@ POS
                                     <div class="row mb-3">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div class="form-floating">
-                                                <input type="number" value="" readonly name="sale_total_amount" id="sale_total_amount" class="form-control @error('sale_total_amount') is-invalid @enderror" autocomplete="off"
-                                                    style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" />
-                                                @error('sale_total_amount')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
+                                                <input type="number" value="" style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
+                                                    readonly name="sale_total_amount" id="sale_total_amount" class="form-control" autocomplete="off" />
                                                 <label for="sale_total_amount">Total a pagar <span class="text-danger">*</span></label>
                                             </div>
                                         </div>
@@ -228,7 +239,7 @@ POS
                                     <div class="row mb-3">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div class="form-floating">
-                                                <input type="number" min="0" name="sale_payment_received" value="" id="sale_payment_received" class="form-control @error('sale_payment_received') is-invalid @enderror" autocomplete="off" />
+                                                <input type="number" min="0" name="sale_payment_received" value="" id="sale_payment_received" class="form-control" autocomplete="off" />
                                                 @error('sale_payment_received')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -239,11 +250,11 @@ POS
                                         </div>
                                     </div>
 
-                                    <div class="row mb-2">
+                                    <div class="row mb-3">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div class="form-floating">
-                                                <input type="number" value="" readonly name="sale_payment_change" min="0" id="sale_payment_change" class="form-control @error('sale_payment_change') is-invalid @enderror" autocomplete="off"
-                                                    style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" />
+                                                <input type="number" value="" style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
+                                                    readonly name="sale_payment_change" min="0" id="sale_payment_change" class="form-control" autocomplete="off" />
                                                 @error('sale_payment_change')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -255,17 +266,15 @@ POS
                                     </div>
 
                                     <!-- Botones -->
-                                    <div class="row">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
-                                            <button type="submit" class="btn btn-success">
-                                                <x-heroicon-o-cursor-arrow-ripple style="width: 25px; height: 25px; color: white" />
-                                                Cobrar
-                                            </button>
-                                            <a href="#" class="btn bg-warning text-white" id="sale_clear">
-                                                <x-heroicon-o-backspace style="width: 25px; height: 25px; color: white" />
-                                                Limpiar
-                                            </a>
-                                        </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                        <button type="submit" class="btn btn-success">
+                                            <x-heroicon-o-cursor-arrow-ripple style="width: 25px; height: 25px; color: white" />
+                                            Cobrar
+                                        </button>
+                                        <a href="#" class="btn bg-warning text-white" id="sale_clear">
+                                            <x-heroicon-o-backspace style="width: 25px; height: 25px; color: white" />
+                                            Limpiar
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -286,12 +295,6 @@ POS
 <script src="{{ Storage::url('assets/js/plugin/tomselect/tom-select.complete.js') }}"></script>
 <script src="{{ Storage::url('customjs/tomselect/ts_init.js') }}"></script>
 
-<!-- Venta exenta checkbox -->
-<script src="{{ Storage::url('customjs/pos/checkbox_exempt_tax.js') }}"></script>
-
 <!-- Script para manejar la lógica -->
-<script src="{{ Storage::url('customjs/pos/pos_creation.js') }}"></script>
-
-<!-- Ocultar campos exenta y correlativo si no es venta exonerada -->
-<script src="{{ Storage::url('customjs/pos/hidde_inputs.js') }}"></script>
+<script src="{{ Storage::url('customjs/pos/pos_creation_exonerated.js') }}"></script>
 @endsection

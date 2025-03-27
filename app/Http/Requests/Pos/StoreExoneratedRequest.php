@@ -4,7 +4,7 @@ namespace App\Http\Requests\Pos;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class StoreExoneratedRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class StoreRequest extends FormRequest
             'seller_id' => 'required|integer|exists:sellers,id',
             'folio_id' => 'required|integer|exists:fiscal_folios,id',
             'sale_type' => 'required|string|min:1|max:1',
-            'exempt_purchase_order_correlative' => 'nullable|string|min:12|max:12|unique:pos,exempt_purchase_order_correlative',
-            'exonerated_certificate' => 'nullable|string|min:11|max:11|unique:pos,exonerated_certificate',
-            'folio_invoice_number' => 'required|string|min:19|max:19|unique:pos,folio_invoice_number',
+            'exempt_purchase_order_correlative' => 'required|string|min:12|max:12|unique:pos,exempt_purchase_order_correlative',
+            'exonerated_certificate' => 'required|string|min:11|max:11|unique:pos,exonerated_certificate',
+            'folio_invoice_number' => 'required|string|min:19|max:19',
             'sale_total_amount' => 'required|numeric|min:0.01',
             'sale_discount' => 'required|numeric|min:0|max:100',
             'sale_tax' => 'required|numeric|min:0|max:100',
@@ -71,12 +71,14 @@ class StoreRequest extends FormRequest
             'sale_type.max' => 'El tipo de venta debe contener como máximo :max caracter.',
 
             // Nº Correlativo orden de compra exenta
+            'exempt_purchase_order_correlative.required' => 'El correlativo de orden compra exenta es obligatorio.',
             'exempt_purchase_order_correlative.string' => 'El correlativo de orden compra exenta solo debe contener letras y números.',
             'exempt_purchase_order_correlative.unique' => 'El correlativo de orden compra exenta ya fue registrado antes.',
             'exempt_purchase_order_correlative.min' => 'El correlativo de orden compra exenta solo debe contener al menos :min caracteres.',
             'exempt_purchase_order_correlative.max' => 'El correlativo de orden compra exenta debe contener como máximo :max caractes.',
 
             // Nº Correlativo constancia registro exonerado
+            'exonerated_certificate.required' => 'El correlativo de constancia del registro exonerado es obligatorio.',
             'exonerated_certificate.string' => 'El correlativo de constancia del registro exonerado solo debe contener letras y números.',
             'exonerated_certificate.unique' => 'El correlativo de constancia del registro exonerado ya fue registrado antes.',
             'exonerated_certificate.min' => 'El correlativo de constancia del registro exonerado solo debe contener al menos :min caracteres.',

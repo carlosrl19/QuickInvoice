@@ -17,7 +17,7 @@ class StoreRequest extends FormRequest
             'client_name' => 'required|string|min:3|max:55|regex:/^[^\d]+$/|unique:clients',
             'client_code' => 'required|string|min:9|max:9|regex:/^[A-Z0-9]+$/|unique:clients',
             'client_document' => 'required|string|min:13|max:14|regex:/^[0-9]+$/|unique:clients',
-            'client_type' => 'required|string|min:7|max:8|regex:/^[^\d]+$/',
+            'client_type' => 'required|string|min:1|max:1|regex:/^[^\d]+$/',
             'client_phone1' => 'required|string|min:8|max:8|regex:/^[0-9]+$/|unique:clients',
             'client_phone2' => 'nullable|string|min:8|max:8|regex:/^[0-9]+$/|unique:clients',
             'client_birthdate' => 'nullable|date:Y-m-d',
@@ -65,8 +65,8 @@ class StoreRequest extends FormRequest
             'client_type.required' => 'El tipo de cliente es obligatorio.',
             'client_type.string' => 'El tipo de cliente solo debe contener letras.',
             'client_type.regex' => 'El tipo de cliente no puede contener números ni símbolos.',
-            'client_type.min' => 'El tipo de cliente debe contener al menos :min caracteres.',
-            'client_type.max' => 'El tipo de cliente no puede exceder :max caracteres.',
+            'client_type.min' => 'El tipo de cliente debe contener al menos :min caracter.',
+            'client_type.max' => 'El tipo de cliente no puede exceder :max caracter.',
 
             // Client phone1 messages
             'client_phone1.required' => 'El Nº teléfono principal es obligatorio.',

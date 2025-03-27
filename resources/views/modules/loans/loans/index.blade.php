@@ -64,6 +64,7 @@ Créditos vigentes
                                         <div role="separator" class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{ route('loans.loan_receipt_delivery_show', $loan->id) }}">Comprobante entrega</a>
                                         <a class="dropdown-item" href="{{ route('loans.loan_account_statement_show', $loan->id) }}">Estado de cuenta</a>
+                                        <a class="dropdown-item" href="{{ route('loans.loan_payment_plan_show', $loan->id) }}">Plan de pagos (X) (Es lo mismo que estado de cuenta?)</a>
                                         <div role="separator" class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Ajustes (X)</a>
                                         <a class="dropdown-item" href="#">Modificar precios (X)</a>

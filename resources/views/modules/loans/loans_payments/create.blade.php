@@ -164,7 +164,6 @@ Créditos vigentes
                                 <div class="col">
                                     <select class="tom-select" id="loan_quote_payment_mode_select" name="loan_quote_payment_mode">
                                         <option value="" selected disabled>Seleccione el método de pago</option>
-                                        {{ old('client_type') == 'NATURAL' ? 'selected' : '' }}
                                         <option value="1" {{ old('loan_quote_payment_mode') == '1' ? 'selected':'' }}>Efectivo HNL</option>
                                         <option value="2" {{ old('loan_quote_payment_mode') == '2' ? 'selected':'' }}>Cheque HNL(X)</option>
                                         <option value="3" {{ old('loan_quote_payment_mode') == '3' ? 'selected':'' }}>Depósito bancario(X)</option>

@@ -16,6 +16,7 @@ class StoreRequest extends FormRequest
         return [
             'service_name' => 'required|string|min:3|max:55|regex:/^[^\d]+$/|unique:services',
             'service_nomenclature' => 'required|string|min:2|max:6|regex:/^[^\d]+$/|unique:services',
+            'service_type' => 'required|numeric|in:0,1',
             'service_description' => 'nullable|string|min:3|max:155',
         ];
     }
@@ -32,12 +33,18 @@ class StoreRequest extends FormRequest
             'service_name.max' => 'El nombre del servicio no puede exceder :max caracteres.',
 
             // Service nomenclature messages
-            'service_nomenclature.required' => 'La nomenclatura del servicio obligatoria.',
+            'service_nomenclature.required' => 'La nomenclatura del servicio es obligatoria.',
             'service_nomenclature.unique' => 'La nomenclatura del servicio ya existe.',
             'service_nomenclature.string' => 'La nomenclatura del servicio solo debe contener letras.',
             'service_nomenclature.regex' => 'La nomenclatura del servicio no puede contener números ni símbolos.',
             'service_nomenclature.min' => 'La nomenclatura del servicio debe contener al menos :min caracteres.',
             'service_nomenclature.max' => 'La nomenclatura del servicio no puede exceder :max caracteres.',
+
+            // Service tax messages
+            'service_type.required' => 'El impuesto del servicio es obligatorio.',
+            'service_type.numeric' => 'El impuesto del servicio solo debe contener números.',
+            'service_type.regex' => 'El impuesto del servicio no puede contener letras ni símbolos.',
+            'service_type.in' => 'El impuesto del servicio debe ser: 0: Exento de ISV, 1: ISV incluido.',
 
             // Service description messages
             'service_description.string' => 'La descripción del servicio solo debe contener letras y números.',

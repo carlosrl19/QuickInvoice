@@ -26,8 +26,8 @@
                                 <div class="col">
                                     <select class="form-select @error('client_type') is-invalid @enderror" name="client_type">
                                         <option value="" selected disabled>Seleccione el tipo de cliente</option>
-                                        <option value="NATURAL" {{ old('client_type') == 'NATURAL' ? 'selected' : '' }}>NATURAL</option>
-                                        <option value="JURIDICA" {{ old('client_type') == 'JURIDICA' ? 'selected' : '' }}>JURIDICA</option>
+                                        <option value="N" {{ old('client_type') == 'N' ? 'selected' : '' }}>NATURAL</option>
+                                        <option value="J" {{ old('client_type') == 'J' ? 'selected' : '' }}>JURIDICA</option>
                                     </select>
                                     @error('client_type')
                                     <span class="invalid-feedback" role="alert">

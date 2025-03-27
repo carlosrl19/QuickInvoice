@@ -135,9 +135,9 @@
 		<div class="header">
 			<img src="../public/storage/static/logo-rounded.png" width="120" height="94">
 			<br /><br />
-			<span class="subtitle">INVERSIONES ROBENIOR</span><br />
-			<span class="subtitle_sm">Bº RIO DE PIEDRAS, 21 AVE, 5 CALLE, SAN PEDRO SULA, CORTES</span><br />
-			<span class="subtitle_sm">TEL.: 2510-6118 | CORREO: contabilidad@robenior.com | R.T.N.: 08011999074695</span><br />
+			<span class="subtitle">{{ $settings->company_name ?? 'Nombre empresa' }}</span><br />
+			<span class="subtitle_sm">{{ $settings->company_address ?? 'Dirección empresa' }}</span><br />
+			<span class="subtitle_sm">TEL.: {{ $settings->company_phone ?? 'Teléfono empresa' }} | CORREO: {{ $settings->company_email ?? 'Email empresa' }} | R.T.N.: {{ $settings->company_rtn ?? 'R.T.N. Empresa' }}</span><br />
 		</div>
 
 		<div>

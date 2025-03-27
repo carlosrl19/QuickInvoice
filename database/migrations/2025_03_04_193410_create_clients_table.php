@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('client_name', 55);
             $table->string('client_code', 9);
             $table->string('client_document', 14);
-            $table->string('client_type', 8); // Natural, Jurídico
+            $table->enum('client_type', ['N','J']); // Natural, Jurídico
             $table->string('client_phone1', 8);
             $table->string('client_phone2', 8)->nullable();
             $table->date('client_birthdate')->nullable();

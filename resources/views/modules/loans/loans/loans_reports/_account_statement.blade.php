@@ -126,7 +126,7 @@
 	<div class="invoice-box">
 
 		<div class="header">
-			<span class="subtitle">INVERSIONES ROBENIOR</span>
+			<span class="subtitle">{{ $settings->company_name ?? 'Nombre empresa' }}</span>
 			<div class="divider"></div>
 			<span class="subtitle">Estado de cuenta # {{ $loan->loan_code_number }}</span>
 		</div>
@@ -181,13 +181,13 @@
 					<!-- Contenido del segundo div -->
 					<span class="text_header_sm">Plazo:&nbsp;{{ $loan->loan_quote_number }}
 						@if($loan->loan_payment_type == 1)
-						<span class="text_header_sm"> {{ $loan->loan_quota_number == 1 ? 'día':'días' }}</span>
+						<span class="text_header_sm"> {{ $loan->loan_quote_number == 1 ? 'día':'días' }}</span>
 						@elseif($loan->loan_payment_type == 2)
-						<span class="text_header_sm"> {{ $loan->loan_quota_number == 1 ? 'semana':'semanas' }}</span>
+						<span class="text_header_sm"> {{ $loan->loan_quote_number == 1 ? 'semana':'semanas' }}</span>
 						@elseif($loan->loan_payment_type == 3)
-						<span class="text_header_sm"> {{ $loan->loan_quota_number == 1 ? 'quincena':'quincenas' }}</span>
+						<span class="text_header_sm"> {{ $loan->loan_quote_number == 1 ? 'quincena':'quincenas' }}</span>
 						@elseif($loan->loan_payment_type == 4)
-						<span class="text_header_sm"> {{ $loan->loan_quota_number == 1 ? 'mes':'meses' }}</span>
+						<span class="text_header_sm"> {{ $loan->loan_quote_number == 1 ? 'mes':'meses' }}</span>
 						@else
 						<span class="text_header_sm"> (?)</span>
 						@endif

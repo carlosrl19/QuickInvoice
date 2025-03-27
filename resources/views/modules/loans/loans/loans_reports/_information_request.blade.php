@@ -119,7 +119,7 @@
 	<div class="invoice-box">
 
 		<div class="header">
-			<span class="subtitle">INVERSIONES ROBENIOR</span>
+			<span class="subtitle">{{ $settings->company_name ?? 'Nombre empresa' }}</span>
 			<div class="divider"></div>
 			<span class="subtitle">Solicitud de crédito # {{ $loan->loan_request_number }}</span>
 		</div>
@@ -168,13 +168,13 @@
 					</span><br>
 					<span class="text_header_sm">Plazo:&nbsp;{{ $loan->loan_quote_number }}
 						@if($loan->loan_payment_type == 1)
-						<span class="text_header_sm"> {{ $loan->loan_quota_number <= 1 ? 'día':'días' }}</span>
+						<span class="text_header_sm"> {{ $loan->loan_quote_number == 1 ? 'día':'días' }}</span>
 						@elseif($loan->loan_payment_type == 2)
-						<span class="text_header_sm"> {{ $loan->loan_quota_number <= 1 ? 'semana':'semanas' }}</span>
+						<span class="text_header_sm"> {{ $loan->loan_quote_number == 1 ? 'semana':'semanas' }}</span>
 						@elseif($loan->loan_payment_type == 3)
-						<span class="text_header_sm"> {{ $loan->loan_quota_number <= 1 ? 'quincena':'quincenas' }}</span>
+						<span class="text_header_sm"> {{ $loan->loan_quote_number == 1 ? 'quincena':'quincenas' }}</span>
 						@else
-						<span class="text_header_sm"> {{ $loan->loan_quota_number <= 1 ? 'mes':'meses' }}</span>
+						<span class="text_header_sm"> {{ $loan->loan_quote_number == 1 ? 'mes':'meses' }}</span>
 						@endif
 					</span><br>
 				</div>
@@ -207,8 +207,8 @@
 					<td style="text-align: left; font-size: 8pt !important;">{{ $loan->loan_description }}</td>
 					<td style="font-size: 8pt !important; color: lightgray">N/A</td>
 					<td style="font-size: 8pt !important;">1</td>
-					<td style="font-size: 8pt !important;">{{ $loan->loan_total }}</td>
-					<td style="font-size: 8pt !important;">{{ $loan->loan_total }}</td>
+					<td style="font-size: 8pt !important;">{{ number_format($loan->loan_total,2) }}</td>
+					<td style="font-size: 8pt !important;">{{ number_format($loan->loan_total,2) }}</td>
 				</tr>
 			</tbody>
 			<tfoot>

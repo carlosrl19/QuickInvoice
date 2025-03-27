@@ -26,7 +26,7 @@ class PosDetailsController extends Controller
         $sale = Pos::findOrFail($id);
         $pos_details = PosDetails::where('sale_id', $sale->id)->get();
         $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
-        $settings = Settings::select('logo_company')->first();
+        $settings = Settings::first();
 
         // Obtener el monto del pago con centavos
         $monto = $sale->sale_total_amount;
@@ -88,7 +88,7 @@ class PosDetailsController extends Controller
         // Renderizar el PDF
         $pdf->render();
 
-        $fileName = 'FACTURA #' . $sale->id . '.pdf';
+        $fileName = 'FACTURA #' . $sale->folio_invoice_number . '.pdf';
 
         return response($pdf->output(), 200)
             ->header('Content-Type', 'application/pdf')

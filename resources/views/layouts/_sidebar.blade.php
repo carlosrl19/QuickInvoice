@@ -56,12 +56,12 @@
                        </a>
                    </li>
                    <li class="nav-item">
-                       <a data-bs-toggle="collapse" href="#base">
+                       <a data-bs-toggle="collapse" href="#credits_collapse">
                            <x-heroicon-o-book-open style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <p>Créditos</p>
                            <span class="caret"></span>
                        </a>
-                       <div class="collapse" id="base">
+                       <div class="collapse" id="credits_collapse">
                            <ul class="nav nav-collapse">
                                <a href="{{ route('loans.index') }}">
                                    <x-heroicon-o-book-open style="width: 20px; height: 20px; color: lightgreen;" class="me-2 op-5" />
@@ -95,10 +95,34 @@
                        </a>
                    </li>
                    <li class="nav-item">
+                       @php
+                       $settings = App\Models\Settings::exists();
+                       $folio = App\Models\FiscalFolio::exists();
+                       $folio_activated = App\Models\FiscalFolio::where('folio_status', 1)->first();
+                       $folio_no_activated = App\Models\FiscalFolio::where('folio_status', 1)->count() == 0;
+                       @endphp
+
+                       @if(!$settings)
+                       <a href="{{ route('settings.index') }}" style="background-color: rgba(255,0,11,0.5);" title="Para realizar ventas, primero agregue los datos de la empresa en el módulo Configuración" data-bs-toggle="tooltip" data-bs-placement="right">
+                           <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px; color: #ffe000;" class="me-2" />
+                           <span class="sub-item">POS</span>
+                       </a>
+                       @elseif(!$folio)
+                       <a href="{{ route('fiscalfolio.index') }}" style="background-color: rgba(255,0,11,0.5);" title="Para realizar ventas, primero agregue un folio fiscal en el módulo Folios" data-bs-toggle="tooltip" data-bs-placement="right">
+                           <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px; color: #ffe000;" class="me-2" />
+                           <span class="sub-item">POS</span>
+                       </a>
+                       @elseif($folio_no_activated)
+                       <a href="{{ route('fiscalfolio.index') }}" style="background-color: rgba(255,0,11,0.5);" title="Para realizar ventas, primero active el uso del folio fiscal en el módulo Folios" data-bs-toggle="tooltip" data-bs-placement="right">
+                           <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px; color: #ffe000;" class="me-2" />
+                           <span class="sub-item">POS</span>
+                       </a>
+                       @else
                        <a href="{{ route('pos.create') }}">
                            <x-heroicon-o-currency-dollar style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">POS</span>
                        </a>
+                       @endif
                    </li>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
@@ -107,10 +131,17 @@
                        <h4 class="text-section">AJUSTES DEL SISTEMA</h4>
                    </li>
                    <li class="nav-item">
+                       @if($folio_activated->folio_total_invoices_available == 0)
+                       <a href="{{ route('settings.index') }}" title="Se ha llegado al limite de facturación permitido para el folio actual, agregue un nuevo folio el módulo Configuración/Folios" data-bs-toggle="tooltip" data-bs-placement="right">
+                           <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px; color: #ffe000;" class="mx-2" />
+                           <span class="sub-item">Configuración</span>
+                       </a>
+                       @else
                        <a href="{{ route('settings.index') }}">
                            <x-heroicon-o-cog-6-tooth style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Configuración</span>
                        </a>
+                       @endif
                    </li>
                </ul>
            </div>

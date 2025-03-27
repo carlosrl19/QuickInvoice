@@ -2,13 +2,12 @@
     <a href="#" class="logo text-white">
         @php
         $settings = App\Models\Settings::first();
-        $iconPath = $settings && Storage::url('sys_config/img/' . $settings->system_icon) ? Storage::url('sys_config/img/' . $settings->system_icon) : asset('assets/img/kaiadmin/favicon.png');
         @endphp
 
-        <img src="{{ $iconPath }}" alt="" class="navbar-brand" height="48" />
+        <img src="{{ Storage::url('sys_config/img/' . ($settings->system_icon ?? 'default_image.png')) }}" alt="" class="rounded-circle bg-white p-1 me-2 navbar-brand" height="45" />
 
         <span class="text-white fw-bold">
-            {{ $settings && $settings->show_system_name == 1 ? $settings->show_system_name : config('app.name') }}
+            {{ $settings && $settings->show_system_name == 1 ? config('app.name'):config('app.name') }}
         </span>
     </a>
     <div class="nav-toggle">

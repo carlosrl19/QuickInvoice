@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Factura #{{ $sale->id }}</title>
+    <title>Factura #{{ $sale->folio_invoice_number }}</title>
 
     <style>
         body {
@@ -23,7 +23,7 @@
 
         .invoice-box {
             max-width: 800px;
-            margin-top: 15px;
+            margin-top: 20px;
             /* border: 1px solid #eee; */
             /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); */
         }
@@ -63,22 +63,22 @@
 
 <header style="margin-top: -20px; display: flex; justify-content: space-between; align-items: center; position: relative;">
     <div style="width: 48%;">
-        <h3>Inversiones Robenior</h3>
+        <h3>{{ $settings->company_name ?? 'Nombre empresa' }}</h3>
         <div class="divider"></div>
         <span class="text_header_sm">
-            Casa matriz: San Pedro Sula, Honduras Tel: 2510 6118
+            Casa matriz: {{ $settings->company_short_address ?? 'Correo empresa' }} Tel: {{ $settings->company_phone ?? 'Teléfono empresa' }}
         </span><br>
         <span class="text_header_sm">
-            Correo: contabilidad@robenior.com
+            Correo: {{ $settings->company_email ?? 'Correo empresa' }}
         </span><br>
         <span class="text_header_sm">
-            R.T.N.: 08011999074695
+            R.T.N.: {{ $settings->company_rtn ?? 'R.T.N empresa' }}
         </span><br>
         <span class="text_header_sm">
             Sucursal: OFICINA PRINCIPAL
         </span><br>
         <span class="text_header_sm">
-            Lugar: SAN PEDRO SULA, CORTÉS.
+            Lugar: {{ $settings->company_short_address ?? 'Dirección corta empresa' }}
         </span><br>
         <span class="text_header_sm">
             Despachado desde: OFICINA PRINCIPAL
@@ -102,17 +102,35 @@
             <div style="position: absolute; left: 0; width: 45%; border: 1px solid #000; border-radius: 5px; padding: 10px;">
                 <p style="font-weight: bolder; font-size: 11pt; margin-top: -2px;">Cliente:</p>
                 <p style="font-size: 8.5pt; margin-top: -3px;">{{ $sale->client->client_code }} - {{ $sale->client->client_name }}</p>
-                <p style="font-size: 8.5pt; margin-top: -8px;">R.T.N.: {{ $sale->client->client_document }}</p><br>
-                <span style="font-size: 8.5pt;">Comentario: Vendedor: {{ $sale->seller->seller_name }}</span>
+                <p style="font-size: 8.5pt; margin-top: -8px;">R.T.N.: {{ $sale->client->client_document }}</p>
+                <p style="font-size: 8.5pt; margin-top: -8px;">{{ $settings->company_short_address }}</p>
+                <p style="font-size: 8.5pt; margin-top: -8px;">Comentario: <span style="color: gray">N/A</span></p>
+                <p style="font-size: 8.5pt; margin-top: -8px;">Vendedor: {{ $sale->seller->seller_name }}</p>
             </div>
 
             <!-- Exonerated information -->
             <div style="position: absolute; right: 0; width: 45%; height: 115px; border: 1px solid #000; border-radius: 5px; padding: 10px;">
                 <p style="font-size: 8.5pt; margin-top: -2px; letter-spacing: -0.5px">DATOS DEL ADQUIRIENTE EXONERADO</p>
-                <p style="font-size: 8.5pt; margin-top: -3px;">No. correlativo de orden de compra exenta:</p>
-                <p style="font-size: 8.5pt; border-bottom: 1px solid #000; width: 50%;"></p>
-                <p style="font-size: 8.5pt; margin-top: -3px;">No. correlativo de constancia registro exonerado:</p>
-                <p style="font-size: 8.5pt; border-bottom: 1px solid #000; width: 50%;"></p>
+                <p style="font-size: 8.5pt; margin-top: -3px;">No. correlativo de orden de compra</p>
+                @if($sale->exempt_purchase_order_correlative)
+                <p style="font-size: 8.5pt; width: 50%;">
+                    <span style="float: inline-start; margin-top: -10px;">exenta: {{ $sale->exempt_purchase_order_correlative ?? 'ERROR' }}</span>
+                </p>
+                @else
+                <p style="font-size: 8.5pt; border-bottom: 1px solid #000; width: 50%;">
+                    <span style="float: inline-start; margin-top: -12px"></span>
+                </p>
+                @endif
+                <p style="font-size: 8.5pt; margin-top: -3px;">No. correlativo de constancia registro</p>
+                @if($sale->exonerated_certificate)
+                <p style="font-size: 8.5pt; width: 50%;">
+                    <span style="float: inline-start; margin-top: -10px;">exonerado: {{ $sale->exonerated_certificate ?? 'ERROR' }}</span>
+                </p>
+                @else
+                <p style="font-size: 8.5pt; border-bottom: 1px solid #000; width: 50%;">
+                    <span style="float: inline-start; margin-top: -12px"></span>
+                </p>
+                @endif
                 <p style="font-size: 8.5pt; margin-top: -3px;">No. identificativo del registro de la SAG:</p>
                 <p style="font-size: 8.5pt; border-bottom: 1px solid #000; width: 50%;"></p>
             </div>
@@ -137,7 +155,7 @@
                             {{ $sale_detail->sale_quantity }}
                         </td>
                         <td style="border-right: 1px solid #000; font-size: 8.5pt; padding: 10px;">
-                            {{ $sale_detail->service->service_name }} / {{ $sale_detail->service->service_nomenclature }}
+                            {{ $sale_detail->service->service_name }} / {{ $sale_detail->service->service_nomenclature }}<br>
                             {{ $sale_detail->sale_details ? $sale_detail->sale_details:'' }}
                         </td>
                         <td style="text-align: center !important; border-right: 1px solid #000; font-size: 8.5pt; padding: 10px;">
@@ -147,7 +165,10 @@
                             L. {{ number_format($sale->sale_total_amount - $sale->sale_isv_amount,2) }}
                         </td>
                         <td style="text-align: center !important; border-right: 1px solid #000; font-size: 8.2pt; padding: 10px;">{{ number_format($sale_detail->sale->sale_discount,2) }} ({{ number_format($sale_detail->sale->sale_discount,2) }}%)</td>
-                        <td style="text-align: right !important; font-size: 8.5pt; padding: 10px;">L. {{ number_format($sale->sale_total_amount - $sale->sale_isv_amount,2) }} (X)</td>
+                        <td style="text-align: right !important; font-size: 8.5pt; padding: 10px;">
+                            L. {{ number_format($sale->sale_total_amount - $sale->sale_isv_amount,2) }}
+                            <span>{{ $sale->sale_type == 'ET' ? 'E':$sale->sale_type }}</span>
+                        </td>
                     </tr>
                     @endforeach
                     <tr style="text-align: left !important;">
@@ -173,15 +194,15 @@
             <table style="border: 1px solid #000; border-collapse: collapse; margin-top: -15px;">
                 <tr>
                     <td style="width: 59%; padding: 10px; vertical-align: top;">
-                        <p style="font-weight: bolder; font-size: 11.5pt; margin-top: 5px;">Factura de contado # 000-001-01-00008034 (X)</p>
+                        <p style="font-weight: bolder; font-size: 11.5pt; margin-top: 5px;">Factura de contado # {{ $sale->folio_invoice_number }}</p>
                         <p style="font-size: 9pt; margin-top: -3px;">Valor en letras: {{ $sale_amount_letras }} LEMPIRAS EXACTOS</p>
                         <p style="font-weight: bolder; font-size: 9.5pt; margin-top: -8px;">CONDICIONES GENERALES:</p>
                         <div style="margin-top: 15px"></div>
-                        <p style="font-size: 10.5pt; margin-top: -8px;">Firma:
+                        <p style="font-size: 10.5pt; margin-top: -8pxps;">Firma:
                         <div style="float: left; margin-top: -18px; margin-left: 42px; width: 230px; border-bottom: 1px solid #000;"></div>
                         </p>
-                        <p style="font-size: 7pt; margin-top: -10px;">CAI: 2513C0-E8BB43-D7BAE0-63BE03-090902-4C Fecha limite de emisión: 22/10/2025 (X)</p>
-                        <p style="font-size: 7.8pt; margin-top: -8px;">Rango autorizado: 000-001-01-00007971 al 000-001-01-00008970</p>
+                        <p style="font-size: 7pt; margin-top: -10px;">CAI: {{ $settings->company_cai ?? 'CAI empresa' }} Fecha limite de emisión: {{ Carbon\Carbon::parse($sale->folio->folio_authorized_emission_date)->format('d/m/Y') ?? 'CAI fecha límite' }}</p>
+                        <p style="font-size: 7.8pt; margin-top: -8px;">Rango autorizado: {{ $sale->folio->folio_authorized_range_start ?? 'Rango inicial' }} al {{ $sale->folio->folio_authorized_range_end  ?? 'Rango final' }}</p>
                         <p style="font-size: 7.8pt; margin-top: -8px;">G=Gravado E=Exento</p>
                         <p style="font-size: 8.7pt; margin-top: -8px; line-height: 1.5;">NOTA: EL IMPORTE TOTAL DE ESTA FACTURA DEVENGARÁ EL 3% MENSUAL DESPUÉS DE LA FECHA DE VENCIMIENTO</p>
                         <p style="font-weight: bolder; font-size: 10.2pt; margin-top: -8px;">La factura es beneficio de todos "EXIJALA"</p>
@@ -200,12 +221,13 @@
                         <div style="margin-top: 10px"></div>
                         <p style="font-size: 10pt; margin-top: -8px;">Cambio:</p>
                     </td>
+                    @if($sale->sale_type == 'G' && $sale->sale_exempt_tax == 0) <!-- Gravada con ISV -->
                     <td style="line-height: 0.9; padding: 10px; vertical-align: top; text-align: right;">
-                        <p style="font-size: 10pt; margin-top: 3px;">L. (X)</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. (X)</p>
+                        <p style="font-size: 10pt; margin-top: 3px;">L. 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
                         <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_total_amount - $sale->sale_isv_amount,2) }}</p>
                         <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_isv_amount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ $sale->sale_type == 'G' ? number_format($sale->sale_isv_amount,2):'0.00' }}</p>
                         <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
                         <p style="font-weight: bolder; font-size: 10.6pt; margin-top: -3px;">L. {{ number_format($sale->sale_total_amount,2) }}</p>
                         <div style="margin-top: 10px"></div>
@@ -214,6 +236,52 @@
                         <div style="margin-top: 10px"></div>
                         <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_change,2) }}</p>
                     </td>
+                    @elseif($sale->sale_type == 'G' || $sale->sale_type == 'ET' && $sale->sale_exempt_tax == 1)
+                    <td style="line-height: 0.9; padding: 10px; vertical-align: top; text-align: right;">
+                        <p style="font-size: 10pt; margin-top: 3px;">L. 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_total_amount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
+                        <p style="font-weight: bolder; font-size: 10.6pt; margin-top: -3px;">L. {{ number_format($sale->sale_total_amount,2) }}</p>
+                        <div style="margin-top: 10px"></div>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_discount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_received,2) }}</p>
+                        <div style="margin-top: 10px"></div>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_change,2) }}</p>
+                    </td>
+                    @elseif($sale->sale_type == 'E')
+                    <td style="line-height: 0.9; padding: 10px; vertical-align: top; text-align: right;">
+                        <p style="font-size: 10pt; margin-top: 3px;">L. {{ number_format($sale->sale_total_amount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
+                        <p style="font-weight: bolder; font-size: 10.6pt; margin-top: -3px;">L. {{ number_format($sale->sale_total_amount,2) }}</p>
+                        <div style="margin-top: 10px"></div>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_discount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_received,2) }}</p>
+                        <div style="margin-top: 10px"></div>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_change,2) }}</p>
+                    </td>
+                    @else
+                    <td style="line-height: 0.9; padding: 10px; vertical-align: top; text-align: right;">
+                        <p style="font-size: 10pt; margin-top: 3px;">L. {{ $sale->sale_type == 'G' ? '0.00':$sale->sale_total_amount }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. (X)</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ $sale->sale_type == 'G' ? number_format($sale->sale_total_amount - $sale->sale_isv_amount,2):'0.00' }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ $sale->sale_type == 'G' ? number_format($sale->sale_isv_amount,2):'0.00' }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
+                        <p style="font-weight: bolder; font-size: 10.6pt; margin-top: -3px;">L. {{ number_format($sale->sale_total_amount,2) }}</p>
+                        <div style="margin-top: 10px"></div>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_discount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_received,2) }}</p>
+                        <div style="margin-top: 10px"></div>
+                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_change,2) }}</p>
+                    </td>
+                    @endif
                 </tr>
             </table>
         </div>

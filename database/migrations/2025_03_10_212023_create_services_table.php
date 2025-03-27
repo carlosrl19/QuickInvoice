@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('service_name', 55);
             $table->string('service_nomenclature', 6);
+            $table->boolean('service_type'); // 0: Sin ISV (Exonerado), 1: Con ISV incluido
             $table->string('service_description', 155)->nullable();
             $table->timestamps();
         });

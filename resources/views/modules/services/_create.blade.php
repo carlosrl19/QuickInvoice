@@ -25,7 +25,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" maxlength="6" name="service_nomenclature" oninput="this.value = this.value.toCapitalize().replace(/[0-9]/g, '')" value="{{ old('service_nomenclature') }}" id="service_nomenclature" class="form-control @error('service_nomenclature') is-invalid @enderror" autocomplete="off" />
+                                <input type="text" maxlength="6" name="service_nomenclature" oninput="this.value = this.value.toLowerCase().replace(/[0-9]/g, '')" value="{{ old('service_nomenclature') }}" id="service_nomenclature" class="form-control @error('service_nomenclature') is-invalid @enderror" autocomplete="off" />
                                 @error('service_nomenclature')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -33,6 +33,21 @@
                                 @enderror
                                 <label for="service_nomenclature">Nomenclatura del servicio <span class="text-danger">*</span></label>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <select class="form-select @error('service_type') is-invalid @enderror" name="service_type">
+                                <option value="" selected disabled>Seleccione el impuesto</option>
+                                <option value="0" {{ old('service_type') == '0' ? 'selected' : '' }}>EXENTO</option>
+                                <option value="1" {{ old('service_type') == '1' ? 'selected' : '' }}>ISV INCLUIDO</option>
+                            </select>
+                            @error('service_type')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
                     </div>
 

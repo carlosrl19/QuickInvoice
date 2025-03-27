@@ -28,6 +28,7 @@ class ServicesController extends Controller
         try {
             $service->service_name = $request->input('service_name');
             $service->service_nomenclature = $request->input('service_nomenclature');
+            $service->service_type = $request->input('service_type');
             $service->service_description = $request->input('service_description');
             $service->update($request->all());
 
@@ -37,9 +38,6 @@ class ServicesController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $service = Services::findOrFail($id);

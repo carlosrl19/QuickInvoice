@@ -8,12 +8,10 @@ use App\Models\Settings;
 
 class SettingsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('modules.settings.index');
+        $setting = Settings::first();
+        return view('modules.settings.index', compact('setting'));
     }
 
     public function create()
@@ -58,10 +56,12 @@ class SettingsController extends Controller
                 'system_icon' => $systemIcon,
                 'show_system_name' => $request->input('show_system_name'),
                 'company_name' => $request->input('company_name'),
+                'company_cai' => $request->input('company_cai'),
                 'company_rtn' => $request->input('company_rtn'),
                 'company_phone' => $request->input('company_phone'),
                 'company_email' => $request->input('company_email'),
                 'company_address' => $request->input('company_address'),
+                'company_short_address' => $request->input('company_short_address'),
             ]);
 
             return redirect()->route('settings.index')->with('success', 'Configuración guardada correctamente');
@@ -104,22 +104,19 @@ class SettingsController extends Controller
 
             $settings->show_system_name = $request->input('show_system_name');
             $settings->company_name = $request->input('company_name');
+            $settings->company_cai = $request->input('company_cai');
             $settings->company_rtn = $request->input('company_rtn');
             $settings->company_phone = $request->input('company_phone');
             $settings->company_email = $request->input('company_email');
             $settings->company_address = $request->input('company_address');
+            $settings->company_short_address = $request->input('company_short_address');
 
             // Actualizar el registro en la base de datos
             $settings->save();
 
-            return redirect()->route('settings.index')->with('success', 'Configuración actualizada correctamente');
+            return back()->with('success', 'Configuración actualizada correctamente');
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al actualizar el registro.")->withInput()->withErrors($e->getMessage());
         }
-    }
-
-    public function destroy(Settings $settings)
-    {
-        //
     }
 }

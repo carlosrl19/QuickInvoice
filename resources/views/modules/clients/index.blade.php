@@ -77,7 +77,7 @@ Clientes
                                     {{ $client->client_document }}
                                 </td>
                                 <td>
-                                    {{ $client->client_type }}
+                                    {{ $client->client_type == 'N' ? 'NATURAL':'JURIDICA' }}
                                 </td>
                                 <td>
                                     {{ $client->client_phone1 }}

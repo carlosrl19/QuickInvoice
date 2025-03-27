@@ -133,14 +133,14 @@
         <div class="header">
             <img src="../public/storage/static/logo-rounded.png" width="64" height="64">
             <br /><br />
-            <span class="subtitle">INVERSIONES ROBENIOR</span><br />
-            <span class="text_header_sm">Bº RIO DE PIEDRAS, 21 AVE, 5 CALLE, SAN PEDRO SULA, CORTES</span><br />
-            <span class="text_header_sm">TEL.: 2510-6118 | CORREO: contabilidad@robenior.com | R.T.N.: 08011999074695</span><br />
+            <span class="subtitle">{{ $settings->company_name ?? 'Nombre empresa' }}</span><br />
+            <span class="text_header_sm">{{ $settings->company_address ?? 'Dirección empresa' }}</span><br />
+            <span class="text_header_sm">TEL.: {{ $settings->company_phone ?? 'Teléfpno empresa' }} | CORREO: {{ $settings->company_email ?? 'Email empresa' }} | R.T.N.: {{ $settings->company_rtn ?? 'R.T.N. Empresa' }}</span><br />
         </div>
 
         <div class="information">
             <div>
-                <span class="text_header_sm">Lugar: SAN PEDRO SULA, CORTÉS</span><br />
+                <span class="text_header_sm">Lugar: {{ $settings->company_short_address ?? 'Dirección corta empresa' }}</span><br />
                 <span CLASS="text_header_sm">Fecha: {{ Carbon\Carbon::parse($loan->created_at)->format('d/m/Y H:i:s a') }}</span>
             </div>
             <div>

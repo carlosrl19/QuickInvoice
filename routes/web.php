@@ -41,8 +41,10 @@ Route::get('loans/{id}/loan_account_statement_report', 'App\Http\Controllers\Loa
 Route::get('loans/{id}/loan_receipt_delivery_show', 'App\Http\Controllers\LoansController@loan_receipt_delivery_show')->name('loans.loan_receipt_delivery_show');
 Route::get('loans/{id}/loan_receipt_delivery_report', 'App\Http\Controllers\LoansController@loan_receipt_delivery_report')->name('loans.loan_receipt_delivery_report');
 
-Route::get('loans/{id}/loan_request_report', 'App\Http\Controllers\LoansController@loan_request_report')->name('loans.loan_request_report');
+Route::get('loans/{id}/loan_payment_plan_show', 'App\Http\Controllers\LoansController@loan_payment_plan_show')->name('loans.loan_payment_plan_show');
 Route::get('loans/{id}/loan_payment_plan_report', 'App\Http\Controllers\LoansController@loan_payment_plan_report')->name('loans.loan_payment_plan_report');
+
+Route::get('loans/{id}/loan_request_report', 'App\Http\Controllers\LoansController@loan_request_report')->name('loans.loan_request_report');
 Route::get('loans/{id}/loan_receipt_report/{payment_id}', 'App\Http\Controllers\LoansController@loan_receipt_report')->name('loans.loan_receipt_report');
 
 // Pagos de préstamos
@@ -52,7 +54,10 @@ Route::post('loan_payments/{id}/payment', 'App\Http\Controllers\LoanPaymentsCont
 
 // Rutas de punto de venta (POS)
 Route::resource('pos', 'App\Http\Controllers\PosController')->names('pos');
-Route::get('pos-details/{id}/pos_details_show', 'App\Http\Controllers\PosDetailsController@pos_details_show')->name('pos_details.pos_details_show');
+Route::get('pos-exonerated/', 'App\Http\Controllers\PosController@exonerated_sale')->name('pos.exonerated_sale');
+Route::post('pos-exonerated/new_sale', 'App\Http\Controllers\PosController@store_exonerated')->name('pos.store_exonerated');
+
+Route::get('pos-details/{id}/', 'App\Http\Controllers\PosDetailsController@pos_details_show')->name('pos_details.pos_details_show');
 Route::get('pos-details/{id}/report', 'App\Http\Controllers\PosDetailsController@pos_details_report')->name('pos_details.pos_details_report');
 
 // Rutas de vendedores
@@ -60,3 +65,7 @@ Route::resource('sellers', 'App\Http\Controllers\SellerController')->names('sell
 
 // Rutas de ajustes
 Route::resource('settings', 'App\Http\Controllers\SettingsController')->names('settings');
+
+// Rutas de UUID
+Route::resource('fiscalfolio', 'App\Http\Controllers\FiscalFolioController')->names('fiscalfolio');
+Route::post('fiscalfolio/{id}/use', 'App\Http\Controllers\FiscalFolioController@use_folio')->name('fiscalfolio.use_folio');

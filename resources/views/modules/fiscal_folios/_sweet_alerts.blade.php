@@ -1,12 +1,17 @@
 <!-- JQuery -->
 <script src="{{ Storage::url('assets/js/core/jquery-3.7.1.min.js') }}"></script>
 
+<!-- Use folio SweetAlert -->
 <script>
-    document.getElementById('sale_clear').addEventListener('click', function() {
+    document.getElementById('use_folio{{ $folio->id }}').addEventListener('click', function() {
         Swal.fire({
-            title: "Limpiar formulario",
+            title: "Usar folio",
             html: `
-            <p>¿Está seguro de limpiar el formulario? Perderá todos lo agregado a la venta.</p>
+                <p>¿Está seguro de utilizar el folio <b>{{ $folio->folio_authorized_range_start }}-{{ $folio->folio_authorized_range_end }}</b>?</p>
+                <form id="confirm-use-form" action="{{ route('fiscalfolio.use_folio', $folio->id)}}" method="POST">
+                    @csrf
+                    @method("POST")
+                </form>
             `,
             icon: "warning",
             showCancelButton: true,
@@ -17,10 +22,10 @@
             confirmButtonText: "Confirmar"
         }).then((result) => {
             if (result.value) {
-                // Redirecciona a pos.pos_create
-                window.location.href = "{{ route('pos.create') }}";
+                // Envía el formulario manualmente
+                document.getElementById('confirm-use-form').submit();
             }
-        });
+        })
     })
 </script>
 
@@ -46,7 +51,7 @@
         icon: "error",
         allowOutsideClick: false,
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2500,
         timerProgressBar: true,
     })
 </script>

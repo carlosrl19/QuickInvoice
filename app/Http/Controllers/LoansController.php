@@ -8,6 +8,7 @@ use App\Models\Clients;
 use App\Models\LoanPayments;
 use App\Models\Loans;
 use App\Models\Seller;
+use App\Models\Settings;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -86,6 +87,7 @@ class LoansController extends Controller
     {
         $loan = Loans::findOrFail($id);
         $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+        $settings = Settings::first();
 
         // Configurar el locale en Carbon
         Carbon::setLocale('es');
@@ -115,6 +117,7 @@ class LoansController extends Controller
             view('modules.loans.loans.loans_reports._information_request', compact(
                 'loan',
                 'todayDate',
+                'settings',
                 'dia',
                 'mes',
                 'anio',
@@ -309,6 +312,7 @@ class LoansController extends Controller
     {
         $loan = Loans::findOrFail($id);
         $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+        $settings = Settings::first();
 
         // Configurar el locale en Carbon
         Carbon::setLocale('es');
@@ -334,7 +338,17 @@ class LoansController extends Controller
         $pdf = new Dompdf($options);
 
         // Cargar el contenido de la vista en Dompdf
-        $pdf->loadHtml(view('modules.loans.loans.loans_reports._loan_request_report', compact('loan', 'todayDate', 'dia', 'mes', 'anio', 'hora', 'mins', 'seg')));
+        $pdf->loadHtml(view('modules.loans.loans.loans_reports._loan_request_report', compact(
+            'loan',
+            'todayDate',
+            'settings',
+            'dia',
+            'mes',
+            'anio',
+            'hora',
+            'mins',
+            'seg'
+        )));
 
         // Establecer el tamaño y la orientación del papel
         $pdf->setPaper('A4', 'portrait');
@@ -362,6 +376,7 @@ class LoansController extends Controller
     {
         $loan = Loans::findOrFail($id);
         $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+        $settings = Settings::first();
 
         // Obtener el monto del pago con centavos
         $monto = $loan->loan_total;
@@ -403,7 +418,18 @@ class LoansController extends Controller
         $pdf = new Dompdf($options);
 
         // Cargar el contenido de la vista en Dompdf
-        $pdf->loadHtml(view('modules.loans.loans.loans_reports._receipt_delivery', compact('loan', 'loan_amount_letras', 'todayDate', 'dia', 'mes', 'anio', 'hora', 'mins', 'seg')));
+        $pdf->loadHtml(view('modules.loans.loans.loans_reports._receipt_delivery', compact(
+            'loan',
+            'loan_amount_letras',
+            'todayDate',
+            'settings',
+            'dia',
+            'mes',
+            'anio',
+            'hora',
+            'mins',
+            'seg'
+        )));
 
         // Establecer el tamaño y la orientación del papel
         $pdf->setPaper('A4', 'portrait');
@@ -434,6 +460,7 @@ class LoansController extends Controller
         $loan_payments_sum = LoanPayments::where('loan_id', $loan->id)->sum('loan_quote_payment_amount');
         $loan_payments_paid_sum = LoanPayments::where('loan_id', $loan->id)->where('loan_quote_payment_status', 1)->sum('loan_quote_payment_amount');
         $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+        $settings = Settings::first();
 
         // Configurar el locale en Carbon
         Carbon::setLocale('es');
@@ -466,6 +493,7 @@ class LoansController extends Controller
                 'loan_payments_sum',
                 'loan_payments_paid_sum',
                 'todayDate',
+                'settings',
                 'dia',
                 'mes',
                 'anio',
@@ -488,10 +516,20 @@ class LoansController extends Controller
             ->header('Content-Disposition', 'inline; filename="' . $fileName . '"');
     }
 
+    public function loan_payment_plan_show($id)
+    {
+        $loan = Loans::findOrFail($id);
+
+        return view('modules.loans.loans._payment_plan_show', compact(
+            'loan',
+        ));
+    }
+
     public function loan_payment_plan_report($id)
     {
         $loan = Loans::findOrFail($id);
         $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+        $settings = Settings::first();
 
         // Configurar el locale en Carbon
         Carbon::setLocale('es');
@@ -517,7 +555,17 @@ class LoansController extends Controller
         $pdf = new Dompdf($options);
 
         // Cargar el contenido de la vista en Dompdf
-        $pdf->loadHtml(view('modules.loans.loans_reports._payment_plan_report', compact('loan', 'todayDate', 'dia', 'mes', 'anio', 'hora', 'mins', 'seg')));
+        $pdf->loadHtml(view('modules.loans.loans_reports._payment_plan_report', compact(
+            'loan',
+            'todayDate',
+            'settings',
+            'dia',
+            'mes',
+            'anio',
+            'hora',
+            'mins',
+            'seg'
+        )));
 
         // Establecer el tamaño y la orientación del papel
         $pdf->setPaper('A4', 'portrait');
@@ -537,6 +585,7 @@ class LoansController extends Controller
         $loan = Loans::findOrFail($id);
         $loan_payment = LoanPayments::findOrFail($payment_id);
         $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+        $settings = Settings::first();
 
         // Configurar el locale en Carbon
         Carbon::setLocale('es');
@@ -581,6 +630,7 @@ class LoansController extends Controller
                 'loan',
                 'loan_payment',
                 'todayDate',
+                'settings',
                 'loan_amount_letras',
                 'dia',
                 'mes',

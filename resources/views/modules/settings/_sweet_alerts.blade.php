@@ -9,7 +9,7 @@
         icon: "success",
         allowOutsideClick: false,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 1000,
         timerProgressBar: true,
     })
 </script>

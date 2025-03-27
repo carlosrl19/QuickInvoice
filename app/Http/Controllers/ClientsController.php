@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Clients\StoreRequest;
 use App\Http\Requests\Clients\UpdateRequest;
 use App\Models\Clients;
+use Carbon\Carbon;
 
 class ClientsController extends Controller
 {
+    private function getTodayDate()
+    {
+        return Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+    }
+
     public function index()
     {
         $clients = Clients::get();
@@ -41,6 +47,8 @@ class ClientsController extends Controller
                 'client_exonerated' => $request->input('client_exonerated'),
                 'client_status' => 1,
                 'client_address' => $request->input('client_address'),
+                'created_ad' => $this->getTodayDate(),
+                'updated_ad' => $this->getTodayDate(),
             ]);
             return back()->with("success", "Registro creado exitosamente.");
         } catch (\Exception $e) {
@@ -73,6 +81,8 @@ class ClientsController extends Controller
             $client->client_exonerated = $request->input('client_exonerated');
             $client->client_status = $request->input('client_status');
             $client->client_address = $request->input('client_address');
+            $client->created_ad = $this->getTodayDate();
+            $client->updated_ad = $this->getTodayDate();
             $client->update($request->all());
 
             return redirect()->route("clients.index")->with("success", "Registro actualizado exitosamente.");
