@@ -89,6 +89,12 @@
                        <h4 class="text-section">MODULO FACTURACIÓN</h4>
                    </li>
                    <li class="nav-item">
+                       <a href="{{ route('quotes.index') }}">
+                           <x-heroicon-o-square-3-stack-3d style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                           <span class="sub-item">Cotizaciones</span>
+                       </a>
+                   </li>
+                   <li class="nav-item">
                        <a href="{{ route('pos.index') }}">
                            <x-heroicon-o-computer-desktop style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Registro de ventas</span>
@@ -117,6 +123,11 @@
                            <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px; color: #ffe000;" class="me-2" />
                            <span class="sub-item">POS</span>
                        </a>
+                       @elseif($folio_activated->folio_total_invoices_available == 0)
+                       <a href="#" title="Sin folios de facturación disponibles." data-bs-toggle="tooltip" data-bs-placement="right">
+                           <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px; color: #ffe000;" class="me-2" />
+                           <span class="sub-item">POS</span>
+                       </a>
                        @else
                        <a href="{{ route('pos.create') }}">
                            <x-heroicon-o-currency-dollar style="width: 20px; height: 20px; color: gray;" class="me-2" />
@@ -132,7 +143,7 @@
                    </li>
                    <li class="nav-item">
                        @if($folio_activated->folio_total_invoices_available == 0)
-                       <a href="{{ route('settings.index') }}" title="Se ha llegado al limite de facturación permitido para el folio actual, agregue un nuevo folio el módulo Configuración/Folios" data-bs-toggle="tooltip" data-bs-placement="right">
+                       <a href="{{ route('settings.index') }}" style="background-color: rgba(255,0,11,0.5);" title="Se ha llegado al limite de facturación permitido para el folio actual, agregue un nuevo folio el módulo Configuración/Folios" data-bs-toggle="tooltip" data-bs-placement="right">
                            <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px; color: #ffe000;" class="mx-2" />
                            <span class="sub-item">Configuración</span>
                        </a>

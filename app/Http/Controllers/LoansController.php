@@ -95,7 +95,7 @@ class LoansController extends Controller
         // Obtener la fecha actual en español
         $fecha = Carbon::now()->setTimezone('America/Costa_Rica');
         $dia = $fecha->format('d');
-        $mes = $fecha->translatedFormat('F'); // 'F' para nombre completo del mes
+        $mes = $fecha->format('m');
         $anio = $fecha->format('Y');
         $hora = $fecha->format('H');
         $mins = $fecha->format('m');
@@ -320,7 +320,7 @@ class LoansController extends Controller
         // Obtener la fecha actual en español
         $fecha = Carbon::now()->setTimezone('America/Costa_Rica');
         $dia = $fecha->format('d');
-        $mes = $fecha->translatedFormat('F'); // 'F' para nombre completo del mes
+        $mes = $fecha->format('m');
         $anio = $fecha->format('Y');
         $hora = $fecha->format('H');
         $mins = $fecha->format('m');
@@ -400,7 +400,7 @@ class LoansController extends Controller
         // Obtener la fecha actual en español
         $fecha = Carbon::now()->setTimezone('America/Costa_Rica');
         $dia = $fecha->format('d');
-        $mes = $fecha->translatedFormat('F'); // 'F' para nombre completo del mes
+        $mes = $fecha->format('m');
         $anio = $fecha->format('Y');
         $hora = $fecha->format('H');
         $mins = $fecha->format('m');
@@ -468,7 +468,7 @@ class LoansController extends Controller
         // Obtener la fecha actual en español
         $fecha = Carbon::now()->setTimezone('America/Costa_Rica');
         $dia = $fecha->format('d');
-        $mes = $fecha->translatedFormat('F'); // 'F' para nombre completo del mes
+        $mes = $fecha->format('m');
         $anio = $fecha->format('Y');
         $hora = $fecha->format('H');
         $mins = $fecha->format('m');
@@ -537,7 +537,7 @@ class LoansController extends Controller
         // Obtener la fecha actual en español
         $fecha = Carbon::now()->setTimezone('America/Costa_Rica');
         $dia = $fecha->format('d');
-        $mes = $fecha->translatedFormat('F'); // 'F' para nombre completo del mes
+        $mes = $fecha->format('m');
         $anio = $fecha->format('Y');
         $hora = $fecha->format('H');
         $mins = $fecha->format('m');
@@ -593,7 +593,7 @@ class LoansController extends Controller
         // Obtener la fecha actual en español
         $fecha = Carbon::now()->setTimezone('America/Costa_Rica');
         $dia = $fecha->format('d');
-        $mes = $fecha->translatedFormat('F'); // 'F' para nombre completo del mes
+        $mes = $fecha->format('m');
         $anio = $fecha->format('Y');
 
         // Configuración de opciones para Dompdf

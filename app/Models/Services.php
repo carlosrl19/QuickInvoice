@@ -19,4 +19,9 @@ class Services extends Model
     {
         return $this->hasMany(PosDetails::class, 'service_id');
     }
+
+    public function quote_details()
+    {
+        return $this->hasMany(QuoteDetails::class, 'service_id');
+    }
 }

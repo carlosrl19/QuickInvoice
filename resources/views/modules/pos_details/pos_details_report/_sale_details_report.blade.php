@@ -198,7 +198,7 @@
                         <p style="font-size: 9pt; margin-top: -3px;">Valor en letras: {{ $sale_amount_letras }} LEMPIRAS EXACTOS</p>
                         <p style="font-weight: bolder; font-size: 9.5pt; margin-top: -8px;">CONDICIONES GENERALES:</p>
                         <div style="margin-top: 15px"></div>
-                        <p style="font-size: 10.5pt; margin-top: -8pxps;">Firma:
+                        <p style="font-size: 10.5pt; margin-top: -8px;">Firma:
                         <div style="float: left; margin-top: -18px; margin-left: 42px; width: 230px; border-bottom: 1px solid #000;"></div>
                         </p>
                         <p style="font-size: 7pt; margin-top: -10px;">CAI: {{ $settings->company_cai ?? 'CAI empresa' }} Fecha limite de emisión: {{ Carbon\Carbon::parse($sale->folio->folio_authorized_emission_date)->format('d/m/Y') ?? 'CAI fecha límite' }}</p>
@@ -287,7 +287,7 @@
         </div>
     </div>
     <span style="float: left; font-size: 8pt; margin-top: -16px; margin-left: 10px">
-        Usuario: (X) | Impreso: XX/X/XXXX XX:XX:XX | Origen: POS
+        Usuario: (X) | Impreso: {{ $dia }}/{{ $mes }}/{{ $anio }} {{ $hora }}:{{ $mins }}:{{ $seg }} | Origen: POS
     </span>
     <span style="float: right; font-size: 8pt; margin-top: -16px; margin-right: 20px">
         {{ config('app.name') }}

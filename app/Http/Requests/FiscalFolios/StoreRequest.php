@@ -3,6 +3,8 @@
 namespace App\Http\Requests\FiscalFolios;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
+use App\Models\FiscalFolio;
 
 class StoreRequest extends FormRequest
 {
@@ -22,6 +24,27 @@ class StoreRequest extends FormRequest
             'folio_validation_status' => 'required|in:0,1',
             'folio_status' => 'required|in:0,1',
         ];
+    }
+
+    /**
+     * Agregar una validación adicional después de las reglas estándar para validar que no hayan rangos que se solapen entre sí
+     */
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
+            $start = $this->input('folio_authorized_range_start');
+            $end = $this->input('folio_authorized_range_end');
+
+            $exists = FiscalFolio::where(function ($query) use ($start, $end) {
+                $query->where('folio_authorized_range_start', '<=', $end)
+                    ->where('folio_authorized_range_end', '>=', $start);
+            })->exists();
+
+            if ($exists) {
+                $validator->errors()->add('folio_authorized_range_start', 'El rango inicial ingresado se solapa con un rango existente.');
+                $validator->errors()->add('folio_authorized_range_end', 'El rango final ingresado se solapa con un rango existente.');
+            }
+        });
     }
 
     public function messages(): array

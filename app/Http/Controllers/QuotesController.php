@@ -1,0 +1,168 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\Quotes\StoreRequest;
+use App\Http\Requests\Quotes\UpdateRequest;
+use App\Models\Clients;
+use App\Models\QuoteDetails;
+use App\Models\Quotes;
+use App\Models\Seller;
+use App\Models\Services;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
+class QuotesController extends Controller
+{
+    private function getTodayDate()
+    {
+        return Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+    }
+
+    public function index()
+    {
+        $quotes = Quotes::get();
+        return view('modules.quotes.index', compact('quotes'));
+    }
+
+    public function create()
+    {
+        $services = Services::get();
+        $clients = Clients::where('client_exonerated', 0)->get();
+        $sellers = Seller::get();
+        return view('modules.quotes.create', compact('services', 'clients', 'sellers'));
+    }
+
+    public function exonerated_quote()
+    {
+        $services = Services::get();
+        $clients = Clients::where('client_exonerated', 1)->get();
+        $sellers = Seller::get();
+        return view('modules.quotes.create_exonerated_quote', compact('services', 'clients', 'sellers'));
+    }
+
+    public function store(StoreRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        // Obtener el último ID para generar el código
+        $lastQuote = Quotes::latest()->first();
+        $nextId = $lastQuote ? $lastQuote->id + 1 : 1;
+
+        $quoteCodeNumber = 'CT' . str_pad($nextId, 7, '0', STR_PAD_LEFT);
+
+        if ($request->input('quote_exempt_tax') == 1) {
+            $quote_type = 'ET';
+        } else {
+            $quote_type = 'G';
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $quote = Quotes::create([
+                'quote_code' => $quoteCodeNumber,
+                'client_id' => $request->input('client_id'),
+                'seller_id' => $request->input('seller_id'),
+                'quote_type' => $quote_type,
+                'quote_total_amount' => $request->input('quote_total_amount'),
+                'quote_discount' => $request->input('quote_discount'),
+                'quote_exempt_tax' => $request->input('quote_exempt_tax'),
+                'quote_tax' => $request->input('quote_tax'),
+                'quote_isv_amount' => $request->input('quote_isv_amount'),
+                'created_at' => $this->getTodayDate(),
+                'updated_at' => $this->getTodayDate(),
+            ]);
+
+            if (is_array($validatedData['service_id'])) {
+                foreach ($validatedData['service_id'] as $index => $service_id) {
+                    QuoteDetails::create([
+                        'service_id' => $service_id,
+                        'quote_id' => $quote->id,
+                        'quote_quantity' => $validatedData['quote_quantity'][$index],
+                        'quote_price' => $validatedData['quote_price'][$index],
+                        'quote_subtotal' => $validatedData['quote_subtotal'][$index],
+                        'quote_details' => $validatedData['quote_details'][$index],
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return redirect()->route('quotes.create')->with('success', 'Registro creado exitosamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
+        }
+    }
+
+    public function store_exonerated(StoreRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        // Obtener el último ID para generar el código
+        $lastQuote = Quotes::latest()->first();
+        $nextId = $lastQuote ? $lastQuote->id + 1 : 1;
+
+        $quoteCodeNumber = 'CT' . str_pad($nextId, 7, '0', STR_PAD_LEFT);
+
+        if ($request->input('quote_exempt_tax') == 1) {
+            $quote_type = 'ET';
+        } else {
+            $quote_type = 'E';
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $quote = Quotes::create([
+                'quote_code' => $quoteCodeNumber,
+                'client_id' => $request->input('client_id'),
+                'seller_id' => $request->input('seller_id'),
+                'quote_type' => $quote_type,
+                'quote_total_amount' => $request->input('quote_total_amount'),
+                'quote_discount' => $request->input('quote_discount'),
+                'quote_exempt_tax' => 1,
+                'quote_tax' => $request->input('quote_tax'),
+                'quote_isv_amount' => $request->input('quote_isv_amount'),
+                'created_at' => $this->getTodayDate(),
+                'updated_at' => $this->getTodayDate(),
+            ]);
+
+            if (is_array($validatedData['service_id'])) {
+                foreach ($validatedData['service_id'] as $index => $service_id) {
+                    QuoteDetails::create([
+                        'service_id' => $service_id,
+                        'quote_id' => $quote->id,
+                        'quote_quantity' => $validatedData['quote_quantity'][$index],
+                        'quote_price' => $validatedData['quote_price'][$index],
+                        'quote_subtotal' => $validatedData['quote_subtotal'][$index],
+                        'quote_details' => $validatedData['quote_details'][$index],
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return redirect()->route('quotes.create')->with('success', 'Registro creado exitosamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
+        }
+    }
+
+    public function update(UpdateRequest $request, Quotes $quotes)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Quotes $quotes)
+    {
+        //
+    }
+}

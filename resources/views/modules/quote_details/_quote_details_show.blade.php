@@ -18,7 +18,7 @@
 @endsection
 
 @section('title')
-POS
+Cotización
 @endsection
 
 @section('breadcrumb')
@@ -32,13 +32,13 @@ POS
         <i class="icon-arrow-right"></i>
     </li>
     <li class="nav-item d-none d-xl-inline d-lg-inline">
-        <a href="#">POS</a>
+        <a href="#">Cotización</a>
     </li>
     <li class="separator d-none d-xl-inline d-lg-inline">
         <i class="icon-arrow-right"></i>
     </li>
     <li class="nav-item fw-bold">
-        <a href="#">Detalles de ventas</a>
+        <a href="#">Detalles de cotización</a>
     </li>
 </ul>
 @endsection
@@ -49,14 +49,14 @@ POS
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <a href="{{ route('pos.index') }}" class="btn btn-sm btn-danger">
+                    <a href="{{ route('quotes.index') }}" class="btn btn-sm btn-danger">
                         <x-heroicon-o-arrow-uturn-left style="width: 15px; height: 15px; color: white" /> Volver
                     </a>
                     <p class="text-center mb-0 d-none d-xl-inline d-lg-inline d-md-inline">
-                        Detalles de venta / <span class="text-muted">{{ $sale->folio_invoice_number }}</span>
+                        Detalles de cotización / <span class="text-muted">{{ $quote->quote_code }}</span>
                     </p>
                 </div>
-                <iframe frameborder="0" class="iframe-doc" style="width: 100%;" src="{{ route('pos_details.pos_details_report', $sale->id) }}"></iframe>
+                <iframe frameborder="0" class="iframe-doc" style="width: 100%;" src="{{ route('quote_details.quote_details_report', $quote->id) }}"></iframe>
             </div>
         </div>
     </div>

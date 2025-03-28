@@ -5,9 +5,8 @@
         @endphp
 
         <img src="{{ Storage::url('sys_config/img/' . ($settings->system_icon ?? 'default_image.png')) }}" alt="" class="rounded-circle bg-white p-1 me-2 navbar-brand" height="45" />
-
         <span class="text-white fw-bold">
-            {{ $settings && $settings->show_system_name == 1 ? config('app.name'):config('app.name') }}
+            {{ $settings && $settings->show_system_name == 1 ? config('app.name'):'' }}
         </span>
     </a>
     <div class="nav-toggle">

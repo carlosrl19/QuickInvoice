@@ -6,6 +6,7 @@ use App\Http\Requests\Clients\StoreRequest;
 use App\Http\Requests\Clients\UpdateRequest;
 use App\Models\Clients;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ClientsController extends Controller
 {
@@ -14,10 +15,26 @@ class ClientsController extends Controller
         return Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $clients = Clients::get();
-        return view('modules.clients.index', compact('clients'));
+        // Obtener la letra seleccionada o la letra 'A' por defecto
+        $selectedLetter = $request->input('letter', 'A');
+
+        // Obtener todas las letras iniciales de los nombres en mayúsculas
+        $letters = Clients::selectRaw('UPPER(LEFT(client_name, 1)) as initial')
+            ->groupBy('initial')
+            ->orderBy('initial')
+            ->pluck('initial');
+
+        $clients = Clients::where('client_name', 'LIKE', $selectedLetter . '%')
+            ->orderBy('client_name')
+            ->paginate(500);
+
+        return view('modules.clients.index', compact(
+            'clients',
+            'letters',
+            'selectedLetter'
+        ));
     }
 
     public function store(StoreRequest $request)

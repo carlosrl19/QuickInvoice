@@ -38,6 +38,12 @@
 
 <body>
     <div class="wrapper">
+        <div id="spinner" style="position: fixed; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6);
+            z-index: 9999; display: flex; justify-content: center; align-items: center;">
+            <div class="spinner-border text-white" role="status" style="width: 3rem; height: 3rem;">
+            </div>
+            <span class="text-white fw-bold">&nbsp; Cargando...</span>
+        </div>
         <!-- Sidebar -->
         @include('layouts._sidebar')
         <!-- End Sidebar -->
@@ -107,6 +113,13 @@
 
     <!-- Kaiadmin JS -->
     <script src="{{ Storage::url('assets/js/kaiadmin.min.js') }}"></script>
+
+    <!-- Spinner -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("spinner").style.display = "none";
+        });
+    </script>
 
     @yield('scripts')
 </body>

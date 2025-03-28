@@ -21,7 +21,7 @@ class StoreRequest extends FormRequest
             'client_id' => 'required|integer|exists:clients,id',
             'seller_id' => 'required|integer|exists:sellers,id',
             'folio_id' => 'required|integer|exists:fiscal_folios,id',
-            'sale_type' => 'required|string|min:1|max:1',
+            'sale_type' => 'required|string|min:1|max:2',
             'exempt_purchase_order_correlative' => 'nullable|string|min:12|max:12|unique:pos,exempt_purchase_order_correlative',
             'exonerated_certificate' => 'nullable|string|min:11|max:11|unique:pos,exonerated_certificate',
             'folio_invoice_number' => 'required|string|min:19|max:19|unique:pos,folio_invoice_number',

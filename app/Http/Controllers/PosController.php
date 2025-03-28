@@ -65,8 +65,7 @@ class PosController extends Controller
         DB::beginTransaction();
 
         try {
-            $lastInvoiceNumber = Pos::where('folio_id', $folio->id)
-                ->orderBy('folio_invoice_number', 'desc')
+            $lastInvoiceNumber = Pos::orderBy('folio_invoice_number', 'desc')
                 ->first();
 
             if ($lastInvoiceNumber) {

@@ -84,7 +84,7 @@ Folios
                                 <td>
                                     {{ number_format(Carbon\Carbon::now()->diffInDays($folio->folio_authorized_emission_date,0)) }} días
                                 </td>
-                                <td><span class="text-primary">{{ $folio->folio_total_invoices_available }}</span> / {{ $folio->folio_total_invoices }}</td>
+                                <td><span class="{{ $folio->folio_total_invoices_available > 0 ? 'text-primary':'text-danger'  }}">{{ $folio->folio_total_invoices_available }}</span> / {{ $folio->folio_total_invoices }}</td>
                                 <td><span class="badge bg-dark text-white">{{ $folio->folio_authorized_range_start }}</span> A <span class="badge bg-dark text-white">{{ $folio->folio_authorized_range_end }}</span></td>
                                 <td>{{ $folio->folio_authorized_emission_date }}</td>
                             </tr>

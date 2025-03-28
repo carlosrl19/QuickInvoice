@@ -2,34 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pos;
-use App\Models\PosDetails;
+use App\Models\QuoteDetails;
+use App\Models\Quotes;
 use App\Models\Settings;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Luecano\NumeroALetras\NumeroALetras;
 
-class PosDetailsController extends Controller
+class QuoteDetailsController extends Controller
 {
-    public function pos_details_show($id)
+    public function quote_details_show($id)
     {
-        $sale = Pos::findOrFail($id);
+        $quote = Quotes::findOrFail($id);
 
-        return view('modules.pos_details._sale_details_show', compact(
-            'sale',
+        return view('modules.quote_details._quote_details_show', compact(
+            'quote',
         ));
     }
 
-    public function pos_details_report($id)
+    public function quote_details_report($id)
     {
-        $sale = Pos::findOrFail($id);
-        $pos_details = PosDetails::where('sale_id', $sale->id)->get();
+        $quote = Quotes::findOrFail($id);
+        $quote_details = QuoteDetails::where('quote_id', $quote->id)->get();
         $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
         $settings = Settings::first();
 
         // Obtener el monto del pago con centavos
-        $monto = $sale->sale_total_amount;
+        $monto = $quote->quote_total_amount;
 
         // Separar la parte entera y la parte decimal
         $parteEntera = floor($monto);
@@ -37,11 +37,11 @@ class PosDetailsController extends Controller
 
         // Formateador de números a letras
         $formatter = new NumeroALetras();
-        $sale_amount_letras = $formatter->toWords($parteEntera);
+        $quote_amount_letras = $formatter->toWords($parteEntera);
 
         // Agregar la parte de los centavos a la cadena de letras
         if ($parteCentavos > 0) {
-            $sale_amount_letras .= " CON $parteCentavos/100 CENTAVOS";
+            $quote_amount_letras .= " CON $parteCentavos/100 CENTAVOS";
         }
 
         // Configurar el locale en Carbon
@@ -68,12 +68,12 @@ class PosDetailsController extends Controller
         $pdf = new Dompdf($options);
 
         // Cargar el contenido de la vista en Dompdf
-        $pdf->loadHtml(view('modules.pos_details.pos_details_report._sale_details_report', compact(
-            'sale',
-            'pos_details',
+        $pdf->loadHtml(view('modules.quote_details.quote_details_report._quote_details_report', compact(
+            'quote',
+            'quote_details',
             'todayDate',
             'settings',
-            'sale_amount_letras',
+            'quote_amount_letras',
             'dia',
             'mes',
             'anio',
@@ -88,7 +88,7 @@ class PosDetailsController extends Controller
         // Renderizar el PDF
         $pdf->render();
 
-        $fileName = 'FACTURA #' . $sale->folio_invoice_number . '.pdf';
+        $fileName = 'COTIZACIÓN #' . $quote->quote_code . '.pdf';
 
         return response($pdf->output(), 200)
             ->header('Content-Type', 'application/pdf')

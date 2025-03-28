@@ -9,7 +9,7 @@
 @endsection
 
 @section('title')
-POS
+Cotizaciones
 @endsection
 
 @section('breadcrumb')
@@ -23,21 +23,21 @@ POS
         <i class="icon-arrow-right"></i>
     </li>
     <li class="nav-item d-none d-xl-inline d-lg-inline">
-        <a href="#">POS</a>
+        <a href="#">Cotizaciones</a>
     </li>
     <li class="separator d-none d-xl-inline d-lg-inline">
         <i class="icon-arrow-right"></i>
     </li>
     <li class="nav-item fw-bold">
-        <a href="#">Creación de ventas</a>
+        <a href="#">Creación de cotizaciones</a>
     </li>
 </ul>
 @endsection
 
 @section('create')
-<a class="btn btn-sm btn-label-info btn-round me-2" href="{{ route('pos.create') }}">
+<a class="btn btn-sm btn-label-info btn-round me-2" href="{{ route('quotes.create') }}">
     <x-heroicon-o-eye style="width: 20px; height: 20px;" class="bg-label-info" />
-    <span class="sub-item">Nueva venta gravada</span>
+    <span class="sub-item">Nueva cotización gravada</span>
 </a>
 @endsection
 
@@ -45,17 +45,17 @@ POS
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header bg-danger text-white fw-bold">
-                REGISTRO DE NUEVA VENTA EXONERADA (E)
+            <div class="card-header bg-dark text-white fw-bold">
+                REGISTRO DE NUEVA COTIZACIÓN EXONERADA (E)
             </div>
             <div class="card-body">
-                <form id="pos_creation" action="{{ route('pos.store_exonerated') }}" method="POST" novalidate autocomplete="off" spellcheck="false">
+                <form id="pos_creation" action="{{ route('quotes.store_exonerated') }}" method="POST" novalidate autocomplete="off" spellcheck="false">
                     @csrf
-                    <input type="hidden" name="sale_discount" id="sale_discount" value="0"> <!-- Controller get this -->
-                    <input type="hidden" name="sale_tax" id="sale_tax" value="0"> <!-- Controller get this -->
-                    <input type="hidden" name="sale_isv_amount" id="sale_isv_amount" value="0"> <!-- Controller get this -->
-                    <input type="hidden" name="folio_id" id="folio_id" value="1"> <!-- Controller get this -->
-                    <input type="hidden" name="folio_invoice_number" id="folio_invoice_number" value="000-000-00-00000000"> <!-- Controller get this -->
+                    <input type="hidden" name="quote_code" id="quote_code" value="000000000"> <!-- Controller get this -->
+                    <input type="hidden" name="quote_discount" id="quote_discount" value="0"> <!-- Controller get this -->
+                    <input type="hidden" name="quote_tax" id="quote_tax" value="0"> <!-- Controller get this -->
+                    <input type="hidden" name="quote_total_amount" id="quote_total_amount" value="0"> <!-- Controller get this -->
+                    <input type="hidden" name="quote_isv_amount" id="quote_isv_amount" value="0"> <!-- Controller get this -->
 
                     <div class="row">
                         <!-- Col izquierda -->
@@ -64,7 +64,7 @@ POS
                                 <!-- Selección de Servicios y Clientes -->
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
                                     <div class="row mb-3">
-                                        <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12" id="client_select_container">
+                                        <div class="col-xl-6 col-lg-6 col-sm-12 col-xs-12" id="client_select_container">
                                             <label for="client_id">Cliente <span class="text-danger">*</span></label>
                                             <select class="tom-select @error('client_id') is-invalid @enderror" id="client_id_select" name="client_id">
                                                 <option value="" selected disabled>Seleccione el cliente</option>
@@ -78,7 +78,7 @@ POS
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12" id="seller_select_container">
+                                        <div class="col-xl-6 col-lg-6 col-sm-12 col-xs-12" id="seller_select_container">
                                             <label for="seller_id">Vendedor <span class="text-danger">*</span></label>
                                             <select class="tom-select @error('seller_id') is-invalid @enderror" id="seller_id_select" name="seller_id">
                                                 <option value="" selected disabled>Seleccione el vendedor</option>
@@ -92,8 +92,11 @@ POS
                                             </span>
                                             @enderror
                                         </div>
-                                        <!-- Selección de servicio -->
-                                        <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12" id="service_select_container">
+                                    </div>
+
+                                    <!-- Selección de servicio -->
+                                    <div class="row mb-3">
+                                        <div class="col-xl-6 col-lg-6 col-sm-12 col-xs-12" id="service_select_container">
                                             <label for="service_id">Servicio <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <select class="tom-select w-75 @error('service_id') is-invalid @enderror" id="service_id_select" name="service_id">
@@ -103,7 +106,7 @@ POS
                                                         data-price="{{ $service->price }}">{{ $service->service_nomenclature }} - {{ $service->service_name }}</option>
                                                     @endforeach
                                                 </select>
-                                                <button type="button" class="btn btn-sm btn-danger" id="add_service_button">
+                                                <button type="button" class="btn btn-sm btn-secondary" id="add_service_button">
                                                     <x-heroicon-o-plus style="width: 20px; height: 20px; color: white" />
                                                 </button>
                                                 @error('service_id')
@@ -113,13 +116,17 @@ POS
                                                 @enderror
                                             </div>
                                         </div>
+                                        <div class="col-xl-6 col-lg-6 col-sm-12 col-xs-12" id="service_select_container">
+                                            <label for="service_id">Fecha de vencimiento <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" name="quote_expire_date" id="quote_expire_date" min="{{ Carbon\Carbon::now()->addWeek()->format('Y-m-d') }}">
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Tabla de Servicios -->
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered table-head-bg-danger table-bordered-bd-danger mt-4">
+                                        <table class="table table-bordered table-head-bg-secondary table-bordered-bd-secondary mt-4">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">Producto/ Código / Serie</th>
@@ -142,6 +149,18 @@ POS
 
                         <!-- Col derecha -->
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
+                            <div class="row mb-3 d-none">
+                                <div class="col">
+                                    <select class="tom-select-no-search @error('quote_type') is-invalid @enderror" id="quote_type_select" name="quote_type">
+                                        <option value="E" selected readonly>TIPO DE COTIZACIÓN: EXONERADA</option>
+                                    </select>
+                                    @error('quote_type')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="row mb-3">
                                 <div class="col-xl-12 col-lg-12 col-sm-12" id="service_select_container">
                                     <div class="table-responsive">
@@ -168,7 +187,7 @@ POS
                                     <div class="row mb-3 d-none">
                                         <div class="col">
                                             <select class="tom-select-no-search @error('sale_type') is-invalid @enderror" id="sale_type_select" name="sale_type">
-                                                <option value="E" {{ old('sale_type') == 'E' ? 'selected' : '' }}>TIPO DE VENTA: EXENTA</option>
+                                                <option value="E" {{ old('sale_type') == 'E' ? 'selected' : '' }}>TIPO DE COTIZACIÓN: EXENTA</option>
                                             </select>
                                             @error('sale_type')
                                             <span class="invalid-feedback" role="alert">
@@ -178,100 +197,13 @@ POS
                                         </div>
                                     </div>
 
-                                    <!-- Sale type exenta options -->
-                                    <div id="exenta_option_selected">
-                                        <div class="row mb-3">
-                                            <div class="col">
-                                                <div class="form-floating">
-                                                    <input type="text" maxlength="12" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')" class="form-control @error('exempt_purchase_order_correlative') is-invalid @enderror"
-                                                        value="{{ old('exempt_purchase_order_correlative') }}" name="exempt_purchase_order_correlative" id="exempt_purchase_order_correlative">
-                                                    <label for="exempt_purchase_order_correlative">Nº Correlativo orden de compra exenta <span class="text-danger">*</span></label>
-                                                    @error('exempt_purchase_order_correlative')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col">
-                                                <div class="form-floating">
-                                                    <input type="text" maxlength="11" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')" class="form-control @error('exonerated_certificate') is-invalid @enderror"
-                                                        value="{{ old(key: 'exonerated_certificate') }}" name="exonerated_certificate" id="exonerated_certificate">
-                                                    <label for="exonerated_certificate">Nº Correlativo orden de constancia registro exonerado <span class="text-danger">*</span></label>
-                                                    @error('exonerated_certificate')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <div class="col">
-                                            <select class="tom-select-no-search @error('sale_payment_type') is-invalid @enderror" name="sale_payment_type">
-                                                <option value="0" selected disabled>Seleccione el tipo de pago</option>
-                                                <option value="3" {{ old('sale_payment_type') == '3' ? 'selected' : '' }}>DEPOSITO (X)</option>
-                                                <option value="1" {{ old('sale_payment_type') == '1' ? 'selected' : '' }}>EFECTIVO</option>
-                                                <option value="2" {{ old('sale_payment_type') == '2' ? 'selected' : '' }}>TARJETA (X)</option>
-                                            </select>
-                                            @error('sale_payment_type')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                            <div class="form-floating">
-                                                <input type="number" value="" style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
-                                                    readonly name="sale_total_amount" id="sale_total_amount" class="form-control" autocomplete="off" />
-                                                <label for="sale_total_amount">Total a pagar <span class="text-danger">*</span></label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                            <div class="form-floating">
-                                                <input type="number" min="0" name="sale_payment_received" value="" id="sale_payment_received" class="form-control" autocomplete="off" />
-                                                @error('sale_payment_received')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-                                                <label for="sale_payment_received">Recibido <span class="text-danger">*</span></label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                            <div class="form-floating">
-                                                <input type="number" value="" style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
-                                                    readonly name="sale_payment_change" min="0" id="sale_payment_change" class="form-control" autocomplete="off" />
-                                                @error('sale_payment_change')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
-                                                <label for="sale_payment_change">Cambio <span class="text-danger">*</span></label>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <!-- Botones -->
                                     <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
                                         <button type="submit" class="btn btn-success">
                                             <x-heroicon-o-cursor-arrow-ripple style="width: 25px; height: 25px; color: white" />
-                                            Cobrar
+                                            Finalizar
                                         </button>
-                                        <a href="#" class="btn bg-warning text-white" id="sale_clear">
+                                        <a href="#" class="btn bg-warning text-white" id="quote_clear">
                                             <x-heroicon-o-backspace style="width: 25px; height: 25px; color: white" />
                                             Limpiar
                                         </a>
@@ -286,7 +218,7 @@ POS
     </div>
 </div>
 
-@include('modules.pos._sweet_alerts')
+@include('modules.quotes._sweet_alerts')
 @endsection
 
 @section('scripts')
@@ -296,5 +228,5 @@ POS
 <script src="{{ Storage::url('customjs/tomselect/ts_init.js') }}"></script>
 
 <!-- Script para manejar la lógica -->
-<script src="{{ Storage::url('customjs/pos/pos_creation_exonerated.js') }}"></script>
+<script src="{{ Storage::url('customjs/quotes/quotes_creation_exonerated.js') }}"></script>
 @endsection

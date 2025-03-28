@@ -69,3 +69,11 @@ Route::resource('settings', 'App\Http\Controllers\SettingsController')->names('s
 // Rutas de UUID
 Route::resource('fiscalfolio', 'App\Http\Controllers\FiscalFolioController')->names('fiscalfolio');
 Route::post('fiscalfolio/{id}/use', 'App\Http\Controllers\FiscalFolioController@use_folio')->name('fiscalfolio.use_folio');
+
+// Rutas de cotizaciones
+Route::resource('quotes', 'App\Http\Controllers\QuotesController')->names('quotes');
+
+Route::get('quote-details/{id}/', 'App\Http\Controllers\QuoteDetailsController@quote_details_show')->name('quote_details.quote_details_show');
+Route::get('quote-details/{id}/report', 'App\Http\Controllers\QuoteDetailsController@quote_details_report')->name('quote_details.quote_details_report');
+Route::get('quote-exonerated/', 'App\Http\Controllers\QuotesController@exonerated_quote')->name('quotes.exonerated_quote');
+Route::post('quote-exonerated/new_quote', 'App\Http\Controllers\QuotesController@store_exonerated')->name('quotes.store_exonerated');

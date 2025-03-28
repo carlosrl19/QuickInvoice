@@ -43,6 +43,16 @@ Clientes
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
+                <div class="col-12" style="background-color: rgba(0, 0, 0, 0.05); padding: 10px; text-align: center">
+                    <div class="col mt-2">
+                        @foreach ($letters as $letter)
+                        <a href="{{ route('clients.index', ['letter' => $letter]) }}"
+                            class="mx-1 px-2 py-1 border {{ $selectedLetter == $letter ? 'bg-primary text-white' : 'bg-gray-900 text-muted' }}">
+                            {{ $letter }}
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table id="dt_clients_index" class="display table table-responsive table-striped">
                         <thead>

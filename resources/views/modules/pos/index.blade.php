@@ -38,6 +38,7 @@ POS
                                 <th>Detalles</th>
                                 <th>Fecha</th>
                                 <th>Factura</th>
+                                <th>Cliente</th>
                                 <th>Tipo venta</th>
                                 <th>Tipo pago</th>
                                 <th>Total</th>
@@ -55,6 +56,7 @@ POS
                                 </td>
                                 <td>{{ $sale->created_at }}</td>
                                 <td>{{ $sale->folio_invoice_number }}</td>
+                                <td>{{ $sale->client->client_name }}</td>
                                 <td>
                                     {{ $sale->sale_type == 'E' ? 'EXONERADA' : ($sale->sale_type == 'G' ? 'GRAVADA' : 'EXENTA') }}
                                 </td>
