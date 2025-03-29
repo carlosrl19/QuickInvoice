@@ -12,6 +12,13 @@
 			padding: 0;
 		}
 
+		.divider-header {
+			width: 80%;
+			height: 1px;
+			background-color: #ddd;
+			margin: 10px 0;
+		}
+
 		.divider {
 			width: 100%;
 			height: 1px;
@@ -120,8 +127,13 @@
 
 		<div class="header">
 			<span class="subtitle">{{ $settings->company_name ?? 'Nombre empresa' }}</span>
-			<div class="divider"></div>
+			<div class="divider-header"></div>
 			<span class="subtitle">Solicitud de crédito # {{ $loan->loan_request_number }}</span>
+		</div>
+
+		<!-- Imagen posicionada a la derecha -->
+		<div style="position: absolute; top: 0; right: 20; opacity: 0.8;">
+			<img src="{{ public_path('../storage/app/public/sys_config/img/' . $settings->logo_company) ?? public_path('../storage/app/public/assets/img/kaiadmin/favicon.png') }}" alt="" style="min-width: 90px; min-height: 90px; max-width: 180px; max-height: 100px" />
 		</div>
 
 		<div class="information">
@@ -181,9 +193,10 @@
 
 				<div style="width: 48%; display: inline-block; vertical-align: top;">
 					<!-- Contenido del segundo div -->
+					<span class="text_header_sm">Fecha solicitud: {{ Carbon\Carbon::parse($loan->created_at )->format('d/m/Y H:i:s a') }}</span><br />
 					<span class="text_header_sm">Cuota: {{ number_format($loan->loan_quote_value,2) }}</span><br />
 					<span class="text_header_sm">Número cuotas: {{ $loan->loan_quote_number }}</span><br />
-					<span class="text_header_sm">Tasa mora: (X)</span><br />
+					<span class="text_header_sm">Tasa mora: 0</span><br />
 					<span class="text_header_sm">Vendedor: {{ $loan->seller->seller_name }}</span><br />
 				</div>
 			</div>
@@ -217,7 +230,7 @@
 				</tr>
 				<tr>
 					<td style="text-align: left; font-size: 10pt !important; background-color: #d1eef6;">Sub-total <strong>{{ number_format($loan->loan_total,2) }}</strong></td>
-					<td colspan="2" style="text-align: left; font-size: 10pt !important; background-color: #d1eef6;">ISV <strong>{{ number_format($loan->loan_interest,2) }}</strong></td>
+					<td colspan="2" style="text-align: left; font-size: 10pt !important; background-color: #d1eef6;">ISV <strong>{{ number_format($loan->loan_interest,2) }}%</strong></td>
 					<td colspan="2" style="text-align: left; font-size: 10pt !important; background-color: #d1eef6;">Total <strong>{{ number_format($loan->loan_total,2) }}</strong></td>
 				</tr>
 			</tfoot>

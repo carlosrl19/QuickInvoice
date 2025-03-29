@@ -50,6 +50,7 @@ Servicios
                                 <th>Acciones</th>
                                 <th>Nombre servicio</th>
                                 <th>Nomenclatura</th>
+                                <th>Tipo ISV</th>
                                 <th>Detalles</th>
                             </tr>
                         </thead>
@@ -69,6 +70,11 @@ Servicios
                                 <td>
                                     <span class="{{ $service->service_nomenclature ? 'text-dark':'text-muted op-3' }}">
                                         {{ $service->service_nomenclature ?? 'N/A' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="{{ $service->service_type ? 'text-dark':'text-muted' }}">
+                                        {{ $service->service_type == 0 ? 'Sin I.S.V. incluido':'Con I.S.V. incluido' }}
                                     </span>
                                 </td>
                                 <td>

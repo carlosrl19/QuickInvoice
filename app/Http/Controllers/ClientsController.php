@@ -64,8 +64,8 @@ class ClientsController extends Controller
                 'client_exonerated' => $request->input('client_exonerated'),
                 'client_status' => 1,
                 'client_address' => $request->input('client_address'),
-                'created_ad' => $this->getTodayDate(),
-                'updated_ad' => $this->getTodayDate(),
+                'created_at' => $this->getTodayDate(),
+                'updated_at' => $this->getTodayDate(),
             ]);
             return back()->with("success", "Registro creado exitosamente.");
         } catch (\Exception $e) {
@@ -82,10 +82,13 @@ class ClientsController extends Controller
     public function update(UpdateRequest $request, Clients $client)
     {
         try {
+            //Required data
             $client->client_name = $request->input('client_name');
             $client->client_document = $request->input('client_document');
             $client->client_type = $request->input('client_type');
             $client->client_phone1 = $request->input('client_phone1');
+
+            // No required data (nullable)
             $client->client_phone2 = $request->input('client_phone2');
             $client->client_birthdate = $request->input('client_birthdate');
             $client->client_phone_home = $request->input('client_phone_home');
@@ -98,8 +101,7 @@ class ClientsController extends Controller
             $client->client_exonerated = $request->input('client_exonerated');
             $client->client_status = $request->input('client_status');
             $client->client_address = $request->input('client_address');
-            $client->created_ad = $this->getTodayDate();
-            $client->updated_ad = $this->getTodayDate();
+            $client->updated_at = $this->getTodayDate();
             $client->update($request->all());
 
             return redirect()->route("clients.index")->with("success", "Registro actualizado exitosamente.");

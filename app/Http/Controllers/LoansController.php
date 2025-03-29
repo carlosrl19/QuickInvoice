@@ -555,7 +555,7 @@ class LoansController extends Controller
         $pdf = new Dompdf($options);
 
         // Cargar el contenido de la vista en Dompdf
-        $pdf->loadHtml(view('modules.loans.loans_reports._payment_plan_report', compact(
+        $pdf->loadHtml(view('modules.loans.loans.loans_reports._payment_plan_report', compact(
             'loan',
             'todayDate',
             'settings',

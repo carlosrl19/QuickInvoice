@@ -38,7 +38,7 @@ Créditos vigentes
         <i class="icon-arrow-right"></i>
     </li>
     <li class="nav-item fw-bold">
-        <a href="#">Estado de cuenta</a>
+        <a href="#">Plan de pagos</a>
     </li>
 </ul>
 @endsection
@@ -56,7 +56,7 @@ Créditos vigentes
                         Plan de pagos / <span class="text-muted">#{{ $loan->loan_request_number }}</span>
                     </p>
                 </div>
-                <iframe frameborder="0" class="iframe-doc" style="width: 100%;" src="{{ route('loans.loan_account_statement_report', $loan->id) }}"></iframe>
+                <iframe frameborder="0" class="iframe-doc" style="width: 100%;" src="{{ route('loans.loan_payment_plan_report', $loan->id) }}"></iframe>
             </div>
         </div>
     </div>

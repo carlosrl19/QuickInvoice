@@ -126,9 +126,11 @@
 	<div class="invoice-box">
 
 		<div class="header">
-			<img src="../public/storage/static/logo-rounded.png" width="64" height="64">
-			<br /><br />
-			<span class="subtitle">{{ $settings->company_name ?? 'Nombre empresa' }}</span><br />
+			<!-- Imagen posicionada a la derecha -->
+			<div style="position: absolute; top: 0; right: 230; opacity: 0.8;">
+				<img src="{{ public_path('../storage/app/public/sys_config/img/' . $settings->logo_company) ?? public_path('../storage/app/public/assets/img/kaiadmin/favicon.png') }}" alt="" style="min-width: 90px; min-height: 90px; max-width: 180px; max-height: 100px" />
+			</div><br>
+			<p style="margin-top: 60px; margin-bottom: -2px;" class="subtitle">{{ $settings->company_name ?? 'Nombre empresa' }}</p>
 			<span class="text_header_sm">{{ $settings->company_address ?? 'Dirección empresa' }}</span><br />
 			<span class="text_header_sm">TEL.: {{ $settings->company_phone ?? 'Teléfono empresa' }} | CORREO: {{ $settings->company_email ?? 'Email empresa' }} | R.T.N.: {{ $settings->company_rtn ?? 'R.T.N. Empresa' }}</span><br />
 		</div>
@@ -137,7 +139,7 @@
 			<div>
 				<strong>LUGAR Y FECHA:</strong><br />
 				<span class="text_header_sm"> {{ $settings->company_short_address ?? 'Dirección corta empresa' }}</span><br />
-				<span>{{ $loan->created_at }}</span>
+				<span class="text_header_sm">{{ $loan->created_at }}</span>
 			</div>
 
 			<br>
