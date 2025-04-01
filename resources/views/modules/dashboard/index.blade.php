@@ -5,103 +5,130 @@ Dashboard
 @endsection
 
 @section('content')
+
+@php
+use App\Models\Clients;
+use App\Models\Loans;
+use App\Models\Pos;
+use App\Models\PosDetails;
+use App\Models\SystemLogs;
+use App\Models\Quotes;
+use Carbon\Carbon;
+
+$actualMonth = Carbon::now()->month;
+$actualYear = Carbon::now()->year;
+
+// Logs
+$newLogsThisMonth = SystemLogs::whereMonth('created_at', $actualMonth)
+->whereYear('created_at', $actualYear)
+->get();
+$colorsList = ['secondary', 'success', 'info', 'warning', 'danger', 'primary', 'black'];
+$colors = [];
+foreach ($newLogsThisMonth as $log) {
+$colors[] = $colorsList[array_rand($colorsList)];
+}
+
+// Clients
+$clients_counter = Clients::count();
+$newClientsThisMonth = Clients::whereMonth('created_at', $actualMonth)
+->whereYear('created_at', $actualYear)
+->count();
+
+// Quotes
+$newQuotesThisMonth = Quotes::whereMonth('created_at', $actualMonth)
+->whereYear('created_at', $actualYear)
+->count();
+$newQuotesThisMonthSum = Quotes::whereMonth('created_at', $actualMonth)
+->whereYear('created_at', $actualYear)
+->sum('quote_total_amount');
+
+// Sales
+$pos = Pos::whereMonth('created_at', $actualMonth)->get();
+$pos_counter = Pos::whereMonth('created_at', $actualMonth)->count();
+$pos_counter_amount_sum = PosDetails::whereMonth('created_at', $actualMonth)
+->sum('sale_price');
+
+// Loans
+$loans_counter = Loans::whereMonth('created_at', $actualMonth)->count();
+$loan_counter_amount_sum = Loans::whereMonth('created_at', $actualMonth)
+->sum('loan_amount');
+
+@endphp
+
 <div class="row row-card-no-pd">
-    <div class="col-12 col-sm-6 col-md-6 col-xl-3">
-        <div class="card">
+    <!-- Ventas del mes actual -->
+    <div class="col-12 col-sm-6 col-md-6 col-xl-3 mb-3">
+        <div class="card bg-info">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h6><b>Todays Income</b></h6>
-                        <p class="text-muted">All Customs Value</p>
+                        <h1 class="text-white fw-bold">
+                            {{ $pos_counter }} ventas
+                            <small>( L. {{ number_format($pos_counter_amount_sum,2) }})</small>
+                        </h1>
+                        <h6 class="text-white"><b>Ventas del mes</b></h6>
                     </div>
-                    <h4 class="text-info fw-bold">$170</h4>
-                </div>
-                <div class="progress progress-sm">
-                    <div
-                        class="progress-bar bg-info w-75"
-                        role="progressbar"
-                        aria-valuenow="75"
-                        aria-valuemin="0"
-                        aria-valuemax="100"></div>
-                </div>
-                <div class="d-flex justify-content-between mt-2">
-                    <p class="text-muted mb-0">Change</p>
-                    <p class="text-muted mb-0">75%</p>
+                    <div>
+                        <x-heroicon-o-shopping-cart style="width: 80px; height: 100%; color: rgba(0,0,0,0.2)" />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-12 col-sm-6 col-md-6 col-xl-3">
-        <div class="card">
+
+    <!-- Ingresos del mes actual -->
+    <div class="col-12 col-sm-6 col-md-6 col-xl-3 mb-3">
+        <div class="card bg-danger">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h6><b>Total Revenue</b></h6>
-                        <p class="text-muted">All Customs Value</p>
+                        <h1 class="text-white fw-bold">
+                            {{ $newQuotesThisMonth }}
+                            <small>( L. {{ number_format($newQuotesThisMonthSum,2) }})</small>
+                        </h1>
+                        <h6 class="text-white"><b>Cotizaciones del mes</b></h6>
                     </div>
-                    <h4 class="text-success fw-bold">$120</h4>
-                </div>
-                <div class="progress progress-sm">
-                    <div
-                        class="progress-bar bg-success w-25"
-                        role="progressbar"
-                        aria-valuenow="25"
-                        aria-valuemin="0"
-                        aria-valuemax="100"></div>
-                </div>
-                <div class="d-flex justify-content-between mt-2">
-                    <p class="text-muted mb-0">Change</p>
-                    <p class="text-muted mb-0">25%</p>
+                    <div>
+                        <x-heroicon-o-banknotes style="width: 80px; height: 100%; color: rgba(0,0,0,0.2)" />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-12 col-sm-6 col-md-6 col-xl-3">
-        <div class="card">
+
+    <!-- Nuevos clientes del mes actual -->
+    <div class="col-12 col-sm-6 col-md-6 col-xl-3 mb-3">
+        <div class="card bg-info">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h6><b>New Orders</b></h6>
-                        <p class="text-muted">Fresh Order Amount</p>
+                        <h1 class="text-white fw-bold">
+                            {{ $newClientsThisMonth }} <small>({{ $clients_counter }})</small>
+                        </h1>
+                        <h6 class="text-white"><b>Nuevos clientes del mes</b></h6>
                     </div>
-                    <h4 class="text-danger fw-bold">15</h4>
-                </div>
-                <div class="progress progress-sm">
-                    <div
-                        class="progress-bar bg-danger w-50"
-                        role="progressbar"
-                        aria-valuenow="50"
-                        aria-valuemin="0"
-                        aria-valuemax="100"></div>
-                </div>
-                <div class="d-flex justify-content-between mt-2">
-                    <p class="text-muted mb-0">Change</p>
-                    <p class="text-muted mb-0">50%</p>
+                    <div>
+                        <x-heroicon-o-users style="width: 80px; height: 100%; color: rgba(0,0,0,0.2)" />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-12 col-sm-6 col-md-6 col-xl-3">
-        <div class="card">
+
+    <!-- Nuevos créditos del mes actual -->
+    <div class="col-12 col-sm-6 col-md-6 col-xl-3 mb-3">
+        <div class="card bg-secondary">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h6><b>New Users</b></h6>
-                        <p class="text-muted">Joined New User</p>
+                        <h1 class="text-white fw-bold">
+                            {{ $loans_counter }} <small>(L. {{ number_format($loan_counter_amount_sum,2) }})</small>
+                        </h1>
+                        <h6 class="text-white"><b>Nuevos créditos del mes</b></h6>
                     </div>
-                    <h4 class="text-secondary fw-bold">12</h4>
-                </div>
-                <div class="progress progress-sm">
-                    <div
-                        class="progress-bar bg-secondary w-25"
-                        role="progressbar"
-                        aria-valuenow="25"
-                        aria-valuemin="0"
-                        aria-valuemax="100"></div>
-                </div>
-                <div class="d-flex justify-content-between mt-2">
-                    <p class="text-muted mb-0">Change</p>
-                    <p class="text-muted mb-0">25%</p>
+                    <div>
+                        <x-heroicon-o-document-currency-dollar style="width: 80px; height: 100%; color: rgba(0,0,0,0.2)" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -109,199 +136,90 @@ Dashboard
 </div>
 
 <div class="row">
+    <!-- Ventas del mes actual -->
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <div class="card-head-row card-tools-still-right">
-                    <div class="card-title">Recent Activity</div>
-                    <div class="card-tools">
-                        <div class="dropdown">
-                            <button
-                                class="btn btn-icon btn-clean"
-                                type="button"
-                                id="dropdownMenuButton"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                            <div
-                                class="dropdown-menu"
-                                aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="card-title">Ventas ultimo trimestre</div>
             </div>
             <div class="card-body">
-                <ol class="activity-feed">
-                    <li class="feed-item feed-item-secondary">
-                        <time class="date" datetime="9-25">Sep 25</time>
-                        <span class="text">Responded to need
-                            <a href="#">"Volunteer opportunity"</a></span>
-                    </li>
-                    <li class="feed-item feed-item-success">
-                        <time class="date" datetime="9-24">Sep 24</time>
-                        <span class="text">Added an interest
-                            <a href="#">"Volunteer Activities"</a></span>
-                    </li>
-                    <li class="feed-item feed-item-info">
-                        <time class="date" datetime="9-23">Sep 23</time>
-                        <span class="text">Joined the group
-                            <a href="single-group.php">"Boardsmanship Forum"</a></span>
-                    </li>
-                    <li class="feed-item feed-item-warning">
-                        <time class="date" datetime="9-21">Sep 21</time>
-                        <span class="text">Responded to need
-                            <a href="#">"In-Kind Opportunity"</a></span>
-                    </li>
-                    <li class="feed-item feed-item-danger">
-                        <time class="date" datetime="9-18">Sep 18</time>
-                        <span class="text">Created need
-                            <a href="#">"Volunteer Opportunity"</a></span>
-                    </li>
-                    <li class="feed-item">
-                        <time class="date" datetime="9-17">Sep 17</time>
-                        <span class="text">Attending the event
-                            <a href="single-event.php">"Some New Event"</a></span>
-                    </li>
-                </ol>
+                <div class="chart-container">
+                    <canvas id="lineChart" width="1456" height="600" style="display: block; width: 728px; height: 300px;" class="chartjs-render-monitor"></canvas>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Actividades recientes del mes actual -->
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
                 <div class="card-head-row">
-                    <div class="card-title">Support Tickets</div>
+                    <div class="card-title">Actividad reciente</div>
                     <div class="card-tools">
-                        <ul
-                            class="nav nav-pills nav-secondary nav-pills-no-bd nav-sm"
-                            id="pills-tab"
-                            role="tablist">
+                        <ul class="nav nav-pills nav-secondary nav-pills-no-bd nav-sm" id="pills-tab" role="tablist">
                             <li class="nav-item">
-                                <a
-                                    class="nav-link"
-                                    id="pills-today"
-                                    data-bs-toggle="pill"
-                                    href="#pills-today"
-                                    role="tab"
-                                    aria-selected="true">Today</a>
+                                <a class="nav-link" id="pills-today" data-bs-toggle="pill" href="#pills-today"
+                                    role="tab" aria-selected="true">Hoy</a>
                             </li>
                             <li class="nav-item">
-                                <a
-                                    class="nav-link active"
-                                    id="pills-week"
-                                    data-bs-toggle="pill"
-                                    href="#pills-week"
-                                    role="tab"
-                                    aria-selected="false">Week</a>
+                                <a class="nav-link active" id="pills-week" data-bs-toggle="pill" href="#pills-week"
+                                    role="tab" aria-selected="false">Semana</a>
                             </li>
                             <li class="nav-item">
-                                <a
-                                    class="nav-link"
-                                    id="pills-month"
-                                    data-bs-toggle="pill"
-                                    href="#pills-month"
-                                    role="tab"
-                                    aria-selected="false">Month</a>
+                                <a class="nav-link" id="pills-month" data-bs-toggle="pill" href="#pills-month"
+                                    role="tab" aria-selected="false">Mes</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="card-body">
+                @forelse($newLogsThisMonth as $index => $log)
                 <div class="d-flex">
                     <div class="avatar avatar-online">
-                        <span
-                            class="avatar-title rounded-circle border border-white bg-info">J</span>
+                        <span class="avatar-title rounded-circle border border-white bg-{{ $colors[$index] }}">
+                            <x-heroicon-o-document-text style="width: 20px; height: 20px; color: white" />
+                        </span>
                     </div>
                     <div class="flex-1 ms-3 pt-1">
                         <h6 class="text-uppercase fw-bold mb-1">
-                            Joko Subianto
-                            <span class="text-warning ps-3">pending</span>
+                            {{ $log->module_log }}
+                            <span class="text-muted op-5 ps-3">
+                                <small>{{ Carbon::parse($log->created_at)->setTimezone('America/Costa_Rica')->locale('es')->translatedFormat('d F')  }}</small>
+                            </span>
                         </h6>
-                        <span class="text-muted">I am facing some trouble with my viewport. When i
-                            start my</span>
+                        <span class="text-muted">{{ $log->log_description }}</span>
                     </div>
                     <div class="float-end pt-1">
-                        <small class="text-muted">8:40 PM</small>
+                        <small class="text-muted">{{ Carbon::parse($log->created_at)->setTimezone('America/Costa_Rica')->locale('es')->translatedFormat('H:i a')  }}</small>
                     </div>
                 </div>
                 <div class="separator-dashed"></div>
+                @empty
                 <div class="d-flex">
-                    <div class="avatar avatar-offline">
-                        <span
-                            class="avatar-title rounded-circle border border-white bg-secondary">P</span>
+                    <div class="avatar avatar-online">
+                        <span class="avatar-title rounded-circle border border-white bg-danger">
+                            <x-heroicon-o-face-smile style="width: 20px; height: 20px; color: white" />
+                        </span>
                     </div>
                     <div class="flex-1 ms-3 pt-1">
                         <h6 class="text-uppercase fw-bold mb-1">
-                            Prabowo Widodo
-                            <span class="text-success ps-3">open</span>
+                            ¡Vaya!
                         </h6>
-                        <span class="text-muted">I have some query regarding the license issue.</span>
+                        <span class="text-muted">Al parecer no se han realizado movimientos últimamente.</span>
                     </div>
                     <div class="float-end pt-1">
-                        <small class="text-muted">1 Day Ago</small>
+                        <small class="text-muted">N/A</small>
                     </div>
                 </div>
-                <div class="separator-dashed"></div>
-                <div class="d-flex">
-                    <div class="avatar avatar-away">
-                        <span
-                            class="avatar-title rounded-circle border border-white bg-danger">L</span>
-                    </div>
-                    <div class="flex-1 ms-3 pt-1">
-                        <h6 class="text-uppercase fw-bold mb-1">
-                            Lee Chong Wei
-                            <span class="text-muted ps-3">closed</span>
-                        </h6>
-                        <span class="text-muted">Is there any update plan for RTL version near
-                            future?</span>
-                    </div>
-                    <div class="float-end pt-1">
-                        <small class="text-muted">2 Days Ago</small>
-                    </div>
-                </div>
-                <div class="separator-dashed"></div>
-                <div class="d-flex">
-                    <div class="avatar avatar-offline">
-                        <span
-                            class="avatar-title rounded-circle border border-white bg-secondary">P</span>
-                    </div>
-                    <div class="flex-1 ms-3 pt-1">
-                        <h6 class="text-uppercase fw-bold mb-1">
-                            Peter Parker
-                            <span class="text-success ps-3">open</span>
-                        </h6>
-                        <span class="text-muted">I have some query regarding the license issue.</span>
-                    </div>
-                    <div class="float-end pt-1">
-                        <small class="text-muted">2 Day Ago</small>
-                    </div>
-                </div>
-                <div class="separator-dashed"></div>
-                <div class="d-flex">
-                    <div class="avatar avatar-away">
-                        <span
-                            class="avatar-title rounded-circle border border-white bg-danger">L</span>
-                    </div>
-                    <div class="flex-1 ms-3 pt-1">
-                        <h6 class="text-uppercase fw-bold mb-1">
-                            Logan Paul <span class="text-muted ps-3">closed</span>
-                        </h6>
-                        <span class="text-muted">Is there any update plan for RTL version near
-                            future?</span>
-                    </div>
-                    <div class="float-end pt-1">
-                        <small class="text-muted">2 Days Ago</small>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{ Storage::url('assets/js/plugin/chart.js/chart.min.js') }}"></script>
 @endsection

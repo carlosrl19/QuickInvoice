@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Services\StoreRequest;
 use App\Http\Requests\Services\UpdateRequest;
 use App\Models\Services;
+use App\Models\SystemLogs;
 
 class ServicesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $services = Services::get();
@@ -20,6 +18,11 @@ class ServicesController extends Controller
     public function store(StoreRequest $request)
     {
         Services::create($request->all());
+
+        SystemLogs::create([
+            'module_log' => 'Servicios',
+            'log_description' => 'Nuevo servicio ' . $request->input('service_name') . ' registrado.'
+        ]);
         return redirect()->route('services.index')->with('success', 'Registro creado exitosamente.');
     }
 
@@ -31,6 +34,11 @@ class ServicesController extends Controller
             $service->service_type = $request->input('service_type');
             $service->service_description = $request->input('service_description');
             $service->update($request->all());
+
+            SystemLogs::create([
+                'module_log' => 'Servicios',
+                'log_description' => 'Servicio ' . $service->service_name . ' modificado.'
+            ]);
 
             return redirect()->route("services.index")->with("success", "Registro actualizado exitosamente.");
         } catch (\Exception $e) {
@@ -49,6 +57,11 @@ class ServicesController extends Controller
 
         try {
             $service->delete();
+
+            SystemLogs::create([
+                'module_log' => 'Servicios',
+                'log_description' => 'Servicio ' . $service->service_name . ' eliminado.'
+            ]);
             return redirect()->route("services.index")->with("success", "Registro eliminado exitosamente.");
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al eliminar el registro.");

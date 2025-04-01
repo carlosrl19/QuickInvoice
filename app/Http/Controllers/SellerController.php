@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Sellers\StoreRequest;
 use App\Http\Requests\Sellers\UpdateRequest;
 use App\Models\Seller;
+use App\Models\SystemLogs;
 use Illuminate\Support\Facades\DB;
 
 class SellerController extends Controller
@@ -19,6 +20,12 @@ class SellerController extends Controller
     {
         try {
             Seller::create($request->all());
+
+            SystemLogs::create([
+                'module_log' => 'Vendedores',
+                'log_description' => 'Nuevo vendedor ' . $request->input('seller_name') . ' registrado.'
+            ]);
+
             return redirect()->route('sellers.index')->with('success', 'Registro creado exitosamente.');
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al crear el registro.")->withInput()->withErrors($e->getMessage());
@@ -32,6 +39,11 @@ class SellerController extends Controller
             $seller->seller_document = $request->input('seller_document');
             $seller->seller_phone = $request->input('seller_phone');
             $seller->update($request->all());
+
+            SystemLogs::create([
+                'module_log' => 'Vendedores',
+                'log_description' => 'Vendedor ' . $seller->seller_name . ' modificado.'
+            ]);
 
             return redirect()->route("sellers.index")->with("success", "Registro actualizado exitosamente.");
         } catch (\Exception $e) {
@@ -50,6 +62,12 @@ class SellerController extends Controller
 
         try {
             $seller->delete();
+
+            SystemLogs::create([
+                'module_log' => 'Vendedores',
+                'log_description' => 'Vendedor ' . $seller->seller_name . ' eliminado.'
+            ]);
+            
             return redirect()->route("sellers.index")->with("success", "Registro eliminado exitosamente.");
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al eliminar el registro.");

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FiscalFolios\StoreRequest;
 use App\Models\FiscalFolio;
+use App\Models\SystemLogs;
 use Carbon\Carbon;
 
 class FiscalFolioController extends Controller
@@ -12,7 +13,7 @@ class FiscalFolioController extends Controller
     {
         return Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
     }
-    
+
     public function index()
     {
         $fiscal_folios = FiscalFolio::get();
@@ -23,6 +24,12 @@ class FiscalFolioController extends Controller
     {
         try {
             FiscalFolio::create($request->all());
+
+            SystemLogs::create([
+                'module_log' => 'Folios',
+                'log_description' => 'Nuevo folio fiscal ' . $request->input('folio_authorized_range_start') . ' al ' . $request->input('folio_authorized_range_end') . ' (fecha límite ' . $request->input('folio_authorized_emission_date') . ').'
+            ]);
+
             return redirect()->route('fiscalfolio.index')->with('success', 'Registro creado exitosamente.');
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al crear el registro.")->withInput()->withErrors($e->getMessage());
@@ -45,6 +52,11 @@ class FiscalFolioController extends Controller
             // Establece el folio seleccionado a folio_status = 1
             $folio->folio_status = 1;
             $folio->update();
+
+            SystemLogs::create([
+                'module_log' => 'Folios',
+                'log_description' => 'Cambio de folio fiscal ' . $folio->folio_authorized_range_start . ' al ' . $folio->folio_authorized_range_end . ' (fecha límite ' . $folio->folio_authorized_emission_date . ').'
+            ]);
 
             return redirect()->route('fiscalfolio.index')->with('success', 'Registro actualizado exitosamente.');
         } catch (\Exception $e) {

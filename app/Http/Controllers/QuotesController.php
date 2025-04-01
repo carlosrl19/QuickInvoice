@@ -9,6 +9,7 @@ use App\Models\QuoteDetails;
 use App\Models\Quotes;
 use App\Models\Seller;
 use App\Models\Services;
+use App\Models\SystemLogs;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -70,6 +71,8 @@ class QuotesController extends Controller
                 'quote_exempt_tax' => $request->input('quote_exempt_tax'),
                 'quote_tax' => $request->input('quote_tax'),
                 'quote_isv_amount' => $request->input('quote_isv_amount'),
+                'quote_expiration_date' => $request->input('quote_expiration_date'),
+                'quote_answer' => 'Respuesta en espera',
                 'created_at' => $this->getTodayDate(),
                 'updated_at' => $this->getTodayDate(),
             ]);
@@ -85,6 +88,18 @@ class QuotesController extends Controller
                         'quote_details' => $validatedData['quote_details'][$index],
                     ]);
                 }
+            }
+
+            if ($request->input('sale_exempt_tax') == 1) {
+                SystemLogs::create([
+                    'module_log' => 'Cotizaciones',
+                    'log_description' => 'Nueva cotización exenta ' . $quoteCodeNumber . ' por L. ' . number_format($request->input('quote_total_amount'), 2) . ' registrada.'
+                ]);
+            } else {
+                SystemLogs::create([
+                    'module_log' => 'Cotizaciones',
+                    'log_description' => 'Nueva cotización gravada ' . $quoteCodeNumber . ' por L. ' . number_format($request->input('quote_total_amount') + $request->input('quote_isv_amount'), 2) . ' registrada.'
+                ]);
             }
 
             DB::commit();
@@ -126,6 +141,8 @@ class QuotesController extends Controller
                 'quote_exempt_tax' => 1,
                 'quote_tax' => $request->input('quote_tax'),
                 'quote_isv_amount' => $request->input('quote_isv_amount'),
+                'quote_expiration_date' => $request->input('quote_expiration_date'),
+                'quote_answer' => 'Respuesta en espera.',
                 'created_at' => $this->getTodayDate(),
                 'updated_at' => $this->getTodayDate(),
             ]);
@@ -142,6 +159,12 @@ class QuotesController extends Controller
                     ]);
                 }
             }
+
+            SystemLogs::create([
+                'module_log' => 'Cotizaciones',
+                'log_description' => 'Nueva cotización exonerada ' . $quoteCodeNumber . ' por L. ' . number_format($request->input('quote_total_amount'), 2) . ' registrada.'
+            ]);
+
 
             DB::commit();
 

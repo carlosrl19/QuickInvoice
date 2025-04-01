@@ -195,12 +195,12 @@ Configuración
                                             <div class="row mb-3">
                                                 <div class="col">
                                                     <div class="row mb-3">
-                                                        <div class="col-md-6 text-center">
+                                                        <div class="col-6 text-center">
                                                             <img class="mb-3" style="margin: auto" id="logoPreviewOld" width="100" height="100" src="{{ Storage::url('sys_config/img/' . $setting->logo_company) }}"><br>
                                                             <label for="logoPreviewOld">Imagen actual</label>
                                                         </div>
-                                                        <div class="col-md-6 text-center">
-                                                            <img class="mb-3" style="margin: auto" id="logoPreview" width="100" height="100"><br>
+                                                        <div class="col-6 text-center">
+                                                            <img class="mb-3" style="margin: auto" src="https://placehold.co/800?text=Sin\nimagen&font=roboto" id="logoPreview" width="100" height="100"><br>
                                                             <label for="logoPreview">Imagen nueva</label>
                                                         </div>
                                                     </div>
@@ -221,12 +221,12 @@ Configuración
                                             <div class="row mb-3">
                                                 <div class="col">
                                                     <div class="row mb-3">
-                                                        <div class="col-md-6 text-center">
+                                                        <div class="col-6 text-center">
                                                             <img class="mb-3" style="margin: auto" id="systemIconPreviewOld" width="100" height="100" src="{{ Storage::url('sys_config/img/' . $setting->system_icon) }}"><br>
                                                             <label for="systemIconPreviewOld">Imagen actual</label>
                                                         </div>
-                                                        <div class="col-md-6 text-center">
-                                                            <img class="mb-3" style="margin: auto" id="systemIconPreview" width="100" height="100"><br>
+                                                        <div class="col-6 text-center">
+                                                            <img class="mb-3" style="margin: auto" src="https://placehold.co/800?text=Sin\nimagen&font=roboto/" id="systemIconPreview" width="100" height="100"><br>
                                                             <label for="systemIconPreview">Imagen nueva</label>
                                                         </div>
                                                     </div>

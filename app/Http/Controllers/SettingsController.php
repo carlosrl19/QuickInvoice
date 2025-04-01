@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Settings\StoreRequest;
 use App\Http\Requests\Settings\UpdateRequest;
 use App\Models\Settings;
+use App\Models\SystemLogs;
 
 class SettingsController extends Controller
 {
@@ -64,6 +65,11 @@ class SettingsController extends Controller
                 'company_short_address' => $request->input('company_short_address'),
             ]);
 
+            SystemLogs::create([
+                'module_log' => 'Configuración',
+                'log_description' => 'Configuración del sistema creada.'
+            ]);
+
             return redirect()->route('settings.index')->with('success', 'Configuración guardada correctamente');
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al crear el registro.")->withInput()->withErrors($e->getMessage());
@@ -113,6 +119,11 @@ class SettingsController extends Controller
 
             // Actualizar el registro en la base de datos
             $settings->save();
+
+            SystemLogs::create([
+                'module_log' => 'Configuración',
+                'log_description' => 'Configuración del sistema actualizada.'
+            ]);
 
             return back()->with('success', 'Configuración actualizada correctamente');
         } catch (\Exception $e) {

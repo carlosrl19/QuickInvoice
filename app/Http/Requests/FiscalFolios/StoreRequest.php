@@ -5,6 +5,7 @@ namespace App\Http\Requests\FiscalFolios;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use App\Models\FiscalFolio;
+use Carbon\Carbon;
 
 class StoreRequest extends FormRequest
 {
@@ -15,12 +16,14 @@ class StoreRequest extends FormRequest
 
     public function rules(): array
     {
+        $fechaMinima = Carbon::today()->addDay()->format('Y-m-d');
+
         return [
             'folio_authorized_range_start' => 'required|string|regex:/^[0-9-]+$/|min:19|max:19|unique:fiscal_folios',
             'folio_authorized_range_end' => 'required|string|regex:/^[0-9-]+$/|min:19|max:19|unique:fiscal_folios',
             'folio_total_invoices' => 'required|numeric|min:1',
             'folio_total_invoices_available' => 'required|numeric|min:0',
-            'folio_authorized_emission_date' => 'required|date:Y-m-d',
+            'folio_authorized_emission_date' => 'required|date:Y-m-d|after_or_equal:' . $fechaMinima,
             'folio_validation_status' => 'required|in:0,1',
             'folio_status' => 'required|in:0,1',
         ];
@@ -79,6 +82,7 @@ class StoreRequest extends FormRequest
             // Folio autorized emission date messages
             'folio_authorized_emission_date.required' => 'La fecha limite de emisión es obligatoria.',
             'folio_authorized_emission_date.date' => 'El formato de fecha de la fecha limite de emisión debe ser Y-m-d.',
+            'folio_authorized_emission_date.after_or_equal' => 'La fecha limite de emisión debe ser ' . $this->fechaMinima,
 
             // Folio validation status messages
             'folio_validation_status.required' => 'El estado de validez del folio es obligatorio.',

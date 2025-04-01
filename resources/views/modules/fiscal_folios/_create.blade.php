@@ -75,7 +75,7 @@
                             <div class="form-floating">
                                 <input type="date" name="folio_authorized_emission_date"
                                     value="{{ old('folio_authorized_emission_date') }}"
-                                    min="{{ Carbon\Carbon::now()->subMonths(10)->format('Y-m-d') }}"
+                                    min="{{ Carbon\Carbon::now()->addDay()->format('Y-m-d') }}"
                                     max="{{ Carbon\Carbon::now()->addYear()->format('Y-m-d') }}"
                                     id="folio_authorized_emission_date" class="form-control @error('folio_authorized_emission_date') is-invalid @enderror"
                                     autocomplete="off" />

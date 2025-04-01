@@ -43,6 +43,7 @@ Cotizaciones
                         <thead>
                             <tr>
                                 <th>Detalles</th>
+                                <th>Estado</th>
                                 <th>Fecha</th>
                                 <th>Cotización</th>
                                 <th>Cliente</th>
@@ -59,6 +60,9 @@ Cotizaciones
                                         <x-heroicon-o-document-text style="width: 20px; height: 20px; color: #2f77f0" />
                                         Cotización
                                     </a>
+                                </td>
+                                <td>
+                                    {{ $quote->quote_expiration_date < Carbon\Carbon::now()->diffInDays($quote->quote_expiration_date) ? 'VENCIDA':'VALIDA' }}
                                 </td>
                                 <td>{{ $quote->created_at }}</td>
                                 <td>{{ $quote->quote_code }}</td>

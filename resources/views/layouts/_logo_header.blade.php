@@ -14,10 +14,10 @@
             <x-heroicon-o-bars-3 style="width: 25px; height: 25px; color: white;" />
         </button>
         <button class="btn btn-toggle sidenav-toggler">
-            <i class="gg-menu-left"></i>
+            <x-heroicon-o-bars-3 style="width: 25px; height: 25px; color: white;" />
         </button>
     </div>
     <button class="btn topbar-toggler more">
-        <i class="gg-more-vertical-alt"></i>
+        <x-heroicon-o-adjustments-horizontal style="width: 25px; height: 25px; color: white;" />
     </button>
 </div>

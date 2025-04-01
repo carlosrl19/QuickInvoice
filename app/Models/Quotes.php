@@ -16,6 +16,8 @@ class Quotes extends Model
         'quote_exempt_tax',
         'quote_tax',
         'quote_isv_amount',
+        'quote_expiration_date',
+        'quote_answer',
     ];
 
     // Relationships

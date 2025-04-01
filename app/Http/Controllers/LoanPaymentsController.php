@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoanPayments\StoreRequest;
 use App\Models\LoanPayments;
 use App\Models\Loans;
+use App\Models\SystemLogs;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -25,6 +26,7 @@ class LoanPaymentsController extends Controller
         ));
     }
 
+    // Crear nuevo pago (vista para realizar el pago)
     public function new_pay($id)
     {
         $loan = Loans::findOrFail($id);
@@ -84,6 +86,7 @@ class LoanPaymentsController extends Controller
         ));
     }
 
+    //Realizar pago al préstamo
     public function loan_payment_creation(StoreRequest $request)
     {
         DB::beginTransaction();
@@ -123,6 +126,11 @@ class LoanPaymentsController extends Controller
                     'updated_at' => $this->getTodayDate(),
                 ]);
             }
+
+            SystemLogs::create([
+                'module_log' => 'Préstamos',
+                'log_description' => 'Nuevo pago al préstamo ' . $loan->loan_code_number . ' registrado.'
+            ]);
 
             DB::commit();
 

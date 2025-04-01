@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Clients\StoreRequest;
 use App\Http\Requests\Clients\UpdateRequest;
 use App\Models\Clients;
+use App\Models\SystemLogs;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -67,6 +68,12 @@ class ClientsController extends Controller
                 'created_at' => $this->getTodayDate(),
                 'updated_at' => $this->getTodayDate(),
             ]);
+
+            SystemLogs::create([
+                'module_log' => 'Clientes',
+                'log_description' => 'Nuevo cliente ' . $request->input('client_name') . ' registrado.'
+            ]);
+
             return back()->with("success", "Registro creado exitosamente.");
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al crear el registro.")->withInput()->withErrors($e->getMessage());
@@ -104,6 +111,11 @@ class ClientsController extends Controller
             $client->updated_at = $this->getTodayDate();
             $client->update($request->all());
 
+            SystemLogs::create([
+                'module_log' => 'Clientes',
+                'log_description' => 'Cliente ' . $request->input('client_name') . ' modificado.'
+            ]);
+
             return redirect()->route("clients.index")->with("success", "Registro actualizado exitosamente.");
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al actualizar el registro.");
@@ -121,6 +133,10 @@ class ClientsController extends Controller
 
         try {
             $client->delete();
+
+            SystemLogs::create([
+                'log_description' => 'Cliente ' . $client->client_name . ' eliminado.'
+            ]);
             return redirect()->route("clients.index")->with("success", "Registro eliminado exitosamente.");
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al eliminar el registro.");

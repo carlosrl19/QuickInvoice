@@ -57,6 +57,7 @@ Cotizaciones
                     <input type="hidden" name="quote_total_amount" id="quote_total_amount" value="0"> <!-- Controller get this -->
                     <input type="hidden" name="quote_isv_amount" id="quote_isv_amount" value="0"> <!-- Controller get this -->
                     <input type="hidden" id="quote_exempt_tax" name="quote_exempt_tax"> <!-- Controller get this -->
+                    <input type="hidden" id="quote_answer" name="quote_answer" value="xxx"> <!-- Controller get this -->
 
                     <div class="row">
                         <!-- Col izquierda -->
@@ -118,7 +119,7 @@ Cotizaciones
                                         </div>
                                         <div class="col-xl-6 col-lg-6 col-sm-12 col-xs-12" id="service_select_container">
                                             <label for="service_id">Fecha de vencimiento <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control" name="quote_expire_date" id="quote_expire_date" min="{{ Carbon\Carbon::now()->addWeek()->format('Y-m-d') }}">
+                                            <input type="date" class="form-control" name="quote_expiration_date" id="quote_expiration_date" min="{{ Carbon\Carbon::now()->addWeek()->format('Y-m-d') }}">
                                         </div>
                                     </div>
                                 </div>

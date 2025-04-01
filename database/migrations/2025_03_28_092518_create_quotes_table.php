@@ -25,6 +25,8 @@ return new class extends Migration
             $table->boolean('quote_exempt_tax'); // 0: Con ISV, 1: Exento de ISV 
             $table->decimal('quote_tax', 10, 2);
             $table->decimal('quote_isv_amount', 10, 2);
+            $table->date('quote_expiration_date');
+            $table->string('quote_answer', 75);
             $table->timestamps();
         });
     }

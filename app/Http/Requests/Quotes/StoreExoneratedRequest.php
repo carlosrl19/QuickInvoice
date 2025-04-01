@@ -25,6 +25,8 @@ class StoreExoneratedRequest extends FormRequest
             'quote_total_amount' => 'required|numeric|min:0.01',
             'quote_discount' => 'required|numeric|min:0|max:100',
             'quote_tax' => 'required|numeric|min:0|max:100',
+            'quote_expiration_date' => 'required|date:Y-m-d',
+            'quote_answer' => 'required|string|min:3|max:55',
 
             // Quote Details
             'service_id' => 'required|array',
@@ -83,6 +85,16 @@ class StoreExoneratedRequest extends FormRequest
             'quote_tax.numeric' => 'El ISV debe ser un número.',
             'quote_tax.min' => 'El ISV debe ser al menos :min%.',
             'quote_tax.max' => 'El ISV no puede ser mayor que :max%.',
+
+            // Quote expiration date messages
+            'quote_expiration_date.required' => 'La fecha de vencimiento de la cotización es obligatoria.',
+            'quote_expiration_date.date' => 'El formato de la fecha de vencimiento debe ser Y-m-d.',
+
+            // Quote answer messages
+            'quote_answer.required' => 'La respuesta a la cotización es obligatoria.',
+            'quote_answer,string' => 'La respuesta a la cotización solo debe contener letras, números y símbolos.',
+            'quote_answer.min' => 'La respuesta a la cotización debe contener al menos :min caracteres.',
+            'quote_answer.max' => 'La respuesta a la cotización debe contener como máximo :min caracteres.',
 
             // Service_id messages
             'service_id.required' => 'El servicio es obligatorio.',

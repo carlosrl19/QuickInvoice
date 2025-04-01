@@ -90,7 +90,7 @@
 
     <!-- Imagen posicionada a la derecha -->
     <div style="position: absolute; top: 20; right: 20; opacity: 0.8;">
-        <img src="{{ public_path('../storage/app/public/sys_config/img/' . $settings->logo_company) ?? public_path('../storage/app/public/assets/img/kaiadmin/favicon.png') }}" alt="" style="min-width: 90px; min-height: 90px; max-width: 180px; max-height: 100px" />
+        <img src="{{ public_path('../storage/app/public/sys_config/img/' . $settings->logo_company) ?? public_path('../storage/app/public/assets/img/kaiadmin/favicon.png') }}" alt="" style="min-width: 100px; min-height: 100px; max-width: 190px; max-height: 110px" />
     </div>
 </header>
 

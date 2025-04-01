@@ -83,15 +83,14 @@
         <!-- Client and Exonerated Information Container -->
         <div style="position: relative; width: 100%; margin-top: 50px; height: 130px;">
             <!-- Client information -->
-            <div style="position: absolute; top: 20; left: 0; width: 50%; padding: 10px;">
+            <div style="position: absolute; top: 15; left: 0; width: 50%; padding: 10px;">
                 <p style="font-size: 8.5pt; margin-top: -3px;">Cliente: {{ $quote->client->client_code }} - {{ $quote->client->client_name }}</p>
                 <p style="font-size: 8.5pt; margin-top: -8px;">R.T.N.: {{ $quote->client->client_document }}</p>
-                <p style="font-size: 8.5pt; margin-top: -8px;">{{ $settings->company_short_address }}</p>
+                <p style="font-size: 8.5pt; margin-top: -8px;">Dirección: {{ $quote->client->client_address ?? 'N/A' }}</p>
             </div>
 
             <!-- Quote information -->
-            <div style="position: absolute; top: 10; right: 0; width: 35%; border-radius: 5px; padding: 10px;">
-                <p style="font-size: 8.5pt; margin-top: -3px;">Cotización # <strong>{{ $quote->quote_code }}</strong></p>
+            <div style="position: absolute; top: 15; right: 0; width: 35%; border-radius: 5px; padding: 10px;">
                 <p style="font-size: 8.5pt; margin-top: -8px;">Hora y fecha: {{ Carbon\Carbon::parse($todayDate)->format('d/m/Y H:i:s a') }}</p>
                 <p style="font-size: 8.5pt; margin-top: -8px;">Lugar: {{ $settings->company_short_address }}</p>
                 <p style="font-size: 8.5pt; margin-top: -8px;">Vendedor: {{ $quote->seller->seller_name }}</p>

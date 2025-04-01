@@ -7,15 +7,21 @@
        <div class="sidebar-wrapper">
            <div class="sidebar-content">
                <ul class="nav nav-secondary">
+                   <li class="nav-section">
+                       <span class="sidebar-mini-icon">
+                           <hr>
+                       </span>
+                       <h4 class="text-section">MODULO DASHBOARD</h4>
+                   </li>
                    <li class="nav-item">
-                       <a href="/dashboard">
+                       <a href="{{ route('dashboard.index') }}">
                            <x-heroicon-o-home style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Dashboard</span>
                        </a>
                    </li>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
-                           <i class="fa fa-ellipsis-h"></i>
+                           <hr>
                        </span>
                        <h4 class="text-section">MODULO RR.HH</h4>
                    </li>
@@ -33,7 +39,7 @@
                    </li>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
-                           <i class="fa fa-ellipsis-h"></i>
+                           <hr>
                        </span>
                        <h4 class="text-section">MODULO INVENTARIO</h4>
                    </li>
@@ -45,7 +51,7 @@
                    </li>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
-                           <i class="fa fa-ellipsis-h"></i>
+                           <hr>
                        </span>
                        <h4 class="text-section">MODULO CRÉDITOS</h4>
                    </li>
@@ -84,7 +90,7 @@
                    </li>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
-                           <i class="fa fa-ellipsis-h"></i>
+                           <hr>
                        </span>
                        <h4 class="text-section">MODULO FACTURACIÓN</h4>
                    </li>
@@ -137,7 +143,7 @@
                    </li>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
-                           <i class="fa fa-ellipsis-h"></i>
+                           <hr>
                        </span>
                        <h4 class="text-section">AJUSTES DEL SISTEMA</h4>
                    </li>
@@ -153,6 +159,12 @@
                            <span class="sub-item">Configuración</span>
                        </a>
                        @endif
+                   </li>
+                   <li class="nav-item">                      
+                       <a href="{{ route('logs.index') }}">
+                           <x-heroicon-o-server-stack style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                           <span class="sub-item">Logs</span>
+                       </a>
                    </li>
                </ul>
            </div>

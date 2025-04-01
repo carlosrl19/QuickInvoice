@@ -77,3 +77,9 @@ Route::get('quote-details/{id}/', 'App\Http\Controllers\QuoteDetailsController@q
 Route::get('quote-details/{id}/report', 'App\Http\Controllers\QuoteDetailsController@quote_details_report')->name('quote_details.quote_details_report');
 Route::get('quote-exonerated/', 'App\Http\Controllers\QuotesController@exonerated_quote')->name('quotes.exonerated_quote');
 Route::post('quote-exonerated/new_quote', 'App\Http\Controllers\QuotesController@store_exonerated')->name('quotes.store_exonerated');
+
+// Rutas de Dashboard
+Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard.index');
+
+// Rutas de Logs
+Route::get('logs', 'App\Http\Controllers\SystemLogsController@index')->name('logs.index');

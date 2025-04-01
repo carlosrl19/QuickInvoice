@@ -10,6 +10,7 @@ use App\Models\Pos;
 use App\Models\PosDetails;
 use App\Models\Seller;
 use App\Models\Services;
+use App\Models\SystemLogs;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -28,7 +29,7 @@ class PosController extends Controller
 
     public function create()
     {
-        $services = Services::get();
+        $services = Services::where('service_type', 1)->get();
         $clients = Clients::where('client_exonerated', 0)->get();
         $sellers = Seller::get();
         return view('modules.pos.create', compact('services', 'clients', 'sellers'));
@@ -36,7 +37,7 @@ class PosController extends Controller
 
     public function exonerated_sale()
     {
-        $services = Services::get();
+        $services = Services::where('service_type', 0)->get();
         $clients = Clients::where('client_exonerated', 1)->get();
         $sellers = Seller::get();
         return view('modules.pos.create_exonerated_sale', compact('services', 'clients', 'sellers'));
@@ -58,8 +59,10 @@ class PosController extends Controller
 
         if ($request->input('sale_exempt_tax') == 1) {
             $sale_type = 'ET';
+            $sale_isv_amount = 0;
         } else {
             $sale_type = 'G';
+            $sale_isv_amount = $request->input('sale_isv_amount');
         }
 
         DB::beginTransaction();
@@ -95,7 +98,7 @@ class PosController extends Controller
                 'sale_discount' => $request->input('sale_discount'),
                 'sale_exempt_tax' => $request->input('sale_exempt_tax'),
                 'sale_tax' => $request->input('sale_tax'),
-                'sale_isv_amount' => $request->input('sale_isv_amount'),
+                'sale_isv_amount' => $sale_isv_amount,
                 'sale_payment_received' => $request->input('sale_payment_received'),
                 'sale_payment_type' => $request->input('sale_payment_type'),
                 'sale_payment_change' => $request->input('sale_payment_change'),
@@ -118,6 +121,18 @@ class PosController extends Controller
                         'sale_details' => $validatedData['sale_details'][$index],
                     ]);
                 }
+            }
+
+            if ($request->input('sale_exempt_tax') == 1) {
+                SystemLogs::create([
+                    'module_log' => 'POS',
+                    'log_description' => 'Nueva venta exenta ' . $folioInvoiceNumber . ' por L. ' . number_format($request->input('sale_total_amount'), 2) . ' registrada.'
+                ]);
+            } else {
+                SystemLogs::create([
+                    'module_log' => 'POS',
+                    'log_description' => 'Nueva venta gravada ' . $folioInvoiceNumber . ' por L. ' . number_format($request->input('sale_total_amount') + $request->input('sale_isv_amount'), 2) . ' registrada.'
+                ]);
             }
 
             DB::commit();
@@ -211,6 +226,11 @@ class PosController extends Controller
                     ]);
                 }
             }
+
+            SystemLogs::create([
+                'module_log' => 'POS',
+                'log_description' => 'Nueva venta exonerada ' . $folioInvoiceNumber . ' por L. ' . number_format($request->input('sale_total_amount'), 2) . ' registrada.'
+            ]);
 
             DB::commit();
 

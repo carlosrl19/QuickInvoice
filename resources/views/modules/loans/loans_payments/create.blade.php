@@ -223,7 +223,7 @@ Créditos vigentes
                                     </div>
                                     <div class="col">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" oninput="this.value = this.value.toUpperCase().replace(/\s/g, '')" value="" minlength="6" maxlength="12" name="card_auth_number" id="card_auth_number">
+                                            <input type="text" class="form-control" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')" value="" minlength="6" maxlength="12" name="card_auth_number" id="card_auth_number">
                                             <label for="card_auth_number" style="z-index: 5">Nº autorización (X)<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
