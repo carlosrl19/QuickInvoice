@@ -13,45 +13,74 @@ use App\Models\Pos;
 use App\Models\PosDetails;
 use App\Models\SystemLogs;
 use App\Models\Quotes;
+use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 use Carbon\Carbon;
 
-$actualMonth = Carbon::now()->month;
-$actualYear = Carbon::now()->year;
-
-// Logs
-$newLogsThisMonth = SystemLogs::whereMonth('created_at', $actualMonth)
-->whereYear('created_at', $actualYear)
-->get();
 $colorsList = ['secondary', 'success', 'info', 'warning', 'danger', 'primary', 'black'];
-$colors = [];
-foreach ($newLogsThisMonth as $log) {
-$colors[] = $colorsList[array_rand($colorsList)];
-}
 
 // Clients
 $clients_counter = Clients::count();
-$newClientsThisMonth = Clients::whereMonth('created_at', $actualMonth)
-->whereYear('created_at', $actualYear)
+$newClientsThisMonth = Clients::whereMonth('created_at', Carbon::now()->month)
+->whereYear('created_at', Carbon::now()->year)
 ->count();
 
 // Quotes
-$newQuotesThisMonth = Quotes::whereMonth('created_at', $actualMonth)
-->whereYear('created_at', $actualYear)
+$newQuotesThisMonth = Quotes::whereMonth('created_at', Carbon::now()->month)
+->whereYear('created_at', Carbon::now()->year)
 ->count();
-$newQuotesThisMonthSum = Quotes::whereMonth('created_at', $actualMonth)
-->whereYear('created_at', $actualYear)
+$newQuotesThisMonthSum = Quotes::whereMonth('created_at', Carbon::now()->month)
+->whereYear('created_at', Carbon::now()->year)
 ->sum('quote_total_amount');
 
 // Sales
-$pos = Pos::whereMonth('created_at', $actualMonth)->get();
-$pos_counter = Pos::whereMonth('created_at', $actualMonth)->count();
-$pos_counter_amount_sum = PosDetails::whereMonth('created_at', $actualMonth)
+$pos_counter = Pos::whereMonth('created_at', Carbon::now()->month)->count();
+$pos_counter_amount_sum = PosDetails::whereMonth('created_at', Carbon::now()->month)
 ->sum('sale_price');
 
+// Sale charts
+$chart_actual_month = [
+'chart_title' => 'Ventas por día',
+'report_type' => 'group_by_date',
+'model' => 'App\Models\Pos',
+'group_by_field' => 'created_at',
+'group_by_period' => 'day',
+'chart_type' => 'line',
+'aggregate_function' => 'sum', // Función para sumar los valores
+'aggregate_field' => 'sale_total_amount', // Campo a sumar
+'aggregate_transform' => function($value) {
+return round($value / 100, 2);
+},
+'filter_field' => 'created_at',
+'filter_period' => 'month',
+'continuous_time' => true,
+'chart_color' => '54,116,181',
+];
+
+$chart_actual_year = [
+'chart_title' => 'Ventas por mes',
+'report_type' => 'group_by_date',
+'model' => 'App\Models\Pos',
+'group_by_field' => 'created_at',
+'group_by_period' => 'month',
+'chart_type' => 'bar',
+'aggregate_function' => 'sum', // Función para sumar los valores
+'aggregate_field' => 'sale_total_amount', // Campo a sumar
+'filter_field' => 'created_at',
+'chart_color' => '153,188,133',
+];
+
+$chart_sales_actual_month = new LaravelChart($chart_actual_month);
+$chart_sales_actual_year = new LaravelChart($chart_actual_year);
+
 // Loans
-$loans_counter = Loans::whereMonth('created_at', $actualMonth)->count();
-$loan_counter_amount_sum = Loans::whereMonth('created_at', $actualMonth)
+$loans_counter = Loans::whereMonth('created_at', Carbon::now()->month)->count();
+$loan_counter_amount_sum = Loans::whereMonth('created_at', Carbon::now()->month)
 ->sum('loan_amount');
+
+// Logs
+$newLogsThisMonth = SystemLogs::whereMonth('created_at', Carbon::now()->month)
+->whereYear('created_at', Carbon::now()->year)
+->get();
 
 @endphp
 
@@ -140,45 +169,50 @@ $loan_counter_amount_sum = Loans::whereMonth('created_at', $actualMonth)
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Ventas ultimo trimestre</div>
+                <div class="card-title">Ventas del mes <small>({{ $pos_counter }})</small></div>
             </div>
             <div class="card-body">
-                <div class="chart-container">
-                    <canvas id="lineChart" width="1456" height="600" style="display: block; width: 728px; height: 300px;" class="chartjs-render-monitor"></canvas>
-                </div>
+                {!! $chart_sales_actual_month->renderHtml() !!}
             </div>
         </div>
     </div>
 
-    <!-- Actividades recientes del mes actual -->
+    <!-- Ventas del año actual -->
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
+                <div class="card-title">Ventas del año</div>
+            </div>
+            <div class="card-body">
+                {!! $chart_sales_actual_year->renderHtml() !!}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Actividades recientes del mes actual -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
                 <div class="card-head-row">
-                    <div class="card-title">Actividad reciente</div>
+                    <div class="card-title">Actividad reciente <small>({{ SystemLogs::count() }})</small></div>
                     <div class="card-tools">
                         <ul class="nav nav-pills nav-secondary nav-pills-no-bd nav-sm" id="pills-tab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link" id="pills-today" data-bs-toggle="pill" href="#pills-today"
-                                    role="tab" aria-selected="true">Hoy</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" id="pills-week" data-bs-toggle="pill" href="#pills-week"
-                                    role="tab" aria-selected="false">Semana</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-month" data-bs-toggle="pill" href="#pills-month"
-                                    role="tab" aria-selected="false">Mes</a>
+                                <a class="nav-link" disabled id="pills-month" data-bs-toggle="pill" href="#" role="tab" aria-selected="false">
+                                    Mes actual
+                                </a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="max-height: 38rem; overflow: auto;">
                 @forelse($newLogsThisMonth as $index => $log)
                 <div class="d-flex">
                     <div class="avatar avatar-online">
-                        <span class="avatar-title rounded-circle border border-white bg-{{ $colors[$index] }}">
+                        <span class="avatar-title rounded-circle border border-white bg-{{ $colorsList[array_rand($colorsList)] }}">
                             <x-heroicon-o-document-text style="width: 20px; height: 20px; color: white" />
                         </span>
                     </div>
@@ -218,8 +252,15 @@ $loan_counter_amount_sum = Loans::whereMonth('created_at', $actualMonth)
         </div>
     </div>
 </div>
+
 @endsection
 
 @section('scripts')
-<script src="{{ Storage::url('assets/js/plugin/chart.js/chart.min.js') }}"></script>
+<!-- Chart mes actual -->
+{!! $chart_sales_actual_month->renderChartJsLibrary() !!}
+{!! $chart_sales_actual_month->renderJs() !!}
+
+<!-- Chart año actual -->
+{!! $chart_sales_actual_year->renderChartJsLibrary() !!}
+{!! $chart_sales_actual_year->renderJs() !!}
 @endsection
