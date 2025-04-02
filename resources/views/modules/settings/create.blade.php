@@ -6,6 +6,11 @@
 
 <!-- IMask.JS -->
 <script src="{{ Storage::url('assets/js/plugin/imask/imask.js') }}"></script>
+
+@php
+use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
+@endphp
+
 @endsection
 
 @section('title')
@@ -264,7 +269,7 @@ Configuración
 </script>
 
 <!-- Laravel Javascript validation -->
-<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
 {!! JsValidator::formRequest('App\Http\Requests\Settings\StoreRequest') !!}
 
 <!-- IMask.JS -->

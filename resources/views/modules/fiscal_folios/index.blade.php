@@ -6,6 +6,11 @@
 
 <!-- IMask.JS -->
 <script src="{{ Storage::url('assets/js/plugin/imask/imask.js') }}"></script>
+
+@php
+use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
+@endphp
+
 @endsection
 
 @section('title')
@@ -113,7 +118,7 @@ Folios
 <script src="{{ Storage::url('customjs/imask/fiscal_folios/imask_fiscal_folios.js') }}"></script>
 
 <!-- Laravel Javascript validation -->
-<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
 {!! JsValidator::formRequest('App\Http\Requests\FiscalFolios\StoreRequest') !!}
 
 @endsection

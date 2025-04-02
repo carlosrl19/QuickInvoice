@@ -25,7 +25,7 @@ return [
      * Duration time for the animation when We are moving the focus
      * to the first error, http://api.jquery.com/animate/ for more information.
      */
-    'duration_animate' => 3000,
+    'duration_animate' => 1000,
 
     /*
      * Enable or disable Ajax validations of Database and custom rules.

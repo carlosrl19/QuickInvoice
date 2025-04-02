@@ -49,12 +49,21 @@ class PosController extends Controller
         $validatedData = $request->validated();
         $folio = FiscalFolio::where('folio_status', 1)->first();
 
+        $sale_payment_type = $request->input('sale_payment_type');
+        $sale_card_last_digits = $request->input('sale_card_last_digits');
+        $sale_card_auth_number = $request->input('sale_card_auth_number');
+
         if (!$folio) {
             return redirect()->back()->with('error', 'No hay ningún folio fiscal en uso actualmente.');
         }
 
         if ($folio->folio_total_invoices_available === 0) {
             return redirect()->back()->with('error', 'Se ha llegado al límite de rango de facturas autorizadas en el folio actual.');
+        }
+
+        // Se valida que se ingresen los 4 digitos de la tarjeta junto a su autorización, en caso de utilizarse TARJETA como tipo de pago
+        if ($sale_payment_type == 2 && (empty($sale_card_last_digits) || empty($sale_card_auth_number))) {
+            return redirect()->back()->with('error', 'Los últ. 4 digitos de la tarjeta y el número de autorización son obligatorios.');
         }
 
         if ($request->input('sale_exempt_tax') == 1) {
@@ -101,6 +110,8 @@ class PosController extends Controller
                 'sale_isv_amount' => $sale_isv_amount,
                 'sale_payment_received' => $request->input('sale_payment_received'),
                 'sale_payment_type' => $request->input('sale_payment_type'),
+                'sale_card_last_digits' => $request->input('sale_card_last_digits'),
+                'sale_card_auth_number' => $request->input('sale_card_auth_number'),
                 'sale_payment_change' => $request->input('sale_payment_change'),
                 'created_at' => $this->getTodayDate(),
                 'updated_at' => $this->getTodayDate(),
@@ -154,6 +165,10 @@ class PosController extends Controller
         $correlative2 = $request->input('exonerated_certificate');
         $services = $request->input('service_id');
 
+        $sale_payment_type = $request->input('sale_payment_type');
+        $sale_card_last_digits = $request->input('sale_card_last_digits');
+        $sale_card_auth_number = $request->input('sale_card_auth_number');
+
         if (!$folio) {
             return redirect()->back()->with('error', 'No hay ningún folio fiscal en uso actualmente.');
         }
@@ -169,6 +184,11 @@ class PosController extends Controller
         // Validar que ambos correlativos se ingresen
         if (!$correlative1 || !$correlative2 && $sale_type_selected === 'E') {
             return redirect()->back()->with('error', 'Orden de compra exenta y constancia de registro exonerado son obligatorios.');
+        }
+
+        // Se valida que se ingresen los 4 digitos de la tarjeta junto a su autorización, en caso de utilizarse TARJETA como tipo de pago
+        if ($sale_payment_type == 2 && (empty($sale_card_last_digits) || empty($sale_card_auth_number))) {
+            return redirect()->back()->with('error', 'Los últ. 4 digitos de la tarjeta y el número de autorización son obligatorios.');
         }
 
         DB::beginTransaction();
@@ -210,6 +230,8 @@ class PosController extends Controller
                 'sale_isv_amount' => $request->input('sale_isv_amount'),
                 'sale_payment_received' => $request->input('sale_payment_received'),
                 'sale_payment_type' => $request->input('sale_payment_type'),
+                'sale_card_last_digits' => $request->input('sale_card_last_digits'),
+                'sale_card_auth_number' => $request->input('sale_card_auth_number'),
                 'sale_payment_change' => $request->input('sale_payment_change'),
                 'created_at' => $this->getTodayDate(),
                 'updated_at' => $this->getTodayDate(),

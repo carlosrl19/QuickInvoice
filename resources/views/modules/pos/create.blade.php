@@ -6,6 +6,11 @@
 
 <!-- Tomselect -->
 <link href="{{ Storage::url('assets/js/plugin/tomselect/tom-select.min.css') }}" rel="stylesheet">
+
+@php
+use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
+@endphp
+
 @endsection
 
 @section('title')
@@ -200,11 +205,11 @@ POS
 
                                     <div class="row mb-3">
                                         <div class="col">
-                                            <select class="tom-select-no-search @error('sale_payment_type') is-invalid @enderror" name="sale_payment_type">
+                                            <select class="tom-select-no-search @error('sale_payment_type') is-invalid @enderror" name="sale_payment_type" id="sale_payment_type_select">
                                                 <option value="0" selected disabled>Seleccione el tipo de pago</option>
                                                 <option value="3" {{ old('sale_payment_type') == '3' ? 'selected' : '' }}>DEPOSITO (X)</option>
                                                 <option value="1" {{ old('sale_payment_type') == '1' ? 'selected' : '' }}>EFECTIVO</option>
-                                                <option value="2" {{ old('sale_payment_type') == '2' ? 'selected' : '' }}>TARJETA (X)</option>
+                                                <option value="2" {{ old('sale_payment_type') == '2' ? 'selected' : '' }}>TARJETA</option>
                                             </select>
                                             @error('sale_payment_type')
                                             <span class="invalid-feedback" role="alert">
@@ -239,6 +244,35 @@ POS
                                                 </span>
                                                 @enderror
                                                 <label for="sale_payment_received">Recibido <span class="text-danger">*</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card selected options -->
+                                    <div id="card_option_selected" style="display: none;">
+                                        <div class="row mb-3">
+                                            <div class=" col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                                <div class="form-floating">
+                                                    <input type="text" minlength="4" maxlength="4" name="sale_card_last_digits" value="" id="sale_card_last_digits" class="form-control @error('sale_card_last_digits') is-invalid @enderror" autocomplete="off" />
+                                                    @error('sale_card_last_digits')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        {{ $message }}
+                                                    </span>
+                                                    @enderror
+                                                    <label for="sale_card_last_digits">Ultimos 4 digitos <span class="text-danger">*</span></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                                <div class="form-floating">
+                                                    <input type="text" minlength="6" maxlength="12" name="sale_card_auth_number" value="" id="sale_card_auth_number" class="form-control @error('sale_card_auth_number') is-invalid @enderror" autocomplete="off" />
+                                                    @error('sale_card_auth_number')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        {{ $message }}
+                                                    </span>
+                                                    @enderror
+                                                    <label for="sale_card_auth_number">Nº autorización <span class="text-danger">*</span></label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -291,7 +325,7 @@ POS
 <script src="{{ Storage::url('customjs/tomselect/ts_init.js') }}"></script>
 
 <!-- Laravel Javascript validation -->
-<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
 {!! JsValidator::formRequest('App\Http\Requests\Pos\StoreRequest') !!}
 
 <!-- Venta exenta checkbox -->
@@ -301,5 +335,8 @@ POS
 <script src="{{ Storage::url('customjs/pos/pos_creation.js') }}"></script>
 
 <!-- Ocultar campos exenta y correlativo si no es venta exonerada -->
-<script src="{{ Storage::url('customjs/pos/hidde_inputs.js') }}"></script>
+<script src="{{ Storage::url('customjs/pos/hide_exempt_inputs.js') }}"></script>
+
+<!-- Ocultar campos de card si no se usa Tarjeta -->
+<script src="{{ Storage::url('customjs/pos/hide_card_inputs.js') }}"></script>
 @endsection

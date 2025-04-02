@@ -6,6 +6,11 @@
 
 <!-- Tomselect -->
 <link href="{{ Storage::url('assets/js/plugin/tomselect/tom-select.min.css') }}" rel="stylesheet">
+
+@php
+use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
+@endphp
+
 @endsection
 
 @section('title')
@@ -234,7 +239,7 @@ Cotizaciones
 <script src="{{ Storage::url('customjs/tomselect/ts_init.js') }}"></script>
 
 <!-- Laravel Javascript validation -->
-<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
 {!! JsValidator::formRequest('App\Http\Requests\Quotes\StoreRequest') !!}
 
 <!-- Venta exenta checkbox -->

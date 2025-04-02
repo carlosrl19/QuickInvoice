@@ -3,6 +3,11 @@
 @section('head')
 <!-- SweetAlert -->
 <script src="{{ Storage::url('assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
+
+@php
+use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
+@endphp
+
 @endsection
 
 @section('title')
@@ -108,7 +113,7 @@ Servicios
 <script src="{{ Storage::url('customjs/datatables/services/dt_services_index.js') }}"></script>
 
 <!-- Laravel Javascript validation -->
-<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
 {!! JsValidator::formRequest('App\Http\Requests\Services\StoreRequest', '#create_service_form') !!}
 
 @endsection

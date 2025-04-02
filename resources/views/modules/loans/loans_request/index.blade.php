@@ -6,6 +6,11 @@
 
 <!-- Tomselect -->
 <link href="{{ Storage::url('assets/js/plugin/tomselect/tom-select.min.css') }}" rel="stylesheet">
+
+@php
+use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
+@endphp
+
 @endsection
 
 @section('title')
@@ -129,7 +134,7 @@ Solicitud de créditos
 <script src="{{ Storage::url('customjs/datatables/loans/dt_loans_index.js') }}"></script>
 
 <!-- Laravel Javascript validation -->
-<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
 {!! JsValidator::formRequest('App\Http\Requests\Loans\StoreRequest') !!}
 
 @endsection

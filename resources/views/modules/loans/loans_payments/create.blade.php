@@ -6,6 +6,11 @@
 
 <!-- Tomselect -->
 <link href="{{ Storage::url('assets/js/plugin/tomselect/tom-select.min.css') }}" rel="stylesheet">
+
+@php
+use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
+@endphp
+
 @endsection
 
 @section('title')
@@ -233,7 +238,7 @@ Créditos vigentes
                                                 {{ $message }}
                                             </span>
                                             @enderror
-                                            <label for="card_last_digits" style="z-index: 5">Ultimos 4 digitos (X)<span class="text-danger">*</span></label>
+                                            <label for="card_last_digits" style="z-index: 5">Ultimos 4 digitos<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                     <div class="col">
@@ -244,7 +249,7 @@ Créditos vigentes
                                                 {{ $message }}
                                             </span>
                                             @enderror
-                                            <label for="card_auth_number" style="z-index: 5">Nº autorización (X)<span class="text-danger">*</span></label>
+                                            <label for="card_auth_number" style="z-index: 5">Nº autorización<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -298,6 +303,10 @@ Créditos vigentes
 <!-- Tomselect -->
 <script src="{{ Storage::url('assets/js/plugin/tomselect/tom-select.complete.js') }}"></script>
 <script src="{{ Storage::url('customjs/tomselect/ts_init.js') }}"></script>
+
+<!-- Laravel Javascript validation -->
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\LoanPayments\StoreRequest') !!}
 
 <!-- Dolar to HNL -->
 <script>

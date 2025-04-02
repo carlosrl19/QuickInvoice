@@ -22,6 +22,8 @@ class Pos extends Model
         'sale_payment_received',
         'sale_payment_change',
         'sale_payment_type',
+        'sale_card_last_digits',
+        'sale_card_auth_number',
     ];
 
     // Relationships

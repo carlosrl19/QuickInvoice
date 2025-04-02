@@ -31,6 +31,8 @@ class StoreRequest extends FormRequest
             'sale_tax' => 'required|numeric|min:0|max:100',
             'sale_payment_received' => 'required|numeric|min:1|gte:sale_total_amount',
             'sale_payment_type' => 'required|numeric|in:1,2,3',
+            'sale_card_last_digits' => 'nullable|string|min:4|max:4|regex:/^[0-9]+$/', // Solo si se usa Tarjeta como sale_payment_type
+            'sale_card_auth_number' => 'nullable|string|min:6|max:12|regex:/^[A-Z0-9]+$/', // Solo si se usa Tarjeta como sale_payment_type
             'sale_payment_change' => 'required|numeric|min:0',
 
             // POS Details
@@ -116,6 +118,16 @@ class StoreRequest extends FormRequest
             'sale_payment_type.required' => 'El tipo de pago es obligatorio.',
             'sale_payment_type.numeric' => 'El tipo de pago debe ser EFECTIVO, TARJETA O DEPÓSITO.',
             'sale_payment_type.in' => 'El tipo de pago debe ser mayor o igual a :min',
+
+            // Card last digits messages
+            'sale_card_last_digits.string' => 'Los últimos 4 digitos de la tarjeta deben contener solo números.',
+            'sale_card_last_digits.min' => 'Los últimos 4 digitos de la tarjeta deben contener al menos :min números.',
+            'sale_card_last_digits.max' => 'Los últimos 4 digitos de la tarjeta no puede contener más de :max números.',
+
+            // Card auth number messages
+            'sale_card_auth_number.string' => 'La autorización de transferencia debe contener solo letras y números.',
+            'sale_card_auth_number.min' => 'La autorización de transferencia debe contener al menos :min números.',
+            'sale_card_auth_number.max' => 'La autorización de transferencia no puede contener más de :max números.',
 
             // Sale payment change messages
             'sale_payment_change.required' => 'El cambio del pago de la venta es obligatorio.',
