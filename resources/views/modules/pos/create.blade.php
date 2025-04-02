@@ -77,7 +77,7 @@ POS
                                             </select>
                                             @error('client_id')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                {{ $message }}
                                             </span>
                                             @enderror
                                         </div>
@@ -91,27 +91,29 @@ POS
                                             </select>
                                             @error('seller_id')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                {{ $message }}
                                             </span>
                                             @enderror
                                         </div>
+
                                         <!-- Selección de servicio -->
                                         <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12" id="service_select_container">
                                             <label for="service_id">Servicio <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <select class="tom-select w-75 @error('service_id') is-invalid @enderror" id="service_id_select" name="service_id">
+                                                <select class="tom-select w-75 @error('service_id') is-invalid @enderror" id="service_id_select" name="service_id[]">
                                                     <option value="" selected disabled>Seleccione los productos o servicios</option>
                                                     @foreach ($services as $service)
-                                                    <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}
-                                                        data-price="{{ $service->price }}">{{ $service->service_nomenclature }} - {{ $service->service_name }}</option>
+                                                    <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>
+                                                        {{ $service->service_nomenclature }} - {{ $service->service_name }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
-                                                <button type="button" class="btn btn-sm btn-primary" id="add_service_button">
+                                                <button type="button" class="btn btn-sm btn-dark" id="add_service_button">
                                                     <x-heroicon-o-plus style="width: 20px; height: 20px; color: white" />
                                                 </button>
                                                 @error('service_id')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                             </div>
@@ -181,7 +183,7 @@ POS
                                             </select>
                                             @error('sale_type')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                {{ $message }}
                                             </span>
                                             @enderror
                                         </div>
@@ -206,7 +208,7 @@ POS
                                             </select>
                                             @error('sale_payment_type')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                {{ $message }}
                                             </span>
                                             @enderror
                                         </div>
@@ -219,7 +221,7 @@ POS
                                                     style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" />
                                                 @error('sale_total_amount')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                                 <label for="sale_total_amount">Total a pagar <span class="text-danger">*</span></label>
@@ -233,7 +235,7 @@ POS
                                                 <input type="number" min="0" name="sale_payment_received" value="" id="sale_payment_received" class="form-control @error('sale_payment_received') is-invalid @enderror" autocomplete="off" />
                                                 @error('sale_payment_received')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                                 <label for="sale_payment_received">Recibido <span class="text-danger">*</span></label>
@@ -248,7 +250,7 @@ POS
                                                     style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" />
                                                 @error('sale_payment_change')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                                 <label for="sale_payment_change">Cambio <span class="text-danger">*</span></label>
@@ -287,6 +289,10 @@ POS
 <!-- Tomselect -->
 <script src="{{ Storage::url('assets/js/plugin/tomselect/tom-select.complete.js') }}"></script>
 <script src="{{ Storage::url('customjs/tomselect/ts_init.js') }}"></script>
+
+<!-- Laravel Javascript validation -->
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\Pos\StoreRequest') !!}
 
 <!-- Venta exenta checkbox -->
 <script src="{{ Storage::url('customjs/pos/checkbox_exempt_tax.js') }}"></script>

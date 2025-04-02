@@ -17,6 +17,8 @@ class LoanPayments extends Model
         'loan_quote_payment_comment',
         'loan_quote_payment_status',
         'loan_quote_payment_mode',
+        'card_last_digits',
+        'card_auth_number',
         'loan_quote_payment_received',
         'loan_quote_payment_change',
         'created_at',

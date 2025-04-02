@@ -46,9 +46,9 @@ class StoreRequest extends FormRequest
             'client_id.exists' => 'El cliente seleccionado no existe en la base de datos.',
 
             // Seller id messages
-            'seller_id.required' => 'El cliente es obligatorio.',
-            'seller_id.numeric' => 'El id del cliente solo debe contener números (dev.request).',
-            'seller_id.exists' => 'El cliente seleccionado no existe en la base de datos.',
+            'seller_id.required' => 'El vendedor es obligatorio.',
+            'seller_id.numeric' => 'El id del vendedor solo debe contener números (dev.request).',
+            'seller_id.exists' => 'El vendedor seleccionado no existe en la base de datos.',
 
             // Loan code messages
             'loan_code_number.required' => 'El código del préstamo es obligatorio.',

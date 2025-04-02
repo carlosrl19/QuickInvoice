@@ -49,7 +49,7 @@
                                             id="loan_payment_comment"></textarea>
                                         @error('loan_payment_comment')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                            {{ $message }}
                                         </span>
                                         @enderror
                                         <label for="loan_payment_comment">Comentarios <span

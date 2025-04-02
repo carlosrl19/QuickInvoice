@@ -12,7 +12,8 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "laraveldaily/laravel-charts": "^0.2.3",
-        "luecano/numero-a-letras": "^4.0"
+        "luecano/numero-a-letras": "^4.0",
+        "proengsoft/laravel-jsvalidation": "^4.10"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

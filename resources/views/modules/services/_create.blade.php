@@ -14,7 +14,7 @@
                                 <input type="text" maxlength="55" name="service_name" value="{{ old('service_name') }}" id="service_name" class="form-control @error('service_name') is-invalid @enderror" autocomplete="off" />
                                 @error('service_name')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="service_name">Nombre del servicio <span class="text-danger">*</span></label>
@@ -28,7 +28,7 @@
                                 <input type="text" maxlength="6" name="service_nomenclature" oninput="this.value = this.value.toLowerCase().replace(/[0-9]/g, '')" value="{{ old('service_nomenclature') }}" id="service_nomenclature" class="form-control @error('service_nomenclature') is-invalid @enderror" autocomplete="off" />
                                 @error('service_nomenclature')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="service_nomenclature">Nomenclatura del servicio <span class="text-danger">*</span></label>
@@ -45,7 +45,7 @@
                             </select>
                             @error('service_type')
                             <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
+                                {{ $message }}
                             </span>
                             @enderror
                         </div>
@@ -58,7 +58,7 @@
                                     name="service_description" rows="6" id="service_description" style="resize: none; height: 100px;">{{ old('service_description') }}</textarea>
                                 @error('service_description')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="service_description">Detalles de servicio</label>

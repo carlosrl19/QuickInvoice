@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <input type="number" name="sale_quantity[]" class="form-control quantity-input" min="1" value="1">
                 </td>
                 <td>
-                    <input type="number" name="sale_price[]" class="form-control price-input" step="0.01" min="0" value="${selectedService.dataset.price}">
+                    <input type="number" name="sale_price[]" class="form-control price-input" step="0.01" min="0" value="">
                     <input type="hidden" name="sale_subtotal[]" value="0.00">
                 </td>
                 <td class="subtotal" style="font-size: clamp(0.75rem, 3vw, 0.85rem)">L. 0.00</td>

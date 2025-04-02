@@ -52,7 +52,7 @@ Configuración
                                                     id="company_name" class="form-control @error('company_name') is-invalid @enderror" autocomplete="off" />
                                                 @error('company_name')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                                 <label for="company_name">Nombre empresa <span class="text-danger">*</span></label>
@@ -67,7 +67,7 @@ Configuración
                                                     id="company_cai" class="form-control @error('company_cai') is-invalid @enderror" autocomplete="off" />
                                                 @error('company_cai')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                                 <label for="company_cai">CAI empresa <span class="text-danger">*</span></label>
@@ -82,7 +82,7 @@ Configuración
                                                     id="company_rtn" class="form-control @error('company_rtn') is-invalid @enderror" autocomplete="off" />
                                                 @error('company_rtn')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                                 <label for="company_rtn">R.T.N empresa <span class="text-danger">*</span></label>
@@ -97,7 +97,7 @@ Configuración
                                                     id="company_phone" class="form-control @error('company_phone') is-invalid @enderror" autocomplete="off" />
                                                 @error('company_phone')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                                 <label for="company_phone">Teléfono empresa <span class="text-danger">*</span></label>
@@ -112,7 +112,7 @@ Configuración
                                                     id="company_email" class="form-control @error('company_email') is-invalid @enderror" autocomplete="off" />
                                                 @error('company_email')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                                 <label for="company_email">Email empresa <span class="text-danger">*</span></label>
@@ -134,7 +134,7 @@ Configuración
                                                     value="{{ $setting->company_address }}">
                                                 @error('company_address')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                                 <label for="company_address">Dirección completa empresa <span class="text-danger">*</span></label>
@@ -156,7 +156,7 @@ Configuración
                                                     value="{{ $setting->company_short_address }}">
                                                 @error('company_short_address')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                                 <label for="company_short_address">Dirección corta empresa <span class="text-danger">*</span></label>
@@ -185,7 +185,7 @@ Configuración
                                                     </select>
                                                     @error('show_system_name')
                                                     <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
+                                                        {{ $message }}
                                                     </span>
                                                     @enderror
                                                 </div>
@@ -209,7 +209,7 @@ Configuración
                                                         <label for="logo_company">Logo para reportes</label>
                                                         @error('logo_company')
                                                         <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
+                                                            {{ $message }}
                                                         </span>
                                                         @enderror
                                                     </div>
@@ -235,7 +235,7 @@ Configuración
                                                         <label for="system_icon">Icono del sistema</label>
                                                         @error('system_icon')
                                                         <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
+                                                            {{ $message }}
                                                         </span>
                                                         @enderror
                                                     </div>

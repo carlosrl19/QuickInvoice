@@ -111,4 +111,9 @@ Folios
 
 <!-- IMask.JS -->
 <script src="{{ Storage::url('customjs/imask/fiscal_folios/imask_fiscal_folios.js') }}"></script>
+
+<!-- Laravel Javascript validation -->
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\FiscalFolios\StoreRequest') !!}
+
 @endsection

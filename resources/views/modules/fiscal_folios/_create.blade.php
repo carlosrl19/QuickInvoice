@@ -20,7 +20,7 @@
                                     id="folio_authorized_range_start" class="form-control @error('folio_authorized_range_start') is-invalid @enderror" autocomplete="off" />
                                 @error('folio_authorized_range_start')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="folio_authorized_range_start">Rango inicio autorizado folio<span class="text-danger">*</span></label>
@@ -35,7 +35,7 @@
                                     id="folio_authorized_range_end" class="form-control @error('folio_authorized_range_end') is-invalid @enderror" autocomplete="off" />
                                 @error('folio_authorized_range_end')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="folio_authorized_range_end">Rango final autorizado folio<span class="text-danger">*</span></label>
@@ -46,26 +46,28 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" maxlength="19" oninput="this.value = this.value.replace(/\D/g, '')" name="folio_total_invoices" value="{{ old('folio_total_invoices') }}"
+                                <input type="text" readonly style="background-color: #ffffff !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
+                                    oninput="this.value = this.value.replace(/\D/g, '')" name="folio_total_invoices" value="{{ old('folio_total_invoices') }}"
                                     id="folio_total_invoices" class="form-control @error('folio_total_invoices') is-invalid @enderror" autocomplete="off" />
                                 @error('folio_total_invoices')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="folio_total_invoices">Total facturas autorizadas<span class="text-danger">*</span></label>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col d-none">
                             <div class="form-floating">
-                                <input type="text" maxlength="19" oninput="this.value = this.value.replace(/\D/g, '')" name="folio_total_invoices_available" value="{{ old('folio_total_invoices_available') }}"
+                                <input type="text" readonly style="background-color: #ffffff !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
+                                    oninput="this.value = this.value.replace(/\D/g, '')" name="folio_total_invoices_available" value="{{ old('folio_total_invoices_available') }}"
                                     id="folio_total_invoices_available" class="form-control @error('folio_total_invoices_available') is-invalid @enderror" autocomplete="off" />
                                 @error('folio_total_invoices_available')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
-                                <label for="folio_total_invoices_available">Total facturas autorizadas<span class="text-danger">*</span></label>
+                                <label for="folio_total_invoices_available">Total facturas disponibles<span class="text-danger">*</span></label>
                             </div>
                         </div>
                     </div>
@@ -81,7 +83,7 @@
                                     autocomplete="off" />
                                 @error('folio_authorized_emission_date')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="folio_authorized_emission_date">Fecha límite emisión <span class="text-danger">*</span></label>

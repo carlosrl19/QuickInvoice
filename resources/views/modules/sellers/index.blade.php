@@ -97,4 +97,8 @@ Vendedores
 <script src="{{ Storage::url('assets/js/plugin/datatables/datatables.min.js') }}"></script>
 <script src="{{ Storage::url('customjs/datatables/clients/dt_clients_index.js') }}"></script>
 
+<!-- Laravel Javascript validation -->
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\Sellers\StoreRequest', '#create_seller_form') !!}
+
 @endsection

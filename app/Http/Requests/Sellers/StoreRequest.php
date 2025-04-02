@@ -47,8 +47,8 @@ class StoreRequest extends FormRequest
             'seller_phone.unique' => 'El Nº teléfono ya existe.',
             'seller_phone.string' => 'El Nº teléfono solo debe contener números.',
             'seller_phone.regex' => 'El Nº teléfono no puede contener letras ni símbolos.',
-            'seller_phone.min' => 'El Nº teléfono debe contener al menos :min letras.',
-            'seller_phone.max' => 'El Nº teléfono no puede exceder :max caracteres.',
+            'seller_phone.min' => 'El Nº teléfono debe contener al menos :min números.',
+            'seller_phone.max' => 'El Nº teléfono no puede exceder :max números.',
         ];
     }
 }

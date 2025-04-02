@@ -76,7 +76,7 @@ Cotizaciones
                                             </select>
                                             @error('client_id')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                {{ $message }}
                                             </span>
                                             @enderror
                                         </div>
@@ -90,7 +90,7 @@ Cotizaciones
                                             </select>
                                             @error('seller_id')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                {{ $message }}
                                             </span>
                                             @enderror
                                         </div>
@@ -112,14 +112,14 @@ Cotizaciones
                                                 </button>
                                                 @error('service_id')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-xl-6 col-lg-6 col-sm-12 col-xs-12" id="service_select_container">
-                                            <label for="service_id">Fecha de vencimiento <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control" name="quote_expiration_date" id="quote_expiration_date" min="{{ Carbon\Carbon::now()->addWeek()->format('Y-m-d') }}">
+                                        <div class="col-xl-6 col-lg-6 col-sm-12 col-xs-12">
+                                            <label for="quote_expiration_date">Fecha de vencimiento <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control @error('quote_expiration_date') is-invalid @enderror" name="quote_expiration_date" id="quote_expiration_date" min="{{ Carbon\Carbon::now()->addWeek()->format('Y-m-d') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -186,7 +186,7 @@ Cotizaciones
                                             </select>
                                             @error('quote_type')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                {{ $message }}
                                             </span>
                                             @enderror
                                         </div>
@@ -232,6 +232,10 @@ Cotizaciones
 <!-- Tomselect -->
 <script src="{{ Storage::url('assets/js/plugin/tomselect/tom-select.complete.js') }}"></script>
 <script src="{{ Storage::url('customjs/tomselect/ts_init.js') }}"></script>
+
+<!-- Laravel Javascript validation -->
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\Quotes\StoreRequest') !!}
 
 <!-- Venta exenta checkbox -->
 <script src="{{ Storage::url('customjs/quotes/checkbox_exempt_tax.js') }}"></script>

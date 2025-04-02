@@ -109,6 +109,8 @@ class LoanPaymentsController extends Controller
                 'loan_quote_payment_status' => 1, // Pagado
                 'loan_quote_payment_comment' => 'Cuota pagada',
                 'loan_quote_payment_mode' => $request->input('loan_quote_payment_mode'),
+                'card_last_digits' => $request->input('card_last_digits'),
+                'card_auth_number' => $request->input('card_auth_number'),
                 'loan_quote_payment_received' => $request->input('loan_quote_payment_received'),
                 'loan_quote_payment_change' => $request->input('loan_quote_payment_change'),
                 'updated_at' => $this->getTodayDate(),

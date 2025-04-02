@@ -74,7 +74,7 @@ POS
                                             </select>
                                             @error('client_id')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                {{ $message }}
                                             </span>
                                             @enderror
                                         </div>
@@ -88,7 +88,7 @@ POS
                                             </select>
                                             @error('seller_id')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                {{ $message }}
                                             </span>
                                             @enderror
                                         </div>
@@ -108,7 +108,7 @@ POS
                                                 </button>
                                                 @error('service_id')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                             </div>
@@ -172,7 +172,7 @@ POS
                                             </select>
                                             @error('sale_type')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                {{ $message }}
                                             </span>
                                             @enderror
                                         </div>
@@ -188,7 +188,7 @@ POS
                                                     <label for="exempt_purchase_order_correlative">Nº Correlativo orden de compra exenta <span class="text-danger">*</span></label>
                                                     @error('exempt_purchase_order_correlative')
                                                     <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
+                                                        {{ $message }}
                                                     </span>
                                                     @enderror
                                                 </div>
@@ -202,7 +202,7 @@ POS
                                                     <label for="exonerated_certificate">Nº Correlativo orden de constancia registro exonerado <span class="text-danger">*</span></label>
                                                     @error('exonerated_certificate')
                                                     <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
+                                                        {{ $message }}
                                                     </span>
                                                     @enderror
                                                 </div>
@@ -220,7 +220,7 @@ POS
                                             </select>
                                             @error('sale_payment_type')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                {{ $message }}
                                             </span>
                                             @enderror
                                         </div>
@@ -242,7 +242,7 @@ POS
                                                 <input type="number" min="0" name="sale_payment_received" value="" id="sale_payment_received" class="form-control" autocomplete="off" />
                                                 @error('sale_payment_received')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                                 <label for="sale_payment_received">Recibido <span class="text-danger">*</span></label>
@@ -257,7 +257,7 @@ POS
                                                     readonly name="sale_payment_change" min="0" id="sale_payment_change" class="form-control" autocomplete="off" />
                                                 @error('sale_payment_change')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    {{ $message }}
                                                 </span>
                                                 @enderror
                                                 <label for="sale_payment_change">Cambio <span class="text-danger">*</span></label>
@@ -294,6 +294,10 @@ POS
 <!-- Tomselect -->
 <script src="{{ Storage::url('assets/js/plugin/tomselect/tom-select.complete.js') }}"></script>
 <script src="{{ Storage::url('customjs/tomselect/ts_init.js') }}"></script>
+
+<!-- Laravel Javascript validation -->
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\Pos\StoreExoneratedRequest') !!}
 
 <!-- Script para manejar la lógica -->
 <script src="{{ Storage::url('customjs/pos/pos_creation_exonerated.js') }}"></script>

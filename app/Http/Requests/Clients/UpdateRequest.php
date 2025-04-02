@@ -75,7 +75,7 @@ class UpdateRequest extends FormRequest
             'client_phone1.unique' => 'El Nº teléfono principal ya existe.',
             'client_phone1.string' => 'El Nº teléfono principal solo debe contener números.',
             'client_phone1.regex' => 'El Nº teléfono principal no puede contener letras ni símbolos.',
-            'client_phone1.min' => 'El Nº teléfono principal debe contener al menos :min letras.',
+            'client_phone1.min' => 'El Nº teléfono principal debe contener al menos :min caracteres.',
             'client_phone1.max' => 'El Nº teléfono principal no puede exceder :max caracteres.',
 
             // Client phone2 messages

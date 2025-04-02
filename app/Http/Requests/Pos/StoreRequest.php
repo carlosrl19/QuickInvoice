@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Pos;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class StoreRequest extends FormRequest
 {
@@ -25,15 +26,15 @@ class StoreRequest extends FormRequest
             'exempt_purchase_order_correlative' => 'nullable|string|min:12|max:12|unique:pos,exempt_purchase_order_correlative',
             'exonerated_certificate' => 'nullable|string|min:11|max:11|unique:pos,exonerated_certificate',
             'folio_invoice_number' => 'required|string|min:19|max:19|unique:pos,folio_invoice_number',
-            'sale_total_amount' => 'required|numeric|min:0.01',
+            'sale_total_amount' => 'required|numeric|min:1',
             'sale_discount' => 'required|numeric|min:0|max:100',
             'sale_tax' => 'required|numeric|min:0|max:100',
-            'sale_payment_received' => 'required|numeric|min:0.01|gte:sale_total_amount',
+            'sale_payment_received' => 'required|numeric|min:1|gte:sale_total_amount',
             'sale_payment_type' => 'required|numeric|in:1,2,3',
             'sale_payment_change' => 'required|numeric|min:0',
 
             // POS Details
-            'service_id' => 'required|array',
+            'service_id' => 'nullable|array', // Nullable porque JSValidator no capturaba los service_id enviados, por qué?
             'service_id.*' => 'integer|exists:services,id',
             'sale_details' => 'required|array',
             'sale_details.*' => 'string',
@@ -109,7 +110,7 @@ class StoreRequest extends FormRequest
             'sale_payment_received.required' => 'El pago de la venta es obligatorio.',
             'sale_payment_received.numeric' => 'El pago de la venta debe ser un número.',
             'sale_payment_received.min' => 'El pago de la venta debe ser al menos L. :min',
-            'sale_payment_received.gte' => 'El pago de la venta debe ser mayor o igual a :min',
+            'sale_payment_received.gte' => 'El pago de la venta debe ser mayor o igual al valor de la venta.',
 
             // Sale payment messages
             'sale_payment_type.required' => 'El tipo de pago es obligatorio.',

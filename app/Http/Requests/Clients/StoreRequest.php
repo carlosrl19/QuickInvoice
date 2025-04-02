@@ -28,7 +28,7 @@ class StoreRequest extends FormRequest
             'client_last_job' => 'nullable|string|min:3|max:55|regex:/^[^\d]+$/',
             'client_email' => 'nullable|email|min:3|max:55|unique:clients',
             'client_own_business' => 'nullable|numeric|in:0,1',
-            'client_exonerated' => 'nullable|numeric|in:0,1',
+            'client_exonerated' => 'required|numeric|in:0,1',
             'client_status' => 'nullable|numeric|in:0,1',
             'client_address' => 'nullable|string|min:3|max:155',
         ];
@@ -73,7 +73,7 @@ class StoreRequest extends FormRequest
             'client_phone1.unique' => 'El Nº teléfono principal ya existe.',
             'client_phone1.string' => 'El Nº teléfono principal solo debe contener números.',
             'client_phone1.regex' => 'El Nº teléfono principal no puede contener letras ni símbolos.',
-            'client_phone1.min' => 'El Nº teléfono principal debe contener al menos :min letras.',
+            'client_phone1.min' => 'El Nº teléfono principal debe contener al menos :min caracteres.',
             'client_phone1.max' => 'El Nº teléfono principal no puede exceder :max caracteres.',
 
             // Client phone2 messages
@@ -123,6 +123,7 @@ class StoreRequest extends FormRequest
             'client_email.max' => 'El email no puede exceder :max caracteres.',
 
             // Client exonerated messages
+            'client_exonerated.required' => 'El exonerado es obligatorio.',
             'client_exonerated.numeric' => 'El exonerado debe ser numérico.',
             'client_exonerated.in' => 'El exonerado solo puede ser 0: Sin exonerar o 1: Exonerado.',
 

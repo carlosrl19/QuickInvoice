@@ -27,6 +27,8 @@ return new class extends Migration
             $table->integer('loan_quote_payment_status')->default(0); // 0: Pendiente, 1: Pagado, 2: Atrasado
             
             $table->integer('loan_quote_payment_mode'); // 1: Efectivo, 2: Cheque, 3: Depósito, 4: Dólar, 5: Tarjeta
+            $table->string('card_last_digits', 4)->nullable(); // Solo si se usa Tarjeta como loan_quote_payment_mode
+            $table->string('card_auth_number', 12)->nullable(); // Solo si se usa Tarjeta como loan_quote_payment_mode
             $table->decimal('loan_quote_payment_received', 10,2);
             $table->decimal('loan_quote_payment_change', 10,2);
             $table->timestamps();

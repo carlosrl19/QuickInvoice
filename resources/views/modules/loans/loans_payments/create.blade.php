@@ -162,7 +162,7 @@ Créditos vigentes
                         <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12">
                             <div class="row mb-3">
                                 <div class="col">
-                                    <select class="tom-select" id="loan_quote_payment_mode_select" name="loan_quote_payment_mode">
+                                    <select class="tom-select @error('loan_quote_payment_mode') is-invalid @enderror" id="loan_quote_payment_mode_select" name="loan_quote_payment_mode">
                                         <option value="" selected disabled>Seleccione el método de pago</option>
                                         <option value="1" {{ old('loan_quote_payment_mode') == '1' ? 'selected':'' }}>Efectivo HNL</option>
                                         <option value="2" {{ old('loan_quote_payment_mode') == '2' ? 'selected':'' }}>Cheque HNL(X)</option>
@@ -170,12 +170,22 @@ Créditos vigentes
                                         <option value="4" {{ old('loan_quote_payment_mode') == '4' ? 'selected':'' }}>Dólar(X)</option>
                                         <option value="5" {{ old('loan_quote_payment_mode') == '5' ? 'selected':'' }}>Tarjeta HNL</option>
                                     </select>
+                                    @error('loan_quote_payment_mode')
+                                    <span class="invalid-feedback" role="alert">
+                                        {{ $message }}
+                                    </span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col">
                                     <div class="form-floating">
-                                        <input type="number" class="form-control" step="any" name="loan_quote_payment_received" id="loan_quote_payment_received" value="{{ old('loan_quote_payment_received') ?? 0 }}" oninput="calcularCambio()">
+                                        <input type="number" class="form-control @error('loan_quote_payment_received') is-invalid @enderror" step="any" name="loan_quote_payment_received" id="loan_quote_payment_received" value="{{ old('loan_quote_payment_received') ?? 0 }}" oninput="calcularCambio()">
+                                        @error('loan_quote_payment_received')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                        @enderror
                                         <label for="loan_quote_payment_received">Recibido <span class="text-danger">*</span></label>
                                     </div>
                                 </div>
@@ -217,13 +227,23 @@ Créditos vigentes
                                 <div class="row mb-3">
                                     <div class="col">
                                         <div class="form-floating">
-                                            <input type="text" oninput="this.value = this.value.replace(/\D/g, '')" class="form-control" value="" minlength="4" maxlength="4" name="card_last_digits" id="card_last_digits">
+                                            <input type="text" oninput="this.value = this.value.replace(/\D/g, '')" class="form-control @error('card_last_digits') is-invalid @enderror" value="" minlength="4" maxlength="4" name="card_last_digits" id="card_last_digits">
+                                            @error('card_last_digits')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                            @enderror
                                             <label for="card_last_digits" style="z-index: 5">Ultimos 4 digitos (X)<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')" value="" minlength="6" maxlength="12" name="card_auth_number" id="card_auth_number">
+                                            <input type="text" class="form-control @error('card_auth_number') is-invalid @enderror" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')" value="" minlength="6" maxlength="12" name="card_auth_number" id="card_auth_number">
+                                            @error('card_auth_number')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                            @enderror
                                             <label for="card_auth_number" style="z-index: 5">Nº autorización (X)<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
@@ -233,7 +253,12 @@ Créditos vigentes
                             <div class="row mb-3">
                                 <div class="col">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" name="loan_quote_payment_change" id="loan_quote_payment_change" value="{{ old('loan_quote_payment_change') ?? 0 }}" style="background-color: #ffffff !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" readonly>
+                                        <input type="text" class="form-control @error('loan_quote_payment_change') is-invalid @enderror" name="loan_quote_payment_change" id="loan_quote_payment_change" value="{{ old('loan_quote_payment_change') ?? 0 }}" style="background-color: #ffffff !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" readonly>
+                                        @error('loan_quote_payment_change')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                        @enderror
                                         <label for="loan_quote_payment_change">Cambio</label>
                                     </div>
                                 </div>

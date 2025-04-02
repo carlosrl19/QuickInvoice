@@ -84,8 +84,8 @@
                             class="avatar-img rounded-circle" />
                     </div>
                     <span class="profile-username">
-                        <span class="op-7">Hi,</span>
-                        <span class="fw-bold">Hizrian</span>
+                        <span class="op-7">Hola,</span>
+                        <span class="fw-bold text-muted">Usuario (X)</span>
                     </span>
                 </a>
                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -99,23 +99,15 @@
                                         class="avatar-img rounded" />
                                 </div>
                                 <div class="u-text">
-                                    <h4>Hizrian</h4>
+                                    <h4>Usuario (X)</h4>
                                     <p class="text-muted">hello@example.com</p>
-                                    <a
-                                        href="profile.html"
-                                        class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                    <a href="/" class="btn btn-xs btn-secondary btn-sm">Ver perfil</a>
                                 </div>
                             </div>
                         </li>
                         <li>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">My Profile</a>
-                            <a class="dropdown-item" href="#">My Balance</a>
-                            <a class="dropdown-item" href="#">Inbox</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Account Setting</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Logout</a>
+                            <a class="dropdown-item" href="#">Cerrar sesión</a>
                         </li>
                     </div>
                 </ul>

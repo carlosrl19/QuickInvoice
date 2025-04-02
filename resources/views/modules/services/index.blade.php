@@ -107,4 +107,8 @@ Servicios
 <script src="{{ Storage::url('assets/js/plugin/datatables/datatables.min.js') }}"></script>
 <script src="{{ Storage::url('customjs/datatables/services/dt_services_index.js') }}"></script>
 
+<!-- Laravel Javascript validation -->
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\Services\StoreRequest', '#create_service_form') !!}
+
 @endsection

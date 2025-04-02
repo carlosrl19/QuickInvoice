@@ -33,7 +33,7 @@ class StoreExoneratedRequest extends FormRequest
             'sale_payment_change' => 'required|numeric|min:0',
 
             // POS Details
-            'service_id' => 'required|array',
+            'service_id' => 'nullable|array', // Nullable porque JSValidator no capturaba los service_id enviados, por qué?
             'service_id.*' => 'integer|exists:services,id',
             'sale_details' => 'required|array',
             'sale_details.*' => 'string',

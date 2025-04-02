@@ -55,7 +55,7 @@ Clientes
                             </select>
                             @error('client_type')
                             <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
+                                {{ $message }}
                             </span>
                             @enderror
                         </div>
@@ -67,7 +67,7 @@ Clientes
                             </select>
                             @error('client_status')
                             <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
+                                {{ $message }}
                             </span>
                             @enderror
                         </div>
@@ -82,7 +82,7 @@ Clientes
                             </select>
                             @error('client_exonerated')
                             <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
+                                {{ $message }}
                             </span>
                             @enderror
                         </div>
@@ -105,7 +105,7 @@ Clientes
                                     id="client_name" class="form-control @error('client_name') is-invalid @enderror" autocomplete="off" />
                                 @error('client_name')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="client_name">Nombre del cliente <span class="text-danger">*</span></label>
@@ -121,7 +121,7 @@ Clientes
                                     class="form-control @error('client_document') is-invalid @enderror" autocomplete="off" />
                                 @error('client_document')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="client_document">Nº documento <span class="text-danger">*</span></label>
@@ -134,7 +134,7 @@ Clientes
                                     class="form-control @error('client_phone1') is-invalid @enderror" autocomplete="off">
                                 @error('client_phone1')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="client_phone1">Nº teléfono 1 <span class="text-danger">*</span></label>
@@ -149,7 +149,7 @@ Clientes
                                     class="form-control @error('client_phone2') is-invalid @enderror" autocomplete="off">
                                 @error('client_phone2')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="client_phone2">Nº teléfono 2</label>
@@ -163,7 +163,7 @@ Clientes
                                     class="form-control @error('client_email') is-invalid @enderror" autocomplete="off">
                                 @error('client_email')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="client_email">Email</label>
@@ -193,7 +193,7 @@ Clientes
                                     class="form-control @error('client_birthdate') is-invalid @enderror" autocomplete="off">
                                 @error('client_birthdate')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="client_birthdate">Fecha nacimiento</label>
@@ -206,7 +206,7 @@ Clientes
                                     class="form-control @error('client_phone_home') is-invalid @enderror" autocomplete="off">
                                 @error('client_phone_home')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="client_phone_home">Teléfono casa</label>
@@ -222,7 +222,7 @@ Clientes
                                     id="client_actual_job" class="form-control @error('client_actual_job') is-invalid @enderror" autocomplete="off" />
                                 @error('client_actual_job')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="client_actual_job">Nombre trabajo actual</label>
@@ -235,7 +235,7 @@ Clientes
                                     id="client_last_job" class="form-control @error('client_last_job') is-invalid @enderror" autocomplete="off" />
                                 @error('client_last_job')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="client_last_job">Nombre trabajo anterior</label>
@@ -251,7 +251,7 @@ Clientes
                                     class="form-control @error('client_job_length') is-invalid @enderror" autocomplete="off">
                                 @error('client_job_length')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="client_job_length">Antiguedad laboral (meses)</label>
@@ -264,7 +264,7 @@ Clientes
                                     class="form-control @error('client_phone_work') is-invalid @enderror" autocomplete="off">
                                 @error('client_phone_work')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="client_phone_work">Teléfono trabajo</label>
@@ -281,7 +281,7 @@ Clientes
                             </select>
                             @error('client_own_business')
                             <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
+                                {{ $message }}
                             </span>
                             @enderror
                         </div>
@@ -295,7 +295,7 @@ Clientes
                                     name="client_address" rows="6" id="client_address" style="resize: none;">{{ $client->client_address }}</textarea>
                                 @error('client_address')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="client_address">Domicilio</label>

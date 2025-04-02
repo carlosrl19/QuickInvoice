@@ -152,9 +152,14 @@ class PosController extends Controller
         $sale_type_selected = $request->input('sale_type');
         $correlative1 = $request->input('exempt_purchase_order_correlative');
         $correlative2 = $request->input('exonerated_certificate');
+        $services = $request->input('service_id');
 
         if (!$folio) {
             return redirect()->back()->with('error', 'No hay ningún folio fiscal en uso actualmente.');
+        }
+
+        if (!$services) {
+            return redirect()->back()->with('error', 'Debe seleccionar algún servicio para realizar la venta.');
         }
 
         if ($folio->folio_total_invoices_available === 0) {

@@ -15,7 +15,7 @@
                                 <input type="text" maxlength="55" name="seller_name" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ\s]/g, '')" value="{{ $seller->seller_name }}" id="seller_name" class="form-control @error('seller_name') is-invalid @enderror" autocomplete="off" />
                                 @error('seller_name')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="seller_name">Nombre del vendedor <span class="text-danger">*</span></label>
@@ -29,7 +29,7 @@
                                 <input type="text" oninput="this.value = this.value.toUpperCase().replace(/\D/g, '')" name="seller_document" maxlength="13" minlength="8" value="{{ $seller->seller_document }}" id="seller_document" class="form-control @error('seller_document') is-invalid @enderror" autocomplete="off" />
                                 @error('seller_document')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="seller_document">Nº identidad <span class="text-danger">*</span></label>
@@ -43,7 +43,7 @@
                                 <input type="text" oninput="this.value = this.value.replace(/\D/g, '')" minlength="8" maxlength="8" name="seller_phone" value="{{ $seller->seller_phone }}" id="seller_phone" class="form-control @error('seller_phone') is-invalid @enderror" autocomplete="off">
                                 @error('seller_phone')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    {{ $message }}
                                 </span>
                                 @enderror
                                 <label for="seller_phone">Nº teléfono <span class="text-danger">*</span></label>

@@ -29,7 +29,7 @@ class StoreExoneratedRequest extends FormRequest
             'quote_answer' => 'required|string|min:3|max:55',
 
             // Quote Details
-            'service_id' => 'required|array',
+            'service_id' => 'nullable|array', // Nullable porque JSValidator no capturaba los service_id enviados, por qué?
             'service_id.*' => 'integer|exists:services,id',
             'quote_details' => 'required|array',
             'quote_details.*' => 'string',
@@ -114,10 +114,10 @@ class StoreExoneratedRequest extends FormRequest
             'quote_quantity.*.min' => 'Cada cantidad de la cotización debe ser al menos L. :min',
 
             // quote_price messages
-            'quote_price.required' => 'El precio de la cotización es obligatorio.',
-            'quote_price.array' => 'El precio de la cotización debe ser un arreglo.',
-            'quote_price.*.numeric' => 'Cada precio de la cotización debe ser un número.',
-            'quote_price.*.min' => 'Cada precio de la cotización debe ser al menos L. :min',
+            'quote_price.required' => 'El precio es obligatorio.',
+            'quote_price.array' => 'El precio debe ser un arreglo.',
+            'quote_price.*.numeric' => 'Cada precio debe ser un número.',
+            'quote_price.*.min' => 'Cada precio debe ser al menos L. :min',
 
             // quote_subtotal messages
             'quote_subtotal.required' => 'El subtotal de la cotización es obligatorio.',
