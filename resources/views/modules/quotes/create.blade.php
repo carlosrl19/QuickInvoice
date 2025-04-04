@@ -62,6 +62,7 @@ Cotizaciones
                     <input type="hidden" name="quote_total_amount" id="quote_total_amount" value="0"> <!-- Controller get this -->
                     <input type="hidden" name="quote_isv_amount" id="quote_isv_amount" value="0"> <!-- Controller get this -->
                     <input type="hidden" id="quote_exempt_tax" name="quote_exempt_tax"> <!-- Controller get this -->
+                    <input type="hidden" id="quote_status" name="quote_status" value="0"> <!-- Controller get this -->
                     <input type="hidden" id="quote_answer" name="quote_answer" value="xxx"> <!-- Controller get this -->
 
                     <div class="row">

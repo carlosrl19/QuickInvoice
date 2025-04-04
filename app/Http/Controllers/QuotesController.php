@@ -23,6 +23,15 @@ class QuotesController extends Controller
     public function index()
     {
         $quotes = Quotes::get();
+
+        // Revisar cotizaciones y pasar las vencidas a estado 4
+        Quotes::where('quote_status', 0)
+            ->where('quote_expiration_date', '<', Carbon::now())
+            ->update([
+                'quote_status' => 4,
+                'quote_answer' => 'COTIZACIÓN VENCIDA',
+            ]);
+
         return view('modules.quotes.index', compact('quotes'));
     }
 
@@ -72,6 +81,7 @@ class QuotesController extends Controller
                 'quote_tax' => $request->input('quote_tax'),
                 'quote_isv_amount' => $request->input('quote_isv_amount'),
                 'quote_expiration_date' => $request->input('quote_expiration_date'),
+                'quote_status' => 0,
                 'quote_answer' => 'Respuesta en espera',
                 'created_at' => $this->getTodayDate(),
                 'updated_at' => $this->getTodayDate(),
@@ -142,6 +152,7 @@ class QuotesController extends Controller
                 'quote_tax' => $request->input('quote_tax'),
                 'quote_isv_amount' => $request->input('quote_isv_amount'),
                 'quote_expiration_date' => $request->input('quote_expiration_date'),
+                'quote_status' => 0,
                 'quote_answer' => 'Respuesta en espera.',
                 'created_at' => $this->getTodayDate(),
                 'updated_at' => $this->getTodayDate(),
@@ -176,9 +187,25 @@ class QuotesController extends Controller
         }
     }
 
-    public function update(UpdateRequest $request, Quotes $quotes)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+        $quote = Quotes::findOrFail($id);
+
+        try {
+            //Required data
+            $quote->quote_status = $request->input('quote_status');
+            $quote->quote_answer = $request->input('quote_answer');
+            $quote->update($request->all());
+
+            SystemLogs::create([
+                'module_log' => 'Cotizaciones',
+                'log_description' => 'Estado de la cotización ' . $quote->quote_code . ' a ' . $request->input('quote_status') . '.'
+            ]);
+
+            return redirect()->route("quotes.index")->with("success", "Registro actualizado exitosamente.");
+        } catch (\Exception $e) {
+            return back()->with("error", "Ocurrió un error al crear el registro.")->withInput()->withErrors($e->getMessage());
+        }
     }
 
     /**

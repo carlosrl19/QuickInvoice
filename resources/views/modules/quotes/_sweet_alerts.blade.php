@@ -1,6 +1,7 @@
 <!-- JQuery -->
 <script src="{{ Storage::url('assets/js/core/jquery-3.7.1.min.js') }}"></script>
 
+<!-- Quote form clear -->
 <script>
     document.getElementById('quote_clear').addEventListener('click', function() {
         Swal.fire({

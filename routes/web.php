@@ -2,15 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Rutas principales
-Route::get('/', function () {
-    return view('modules.dashboard.index');
-});
-
-Route::get('dashboard', function () {
-    return view('modules.dashboard.index');
-});
-
 // Rutas de clientes
 Route::resource('clients', 'App\Http\Controllers\ClientsController')->names('clients');
 

@@ -47,7 +47,7 @@ Configuración
                                 @else
                                 <a class="text-muted mb-3" href="{{ route('settings.edit', App\Models\Settings::first()) }}"
                                     title="Configurar información de la empresa, logos del sistema y reportes." data-bs-toggle="tooltip" data-bs-placement="right">
-                                    <x-heroicon-o-check-circle style="width: 20px; height: 20px; color: green" />
+                                    <x-heroicon-o-check-circle style="width: 20px; height: 20px; color: green" class="me-2" />
                                     1. Configuración general
                                 </a>
                                 @endif
@@ -74,11 +74,16 @@ Configuración
                                 @else
                                 <a class="text-muted mb-3" href="{{ route('fiscalfolio.index') }}"
                                     title="Ver o agregar folios fiscales disponibles en el sistema." data-bs-toggle="tooltip" data-bs-placement="right">
-                                    <x-heroicon-o-check-circle style="width: 20px; height: 20px; color: green" />
+                                    <x-heroicon-o-check-circle style="width: 20px; height: 20px; color: green" class="me-2" />
                                     2. Folios
                                 </a>
                                 @endif
                                 <hr>
+                                <a class="text-muted mb-3" href="{{ route('logs.index') }}"
+                                    title="Ver los registros del sistema." data-bs-toggle="tooltip" data-bs-placement="right">
+                                    <x-heroicon-o-server-stack style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                                    3. Logs
+                                </a>
                             </div>
                         </div>
                     </div>

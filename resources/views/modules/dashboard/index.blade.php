@@ -4,86 +4,25 @@
 Dashboard
 @endsection
 
+@section('breadcrumb')
+<ul class="breadcrumbs mb-1 op-4">
+    <li class="nav-home">
+        <a href="#">
+            <i class="icon-home"></i>
+        </a>
+    </li>
+    <li class="separator">
+        <i class="icon-arrow-right"></i>
+    </li>
+    <li class="nav-item d-none d-xl-inline d-lg-inline">
+        <a href="#">Panel administrador</a>
+    </li>
+</ul>
+@endsection
+
 @section('content')
 
-@php
-use App\Models\Clients;
-use App\Models\Loans;
-use App\Models\Pos;
-use App\Models\PosDetails;
-use App\Models\SystemLogs;
-use App\Models\Quotes;
-use LaravelDaily\LaravelCharts\Classes\LaravelChart;
-use Carbon\Carbon;
-
-$colorsList = ['secondary', 'success', 'info', 'warning', 'danger', 'primary', 'black'];
-
-// Clients
-$clients_counter = Clients::count();
-$newClientsThisMonth = Clients::whereMonth('created_at', Carbon::now()->month)
-->whereYear('created_at', Carbon::now()->year)
-->count();
-
-// Quotes
-$newQuotesThisMonth = Quotes::whereMonth('created_at', Carbon::now()->month)
-->whereYear('created_at', Carbon::now()->year)
-->count();
-$newQuotesThisMonthSum = Quotes::whereMonth('created_at', Carbon::now()->month)
-->whereYear('created_at', Carbon::now()->year)
-->sum('quote_total_amount');
-
-// Sales
-$pos_counter = Pos::whereMonth('created_at', Carbon::now()->month)->count();
-$pos_counter_amount_sum = PosDetails::whereMonth('created_at', Carbon::now()->month)
-->sum('sale_price');
-
-// Sale charts
-$chart_actual_month = [
-'chart_title' => 'Ventas por día',
-'report_type' => 'group_by_date',
-'model' => 'App\Models\Pos',
-'group_by_field' => 'created_at',
-'group_by_period' => 'day',
-'chart_type' => 'line',
-'aggregate_function' => 'sum', // Función para sumar los valores
-'aggregate_field' => 'sale_total_amount', // Campo a sumar
-'aggregate_transform' => function($value) {
-return round($value / 100, 2);
-},
-'filter_field' => 'created_at',
-'filter_period' => 'month',
-'continuous_time' => true,
-'chart_color' => '54,116,181',
-];
-
-$chart_actual_year = [
-'chart_title' => 'Ventas por mes',
-'report_type' => 'group_by_date',
-'model' => 'App\Models\Pos',
-'group_by_field' => 'created_at',
-'group_by_period' => 'month',
-'chart_type' => 'bar',
-'aggregate_function' => 'sum', // Función para sumar los valores
-'aggregate_field' => 'sale_total_amount', // Campo a sumar
-'filter_field' => 'created_at',
-'chart_color' => '153,188,133',
-];
-
-$chart_sales_actual_month = new LaravelChart($chart_actual_month);
-$chart_sales_actual_year = new LaravelChart($chart_actual_year);
-
-// Loans
-$loans_counter = Loans::whereMonth('created_at', Carbon::now()->month)->count();
-$loan_counter_amount_sum = Loans::whereMonth('created_at', Carbon::now()->month)
-->sum('loan_amount');
-
-// Logs
-$newLogsThisMonth = SystemLogs::whereMonth('created_at', Carbon::now()->month)
-->whereYear('created_at', Carbon::now()->year)
-->get();
-
-@endphp
-
+<!-- Información general I -->
 <div class="row row-card-no-pd">
     <!-- Ventas del mes actual -->
     <div class="col-12 col-sm-6 col-md-6 col-xl-3 mb-3">
@@ -92,7 +31,7 @@ $newLogsThisMonth = SystemLogs::whereMonth('created_at', Carbon::now()->month)
                 <div class="d-flex justify-content-between">
                     <div>
                         <h1 class="text-white fw-bold">
-                            {{ $pos_counter }} ventas
+                            {{ $pos_counter_actual_month }} ventas
                             <small>( L. {{ number_format($pos_counter_amount_sum,2) }})</small>
                         </h1>
                         <h6 class="text-white"><b>Ventas del mes</b></h6>
@@ -164,12 +103,55 @@ $newLogsThisMonth = SystemLogs::whereMonth('created_at', Carbon::now()->month)
     </div>
 </div>
 
+<!-- Información general II -->
+<div class="row">
+    <!-- Ventas del día -->
+    <div class="col-12 col-sm-4 col-md-4 col-xl-3 mb-3">
+        <div class="card">
+            <div class="card-body pb-0">
+                <div class="h5 fw-bold float-end text-primary op-3 text-capitalize">
+                    <x-heroicon-o-cursor-arrow-ripple style="width: 80px; height: 100%; color: rgba(0,0,0,0.2)" />
+                </div>
+                <h2 class="mb-2">{{ $pos_counter_actual_day }}</h2>
+                <p class="text-muted">Ventas del día / <span class="op-5 text-primary">{{ $todayDate }}</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cotizaciones activas actualmente -->
+    <div class="col-12 col-sm-4 col-md-4 col-xl-3 mb-3">
+        <div class="card">
+            <div class="card-body pb-0">
+                <div class="h5 fw-bold float-end text-primary op-3">
+                    <x-heroicon-o-document-text style="width: 80px; height: 100%; color: rgba(0,0,0,0.2)" />
+                </div>
+                <h2 class="mb-2">{{ $activeQuotes }}</h2>
+                <p class="text-muted">Cotizaciones activas / <span class="op-5 text-capitalize text-primary">{{ $actualMonth }}</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Créditos activos actualmente -->
+    <div class="col-12 col-sm-4 col-md-4 col-xl-3 mb-3">
+        <div class="card">
+            <div class="card-body pb-0">
+                <div class="h5 fw-bold float-end text-primary op-3">
+                    <x-heroicon-o-document-duplicate style="width: 80px; height: 100%; color: rgba(0,0,0,0.2)" />
+                </div>
+                <h2 class="mb-2">{{ $loans_active_counter }}</h2>
+                <p class="text-muted">Créditos activos / <span class="op-5 text-uppercase text-primary">L. {{ number_format($loan_active_amount_sum,2) }}</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ventas -->
 <div class="row">
     <!-- Ventas del mes actual -->
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Ventas del mes <small>({{ $pos_counter }})</small></div>
+                <div class="card-title">Ventas del mes <small>({{ $pos_counter_actual_month }})</small></div>
             </div>
             <div class="card-body">
                 {!! $chart_sales_actual_month->renderHtml() !!}
@@ -181,7 +163,7 @@ $newLogsThisMonth = SystemLogs::whereMonth('created_at', Carbon::now()->month)
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Ventas del año</div>
+                <div class="card-title">Ventas del año <small>({{ $pos_counter_year }})</small></div>
             </div>
             <div class="card-body">
                 {!! $chart_sales_actual_year->renderHtml() !!}
@@ -190,13 +172,14 @@ $newLogsThisMonth = SystemLogs::whereMonth('created_at', Carbon::now()->month)
     </div>
 </div>
 
+<!-- Actividades recientes -->
 <div class="row">
     <!-- Actividades recientes del mes actual -->
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
                 <div class="card-head-row">
-                    <div class="card-title">Actividad reciente <small>({{ SystemLogs::count() }})</small></div>
+                    <div class="card-title">Actividad reciente <small>({{ $new_logs_actual_month_counter }})</small></div>
                     <div class="card-tools">
                         <ul class="nav nav-pills nav-secondary nav-pills-no-bd nav-sm" id="pills-tab" role="tablist">
                             <li class="nav-item">
@@ -209,7 +192,7 @@ $newLogsThisMonth = SystemLogs::whereMonth('created_at', Carbon::now()->month)
                 </div>
             </div>
             <div class="card-body" style="max-height: 38rem; overflow: auto;">
-                @forelse($newLogsThisMonth as $index => $log)
+                @forelse($new_logs_actual_month as $index => $log)
                 <div class="d-flex">
                     <div class="avatar avatar-online">
                         <span class="avatar-title rounded-circle border border-white bg-{{ $colorsList[array_rand($colorsList)] }}">
@@ -220,13 +203,13 @@ $newLogsThisMonth = SystemLogs::whereMonth('created_at', Carbon::now()->month)
                         <h6 class="text-uppercase fw-bold mb-1">
                             {{ $log->module_log }}
                             <span class="text-muted op-5 ps-3">
-                                <small>{{ Carbon::parse($log->created_at)->setTimezone('America/Costa_Rica')->locale('es')->translatedFormat('d F')  }}</small>
+                                <small>{{ Carbon\Carbon::parse($log->created_at)->setTimezone('America/Costa_Rica')->locale('es')->translatedFormat('d F')  }}</small>
                             </span>
                         </h6>
                         <span class="text-muted">{{ $log->log_description }}</span>
                     </div>
                     <div class="float-end pt-1">
-                        <small class="text-muted">{{ Carbon::parse($log->created_at)->setTimezone('America/Costa_Rica')->locale('es')->translatedFormat('H:i a')  }}</small>
+                        <small class="text-muted">{{ Carbon\Carbon::parse($log->created_at)->setTimezone('America/Costa_Rica')->locale('es')->translatedFormat('H:i a')  }}</small>
                     </div>
                 </div>
                 <div class="separator-dashed"></div>

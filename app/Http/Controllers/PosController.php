@@ -142,7 +142,7 @@ class PosController extends Controller
             } else {
                 SystemLogs::create([
                     'module_log' => 'POS',
-                    'log_description' => 'Nueva venta gravada ' . $folioInvoiceNumber . ' por L. ' . number_format($request->input('sale_total_amount') + $request->input('sale_isv_amount'), 2) . ' registrada.'
+                    'log_description' => 'Nueva venta gravada ' . $folioInvoiceNumber . ' por L. ' . number_format($request->input('sale_total_amount'), 2) . ' registrada.'
                 ]);
             }
 

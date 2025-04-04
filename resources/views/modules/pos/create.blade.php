@@ -67,10 +67,10 @@ POS
 
                     <div class="row">
                         <!-- Col izquierda -->
-                        <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 mb-3">
+                        <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12">
                             <div class="row">
                                 <!-- Selección de Servicios y Clientes -->
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                     <div class="row mb-3">
                                         <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12" id="client_select_container">
                                             <label for="client_id">Cliente <span class="text-danger">*</span></label>

@@ -26,7 +26,8 @@ return new class extends Migration
             $table->decimal('quote_tax', 10, 2);
             $table->decimal('quote_isv_amount', 10, 2);
             $table->date('quote_expiration_date');
-            $table->string('quote_answer', 75);
+            $table->integer('quote_status'); // 0: En proceso, 1: Aceptada, 2: Rechazada, 3: Sin respuesta, 4: Vencida
+            $table->string('quote_answer', 75)->nullable();
             $table->timestamps();
         });
     }

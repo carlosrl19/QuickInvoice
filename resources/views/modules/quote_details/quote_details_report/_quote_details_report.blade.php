@@ -167,7 +167,7 @@
             <table style="border-collapse: collapse; margin-top: -15px;">
                 <tr>
                     <td style="width: 62%; padding: 10px; vertical-align: top;">
-                        <p style="font-weight: bolder; font-size: 10pt; margin-top: 5px; text-align: left;">Cotización # {{ $quote->quote_code }}</p>
+                        <p style="font-weight: bolder; font-size: 10pt; margin-top: 5px; text-align: left;">Cotización # {{ $quote->quote_code }} <span style="color: red">{{ $quote->quote_status == 4 ? 'VENCIDA':'' }}</span></p>
                         <p style="font-size: 8.5pt; margin-top: -3px; text-align: left;">Valor en letras: {{ $quote_amount_letras }} LEMPIRAS EXACTOS</p>
                         <p style="font-size: 8.5pt; margin-top: -3px; text-align: left;">G=Gravado E=Exento</p>
                         <div style="margin-top: 60px"></div>

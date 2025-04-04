@@ -160,12 +160,6 @@
                        </a>
                        @endif
                    </li>
-                   <li class="nav-item">                      
-                       <a href="{{ route('logs.index') }}">
-                           <x-heroicon-o-server-stack style="width: 20px; height: 20px; color: gray;" class="me-2" />
-                           <span class="sub-item">Logs</span>
-                       </a>
-                   </li>
                </ul>
            </div>
        </div>

@@ -18,6 +18,7 @@ class Quotes extends Model
         'quote_isv_amount',
         'quote_expiration_date',
         'quote_answer',
+        'quote_status',
     ];
 
     // Relationships
