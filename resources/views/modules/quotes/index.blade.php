@@ -3,6 +3,8 @@
 @section('head')
 <!-- SweetAlert -->
 <script src="{{ Storage::url('assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
+
+{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
 @endsection
 
 @section('title')
@@ -106,7 +108,7 @@ Cotizaciones
                                     {{ $quote->quote_type == 'E' ? 'EXONERADA' : ($quote->quote_type == 'G' ? 'GRAVADA' : 'EXENTA') }}
                                 </td>
                                 <td>
-                                    L. {{ number_format($quote->quote_total_amount,2) }}
+                                    {{ $currency }} {{ number_format($quote->quote_total_amount,2) }}
                                 </td>
 
                                 <td>

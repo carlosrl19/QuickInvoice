@@ -11,6 +11,7 @@
 use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
 @endphp
 
+{{ $default_seller = App\Models\Settings::value('default_seller_id') }}
 @endsection
 
 @section('title')
@@ -89,7 +90,7 @@ Cotizaciones
                                             <select class="tom-select @error('seller_id') is-invalid @enderror" id="seller_id_select" name="seller_id">
                                                 <option value="" selected disabled>Seleccione el vendedor</option>
                                                 @foreach ($sellers as $seller)
-                                                <option value="{{ $seller->id }}" {{ $seller->id == 1 ? 'selected' : '' }}>{{ $seller->seller_name }}</option>
+                                                <option value="{{ $seller->id }}" {{ $default_seller == $seller->id ? 'selected' : '' }}>{{ $seller->seller_name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('seller_id')

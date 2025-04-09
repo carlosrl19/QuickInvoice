@@ -23,6 +23,10 @@ return new class extends Migration
             $table->string('company_email', 50)->nullable();
             $table->string('company_address', 75)->nullable();
             $table->string('company_short_address', 35)->nullable();
+            $table->string('default_currency_symbol', 3);
+
+            $table->unsignedBigInteger('default_seller_id');
+            $table->foreign('default_seller_id')->references('id')->on('sellers')->onDelete('cascade');
             $table->timestamps();
         });
     }

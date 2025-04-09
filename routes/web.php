@@ -12,6 +12,7 @@ Route::resource('services', 'App\Http\Controllers\ServicesController')->names('s
 Route::resource('loans', 'App\Http\Controllers\LoansController')->names('loans');
 
 // Rutas adicionales para préstamos
+Route::get('loans/quotes/updating', 'App\Http\Controllers\LoansController@update_quotes_status')->name('loans.update_quotes_status');
 Route::get('loans-paid/', 'App\Http\Controllers\LoansController@loans_paid_index')->name('loans.loans_paid_index');
 Route::get('loans-rejected/', 'App\Http\Controllers\LoansController@loans_rejected_index')->name('loans.loans_rejected_index');
 Route::get('loans-nulled/', 'App\Http\Controllers\LoansController@loans_nulled_index')->name('loans.loans_nulled_index');
@@ -74,3 +75,6 @@ Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboa
 
 // Rutas de Logs
 Route::get('logs', 'App\Http\Controllers\SystemLogsController@index')->name('logs.index');
+
+// Rutas de Banks
+Route::resource('banks', 'App\Http\Controllers\BanksController')->names('banks');

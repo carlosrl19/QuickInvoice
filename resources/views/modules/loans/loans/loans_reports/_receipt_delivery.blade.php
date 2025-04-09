@@ -5,6 +5,8 @@
     <meta charset="utf-8" />
     <title>#CE-{{ $loan->loan_code_number }}</title>
 
+    @php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
+
     <style>
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -167,8 +169,8 @@
                     <td>{{ $loan->loan_description }} / (X)</td>
                     <td>N/A</td>
                     <td>0.00%</td>
-                    <td style="text-align: right !important;">L. {{ number_format($loan->loan_total,2) }}</td>
-                    <td style="text-align: right !important;">L. {{ number_format($loan->loan_total,2) }}</td>
+                    <td style="text-align: right !important;">{{ $currency }} {{ number_format($loan->loan_total,2) }}</td>
+                    <td style="text-align: right !important;">{{ $currency }} {{ number_format($loan->loan_total,2) }}</td>
                 </tr>
                 <tr style="text-align: left !important;">
                     <td></td>
@@ -235,7 +237,7 @@
                     <td style="border: none !important;"></td>
                     <td style="border-top: none !important; border-left: none !important; border-right: none !important; border-bottom: 1px solid #eee">Descuento:</td>
                     <td style="border-top: none !important; border-left: none !important; border-right: none !important; border-bottom: 1px solid #eee"></td>
-                    <td style="border-top: none !important; border-left: none !important; border-right: none !important; border-bottom: 1px solid #eee">L. 0.00</td>
+                    <td style="border-top: none !important; border-left: none !important; border-right: none !important; border-bottom: 1px solid #eee">{{ $currency }} 0.00</td>
                 </tr>
                 <tr style="text-align: right !important; font-weight: bold;">
                     <td style="border: none !important;"></td>
@@ -243,7 +245,7 @@
                     <td style="border: none !important;"></td>
                     <td style="border: none !important;">Total:</td>
                     <td style="border: none !important;"></td>
-                    <td style="border: none !important;">L. {{ number_format($loan->loan_total, 2) }}</td>
+                    <td style="border: none !important;">{{ $currency }} {{ number_format($loan->loan_total, 2) }}</td>
                 </tr>
             </tbody>
         </table>

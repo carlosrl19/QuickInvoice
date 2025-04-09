@@ -174,7 +174,7 @@
 					</span><br>
 					<span class="text_header_sm">Tipo de amortización: (X)</span><br />
 					<span class="text_header_sm">Tasa de interes corriente: (X)</span><br />
-					<span class="text_header_sm">Tasa mora: (X)</span><br />
+					<span class="text_header_sm">Tasa mora: {{ number_format( $loan->loan_amount_weekly_arrears,2) }} por día</span><br />
 				</div>
 
 				<div style="width: 48%; display: inline-block; vertical-align: top;">

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('loan_amount', 10,2);
             $table->decimal('loan_down_payment', 10,2); // Prima
             $table->decimal('loan_quote_value', 10,2); // loan_total / loan_quote_number
+            $table->decimal('loan_amount_weekly_arrears', 10,2); // Monto diario por mora
             $table->decimal('loan_interest', 5,2);
             $table->decimal('loan_total', 10,2); // loan_amount + (loan_amount * loan_interest)
             $table->date('loan_start_date');

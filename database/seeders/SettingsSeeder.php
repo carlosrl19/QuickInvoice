@@ -22,6 +22,8 @@ class SettingsSeeder extends Seeder
             'company_email' => 'text@robenior.com',
             'company_address' => 'Bº RIO DE PIEDRAS, 22 AVE, 5 CALLE, SAN PEDRO SULA, CORTES, HONDURAS',
             'company_short_address' => 'SAN PEDRO SULA, HONDURAS',
+            'default_currency_symbol'=> 'HNL',
+            'default_seller_id' => 1,
         ]);
     }
 }

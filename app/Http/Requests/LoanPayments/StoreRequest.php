@@ -19,6 +19,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'loan_id' => 'required|numeric|exists:loans,id',
+            'bank_id' => 'nullable|required_if:loan_quote_payment_mode,3|integer|exists:banks,id',
             'loan_quote_payment_amount' => 'required|numeric|min:1',
             'loan_old_debt' => 'required|numeric|min:1',
             'loan_new_debt' => 'required|numeric|min:0',
@@ -27,28 +28,13 @@ class StoreRequest extends FormRequest
             'loan_quote_payment_comment' => 'nullable|string|min:3|max:255',
             'loan_quote_payment_status' => 'required|numeric|in:0,1,2', // 0: Pendiente, 1: Pagado, 2: Atrasado
             'loan_quote_payment_mode' => 'required|numeric|in:1,2,3,4,5', // 1: Efectivo, 2: Cheque, 3: Depósito, 4: Dólar, 5: Tarjeta
-            'card_last_digits' => 'nullable|string|min:4|max:4|regex:/^[0-9]+$/', // Solo si se usa Tarjeta como loan_quote_payment_mode
-            'card_auth_number' => 'nullable|string|min:6|max:12|regex:/^[A-Z0-9]+$/', // Solo si se usa Tarjeta como loan_quote_payment_mode
+            'loan_card_last_digits' => 'nullable|required_if:loan_quote_payment_mode,5|string|min:4|max:4|regex:/^[0-9]+$/', // Solo si se usa Tarjeta como loan_quote_payment_mode
+            'loan_card_auth_number' => 'nullable|required_if:loan_quote_payment_mode,5|string|min:6|max:12|regex:/^[A-Z0-9]+$/', // Solo si se usa Tarjeta como loan_quote_payment_mode
+            'loan_bank_operation_number' => 'nullable|required_if:loan_quote_payment_mode,3|string|min:6|max:12|regex:/^[A-Z0-9]+$/', // Solo si se usa Deposito como loan_quote_payment_mode
+            'loan_bankcheck_info' => 'nullable|required_if:loan_quote_payment_mode,2|string|min:10|max:40|regex:/^[A-Z0-9\/]+$/', // Solo si se usa Cheque como loan_quote_payment_mode'
             'loan_quote_payment_received' => 'required|numeric|min:1',
             'loan_quote_payment_change' => 'required|numeric|min:0',
         ];
-    }
-
-    /**
-     * Agregar una validación adicional después de las reglas estándar para validar que se ingresen los datos dependiendo el modo de pago
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            $payment_mode = $this->input('loan_quote_payment_mode');
-            $card_last_digits = $this->input('card_last_digits');
-            $card_auth_number = $this->input('card_auth_number');
-
-            if ($payment_mode == 5 && (empty($card_last_digits) || empty($card_auth_number))) {
-                $validator->errors()->add('card_last_digits', 'Los 4 digitos de la tarjeta son obligatorios.');
-                $validator->errors()->add('card_auth_number', 'El nº de autorización es obligatorio.');
-            }
-        });
     }
 
     public function messages()
@@ -58,6 +44,11 @@ class StoreRequest extends FormRequest
             'loan_id.required' => 'El préstamo es obligatorio.',
             'loan_id.numeric' => 'El id del préstamo solo debe contener números.',
             'loan_id.exists' => 'El préstamo no existe en la base de datos.',
+
+            // Bank_id messages
+            'bank_id.required_if' => 'El banco es obligatorio.',
+            'bank_id.integer' => 'El banco debe ser un número entero (dev.request).',
+            'bank_id.exists' => 'El banco seleccionado no existe.',
 
             // Loan payment amount messages
             'loan_quote_payment_amount.required' => 'El valor del pago de cuota es obligatorio.',
@@ -99,14 +90,30 @@ class StoreRequest extends FormRequest
             'loan_quote_payment_mode.in' => 'El método de pago utilizado solo puede ser Efectivo, 2: Cheque, 3: Depósito, 4: Dólar, 5: Tarjeta (dev.request).',
 
             // Card last digits messages
-            'card_last_digits.string' => 'Los últimos 4 digitos de la tarjeta deben contener solo números.',
-            'card_last_digits.min' => 'Los últimos 4 digitos de la tarjeta deben contener al menos :min números.',
-            'card_last_digits.max' => 'Los últimos 4 digitos de la tarjeta no puede contener más de :max números.',
+            'loan_card_last_digits.required_if' => 'Los últimos 4 son obligatorios.',
+            'loan_card_last_digits.string' => 'Los últimos 4 digitos de la tarjeta deben contener solo números.',
+            'loan_card_last_digits.min' => 'Los últimos 4 digitos de la tarjeta deben contener al menos :min números.',
+            'loan_card_last_digits.max' => 'Los últimos 4 digitos de la tarjeta no puede contener más de :max números.',
 
             // Card auth number messages
-            'card_auth_number.string' => 'La autorización de transferencia debe contener solo letras y números.',
-            'card_auth_number.min' => 'La autorización de transferencia debe contener al menos :min números.',
-            'card_auth_number.max' => 'La autorización de transferencia no puede contener más de :max números.',
+            'loan_card_auth_number.required_if' => 'La autorización es obligatoria.',
+            'loan_card_auth_number.string' => 'La autorización debe contener solo letras y números.',
+            'loan_card_auth_number.min' => 'La autorización debe contener al menos :min números.',
+            'loan_card_auth_number.max' => 'La autorización no puede contener más de :max números.',
+
+            // Loan bank operation number messages
+            'loan_bank_operation_number.required_if' => 'El Nº de operación es obligatorio.',
+            'loan_bank_operation_number.string' => 'El Nº de operación debe contener solo letras y caracteres.',
+            'loan_bank_operation_number.regex' => 'El Nº de operación no debe contener símbolos.',
+            'loan_bank_operation_number.min' => 'El Nº de operación debe contener al menos :min caracteres.',
+            'loan_bank_operation_number.max' => 'El Nº de operación no puede contener más de :max caracteres.',
+
+            // Loan bankcheck info messages
+            'loan_bankcheck_info.required_if' => 'El Banco / Nº cuenta es obligatorio.',
+            'loan_bankcheck_info.string' => 'El Banco / Nº cuenta debe contener solo letras, números y signo /.',
+            'loan_bankcheck_info.regex' => 'El Banco / Nº cuenta no debe contener símbolos distintos a /.',
+            'loan_bankcheck_info.min' => 'El Banco / Nº cuenta debe contener al menos :min caracteres.',
+            'loan_bankcheck_info.max' => 'El Banco / Nº cuenta no puede contener más de :max caracteres.',
 
             // Loan quote payment received messages
             'loan_quote_payment_received.required' => 'El total pago es obligatorio.',

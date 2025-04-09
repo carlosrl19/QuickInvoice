@@ -24,6 +24,8 @@ class StoreRequest extends FormRequest
             'company_email' => 'required|email|max:50',
             'company_address' => 'required|string|min:3|max:75',
             'company_short_address' => 'required|string|min:3|max:35',
+            'default_currency_symbol' => 'required|string|min:1|max:3|unique:settings,default_currency_symbol',
+            'default_seller_id' => 'required|exists:sellers,id',
         ];
     }
 
@@ -86,6 +88,17 @@ class StoreRequest extends FormRequest
             'company_short_address.string' => 'La dirección corta de la empresa debe contener solo letras, números y símbolos.',
             'company_short_address.min' => 'La dirección corta de la empresa debe contener al menos :min caracteres.',
             'company_short_address.max' => 'La dirección corta de la empresa no debe exceder los :max caracteres.',
+
+            // Default currency symbol messages
+            'default_currency_symbol.required' => 'El símbolo de la moneda por defecto es obligatorio.',
+            'default_currency_symbol.string' => 'El símbolo de la moneda por defecto debe contener solo letras, números y símbolos.',
+            'default_currency_symbol.min' => 'El símbolo de la moneda por defecto debe contener al menos :min caracteres.',
+            'default_currency_symbol.max' => 'El símbolo de la moneda por defecto no debe exceder los :max caracteres.',
+            'default_currency_symbol.unique' => 'El símbolo de la moneda por defecto ya existe.',
+
+            // Default seller ID messages
+            'default_seller_id.required' => 'El vendedor por defecto es obligatorio.',
+            'default_seller_id.exists' => 'El vendedor por defecto no existe en la base de datos.',
         ];
     }
 }

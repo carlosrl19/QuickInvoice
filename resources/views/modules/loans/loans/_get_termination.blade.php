@@ -32,7 +32,7 @@
                                         <div class="card-status-start bg-primary"></div>
                                         <input type="text" class="form-control" readonly
                                             name="loan_debt" id="loan_debt"
-                                            value="L. {{ number_format($loan->loan_total - $loan_debt, 2) }}">
+                                            value="{{ $currency }} {{ number_format($loan->loan_total - $loan_debt, 2) }}">
                                         <label for="loan_debt">Total a pagar / Deuda actual <span
                                                 class="text-danger">*</span></label>
                                     </div>

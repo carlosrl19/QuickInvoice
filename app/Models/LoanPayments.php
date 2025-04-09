@@ -8,6 +8,7 @@ class LoanPayments extends Model
 {
     protected $fillable = [
         'loan_id',
+        'bank_id',
         'loan_quote_payment_doc_number',
         'loan_quote_payment_amount',
         'loan_old_debt',
@@ -17,10 +18,12 @@ class LoanPayments extends Model
         'loan_quote_payment_comment',
         'loan_quote_payment_status',
         'loan_quote_payment_mode',
-        'card_last_digits',
-        'card_auth_number',
+        'loan_card_last_digits',
+        'loan_card_auth_number',
         'loan_quote_payment_received',
         'loan_quote_payment_change',
+        'loan_bank_operation_number',
+        'loan_bankcheck_info',
         'created_at',
         'updated_at',
     ];
@@ -29,5 +32,10 @@ class LoanPayments extends Model
     public function loan()
     {
         return $this->belongsTo(Loans::class, 'loan_id', 'id');
+    }
+
+    public function bank()
+    {
+        return $this->belongsTo(Banks::class, 'bank_id');
     }
 }

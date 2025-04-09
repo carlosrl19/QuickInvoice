@@ -11,6 +11,8 @@
 use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
 @endphp
 
+{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
+
 @endsection
 
 @section('title')
@@ -57,26 +59,26 @@ Créditos vigentes
                     <div class="row">
                         <div style="background-color: #d1eef6;" class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-xs-12">
                             <div class="row mb-3 mt-4">
-                                <h5 class="text-center">Saldo actual <strong>L. {{ number_format($actual_debt, 2) }}</strong></h5>
+                                <h5 class="text-center">Saldo actual <strong>{{ $currency }} {{ number_format($actual_debt, 2) }}</strong></h5>
                             </div>
                             <div class="row mb-3">
                                 <div class="col">
                                     <div class="form-floating" style="background-color: #fff !important;">
                                         <input type="text" class="form-control" style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
-                                            readonly value="L. {{ number_format($totalToPay - $loan->loan_quote_value,2) }}">
+                                            readonly value="{{ $currency }} {{ number_format($totalToPay - $loan->loan_quote_value,2) }}">
                                         <label for="loan_quote_arrears">Mora</label>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-floating" style="background-color: #fff !important;">
                                         <input type="text" class="form-control" style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
-                                            readonly value="L. {{ number_format($loan->loan_quote_value,2) }}">
+                                            readonly value="{{ $currency }} {{ number_format($loan->loan_quote_value,2) }}">
                                         <label for="loan_quote_amount">Total</label>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-floating" style="background-color: #fff !important;">
-                                        <input type="text" class="form-control" value="L. {{ number_format($totalToPay,2) }}" style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
+                                        <input type="text" class="form-control" value="{{ $currency }} {{ number_format($totalToPay,2) }}" style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
                                             readonly>
                                         <label for="loan_quote_total_amount">Monto a abonar</label>
                                     </div>
@@ -113,6 +115,8 @@ Créditos vigentes
                                             <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.5rem !important;">
                                                 @if($loan_payment->loan_quote_payment_status == 0 || $loan_payment->loan_quote_payment_status == 2)
                                                 0.00
+                                                @elseif($loan_payment->loan_quote_payment_mode == 4)
+                                                $ {{ number_format($loan_payment->loan_quote_payment_received - $loan_payment->loan_quote_payment_change,2) }}
                                                 @else
                                                 {{ number_format($loan_payment->loan_quote_payment_received - $loan_payment->loan_quote_payment_change,2) }}
                                                 @endif
@@ -128,9 +132,9 @@ Créditos vigentes
                                                 @if($loan_payment->loan_quote_payment_status == 0)
                                                 <span class="badge bg-dark text-white fw-bold">PENDIENTE</span>
                                                 @elseif($loan_payment->loan_quote_payment_status == 1)
-                                                <span class="badge bg-success text-white fw-bold">PAGADO</span>
+                                                <span class="badge bg-success2 text-success fw-bold">PAGADO</span>
                                                 @else
-                                                <span class="badge bg-danger text-white fw-bold">MORA</span>
+                                                <span class="badge bg-danger2 text-danger fw-bold">MORA</span>
                                                 @endif
                                             </td>
                                         </tr>
@@ -146,15 +150,15 @@ Créditos vigentes
                                             <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);"></td>
                                             <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);">
                                                 <x-heroicon-o-calendar-days style="width: 20px; height: 20px; color: white;" />
-                                                TOTAL PRESTAMO: L. {{ number_format($loan->loan_total,2)}}
+                                                TOTAL PRESTAMO: {{ $currency }} {{ number_format($loan->loan_total,2)}}
                                             </td>
                                             <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);">
                                                 <x-heroicon-o-calendar-days style="width: 20px; height: 20px; color: white;" />
-                                                TOTAL PAGADO: L. {{ number_format($loan->loan_total - $actual_debt,2)}}
+                                                TOTAL PAGADO: {{ $currency }} {{ number_format($loan->loan_total - $actual_debt,2)}}
                                             </td>
                                             <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);">
                                                 <x-heroicon-o-calendar-days style="width: 20px; height: 20px; color: white;" />
-                                                DEUDA ACTUAL: L. {{ number_format($actual_debt,2) }}
+                                                DEUDA ACTUAL: {{ $currency }} {{ number_format($actual_debt,2) }}
                                             </td>
                                             <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);"></td>
                                             <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);"></td>
@@ -170,9 +174,9 @@ Créditos vigentes
                                     <select class="tom-select @error('loan_quote_payment_mode') is-invalid @enderror" id="loan_quote_payment_mode_select" name="loan_quote_payment_mode">
                                         <option value="" selected disabled>Seleccione el método de pago</option>
                                         <option value="1" {{ old('loan_quote_payment_mode') == '1' ? 'selected':'' }}>Efectivo HNL</option>
-                                        <option value="2" {{ old('loan_quote_payment_mode') == '2' ? 'selected':'' }}>Cheque HNL(X)</option>
-                                        <option value="3" {{ old('loan_quote_payment_mode') == '3' ? 'selected':'' }}>Depósito bancario(X)</option>
-                                        <option value="4" {{ old('loan_quote_payment_mode') == '4' ? 'selected':'' }}>Dólar(X)</option>
+                                        <option value="2" {{ old('loan_quote_payment_mode') == '2' ? 'selected':'' }}>Cheque HNL</option>
+                                        <option value="3" {{ old('loan_quote_payment_mode') == '3' ? 'selected':'' }}>Depósito bancario</option>
+                                        <option value="4" {{ old('loan_quote_payment_mode') == '4' ? 'selected':'' }}>Dólar</option>
                                         <option value="5" {{ old('loan_quote_payment_mode') == '5' ? 'selected':'' }}>Tarjeta HNL</option>
                                     </select>
                                     @error('loan_quote_payment_mode')
@@ -232,24 +236,75 @@ Créditos vigentes
                                 <div class="row mb-3">
                                     <div class="col">
                                         <div class="form-floating">
-                                            <input type="text" oninput="this.value = this.value.replace(/\D/g, '')" class="form-control @error('card_last_digits') is-invalid @enderror" value="" minlength="4" maxlength="4" name="card_last_digits" id="card_last_digits">
-                                            @error('card_last_digits')
+                                            <input type="text" oninput="this.value = this.value.replace(/\D/g, '')" class="form-control @error('loan_card_last_digits') is-invalid @enderror" value="" minlength="4" maxlength="4" name="loan_card_last_digits" id="loan_card_last_digits">
+                                            @error('loan_card_last_digits')
                                             <span class="invalid-feedback" role="alert">
                                                 {{ $message }}
                                             </span>
                                             @enderror
-                                            <label for="card_last_digits" style="z-index: 5">Ultimos 4 digitos<span class="text-danger">*</span></label>
+                                            <label for="loan_card_last_digits" style="z-index: 5">Ultimos 4 digitos<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control @error('card_auth_number') is-invalid @enderror" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')" value="" minlength="6" maxlength="12" name="card_auth_number" id="card_auth_number">
-                                            @error('card_auth_number')
+                                            <input type="text" class="form-control @error('loan_card_auth_number') is-invalid @enderror" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')" value="" minlength="6" maxlength="12" name="loan_card_auth_number" id="loan_card_auth_number">
+                                            @error('loan_card_auth_number')
                                             <span class="invalid-feedback" role="alert">
                                                 {{ $message }}
                                             </span>
                                             @enderror
-                                            <label for="card_auth_number" style="z-index: 5">Nº autorización<span class="text-danger">*</span></label>
+                                            <label for="loan_card_auth_number" style="z-index: 5">Nº autorización<span class="text-danger">*</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bank check selected options -->
+                            <div id="bankcheck_option_selected" style="display: none;">
+                                <div class="row mb-3">
+                                    <div class=" col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                        <div class="form-floating">
+                                            <input type="text" oninput="this.value = this.value.replace(/[^a-zA-Z0-9\/]/g, '').toUpperCase();" minlength="40" maxlength="40" name="loan_bankcheck_info"
+                                                value="" id="loan_bankcheck_info" class="form-control @error('loan_bankcheck_info') is-invalid @enderror" autocomplete="off" />
+                                            @error('loan_bankcheck_info')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                            @enderror
+                                            <label for="loan_bankcheck_info">Banco / Nº cuenta<span class="text-danger">*</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Deposito selected options -->
+                            <div id="bank_option_selected" style="display: none;">
+                                <div class="row mb-3">
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                        <select class="tom-select @error('bank_id') is-invalid @enderror" id="bank_id_select" name="bank_id">
+                                            <option value="" selected disabled>Seleccione el banco</option>
+                                            @foreach ($banks as $bank)
+                                            <option value="{{ $bank->id }}" {{ old('bank_id') == $bank->id ? 'selected' : '' }}>
+                                                {{ $bank->bank_name }} / {{ $bank->bank_account_number }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        @error('bank_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                        <div class="form-floating">
+                                            <input type="text" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')" minlength="6" maxlength="12" name="loan_bank_operation_number" value="" id="loan_bank_operation_number" class="form-control @error('loan_bank_operation_number') is-invalid @enderror" autocomplete="off" />
+                                            @error('loan_bank_operation_number')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                            @enderror
+                                            <label for="loan_bank_operation_number">Nº operación <span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -268,6 +323,7 @@ Créditos vigentes
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="row">
                                 <div class="col">
                                     <a href="{{ route('loans.index') }}" class="btn btn-sm btn-danger w-100">
@@ -317,7 +373,7 @@ Créditos vigentes
 
         if (cuota && tasaCambio) {
             const resultado = parseFloat(cuota) / parseFloat(tasaCambio);
-            lempiras.value = resultado.toFixed(2);
+            lempiras.value = resultado.toFixed(4);
         } else {
             lempiras.value = '';
         }
@@ -330,18 +386,35 @@ Créditos vigentes
 
 <!-- Cambio monetario del cliente -->
 <script>
+    // Cambio monetario del cliente
     function calcularCambio() {
         const paymentReceived = document.getElementById('loan_quote_payment_received').value;
         const quoteValue = document.getElementById('quote_value').value;
         const cambio = document.getElementById('loan_quote_payment_change');
+        const tasaCambio = document.getElementById('tasa_cambio').value;
+        const paymentMode = document.getElementById('loan_quote_payment_mode_select').value;
 
         if (paymentReceived && quoteValue) {
-            const resultado = parseFloat(paymentReceived) - parseFloat(quoteValue);
+            let pagoEnLempiras = parseFloat(paymentReceived);
+
+            // Si el pago es en dólares, convertir a lempiras
+            if (paymentMode === '4') {
+                pagoEnLempiras = parseFloat(paymentReceived) * parseFloat(tasaCambio);
+            }
+
+            const resultado = pagoEnLempiras - parseFloat(quoteValue);
             cambio.value = resultado.toFixed(2);
         } else {
             cambio.value = '';
         }
     }
+
+    // Llama a la función al cargar la página o cuando cambie el pago recibido o la tasa de cambio
+    document.addEventListener('DOMContentLoaded', calcularCambio);
+    document.getElementById('loan_quote_payment_received').addEventListener('input', calcularCambio);
+    document.getElementById('quote_value').addEventListener('input', calcularCambio);
+    document.getElementById('tasa_cambio').addEventListener('input', calcularCambio);
+    document.getElementById('loan_quote_payment_mode_select').addEventListener('change', calcularCambio);
 </script>
 
 <!-- Ocultar tasa cambio si no es seleccionado Dolar -->
@@ -350,6 +423,22 @@ Créditos vigentes
         const seleccionado = this.value;
         const dolar_option = document.getElementById('dolar_option_selected');
         const card_option = document.getElementById('card_option_selected');
+        const bankcheck_option = document.getElementById('bankcheck_option_selected');
+        const bank_option = document.getElementById('bank_option_selected');
+
+        // Cheque
+        if (seleccionado === '2') {
+            bankcheck_option.style.display = 'block';
+        } else {
+            bankcheck_option.style.display = 'none';
+        }
+
+        // Deposito
+        if (seleccionado === '3') {
+            bank_option.style.display = 'block';
+        } else {
+            bank_option.style.display = 'none';
+        }
 
         if (seleccionado === '4') {
             dolar_option.style.display = 'block';

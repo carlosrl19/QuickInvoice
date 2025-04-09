@@ -79,10 +79,16 @@ Configuración
                                 </a>
                                 @endif
                                 <hr>
+                                <a class="text-muted mb-3" href="{{ route('banks.index') }}"
+                                    title="Ver las cuentas para pagos por depósito para la empresa." data-bs-toggle="tooltip" data-bs-placement="right">
+                                    <x-heroicon-o-building-library style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                                    3. Bancos
+                                </a>
+                                <hr>
                                 <a class="text-muted mb-3" href="{{ route('logs.index') }}"
                                     title="Ver los registros del sistema." data-bs-toggle="tooltip" data-bs-placement="right">
                                     <x-heroicon-o-server-stack style="width: 20px; height: 20px; color: gray;" class="me-2" />
-                                    3. Logs
+                                    4. Logs
                                 </a>
                             </div>
                         </div>

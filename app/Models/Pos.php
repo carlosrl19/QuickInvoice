@@ -10,6 +10,7 @@ class Pos extends Model
         'client_id',
         'seller_id',
         'folio_id',
+        'bank_id',
         'sale_type',
         'exempt_purchase_order_correlative',
         'exonerated_certificate',
@@ -24,6 +25,10 @@ class Pos extends Model
         'sale_payment_type',
         'sale_card_last_digits',
         'sale_card_auth_number',
+        'sale_bank_operation_number',
+        'sale_bankcheck_info',
+        'created_at',
+        'updated_at',
     ];
 
     // Relationships
@@ -46,5 +51,9 @@ class Pos extends Model
     {
         return $this->hasMany(PosDetails::class, 'sale_id');
     }
-    
+
+    public function bank()
+    {
+        return $this->belongsTo(Banks::class, 'bank_id');
+    }
 }

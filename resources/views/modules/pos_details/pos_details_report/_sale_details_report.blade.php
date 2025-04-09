@@ -5,6 +5,8 @@
     <meta charset="utf-8" />
     <title>Factura #{{ $sale->folio_invoice_number }}</title>
 
+    @php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
+
     <style>
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -162,11 +164,11 @@
                             N/A
                         </td>
                         <td style="text-align: right !important; border-right: 1px solid #000; font-size: 8.5pt; padding: 10px;">
-                            L. {{ number_format($sale->sale_total_amount - $sale->sale_isv_amount,2) }}
+                            {{ $currency }} {{ number_format($sale->sale_total_amount - $sale->sale_isv_amount,2) }}
                         </td>
                         <td style="text-align: center !important; border-right: 1px solid #000; font-size: 8.2pt; padding: 10px;">{{ number_format($sale_detail->sale->sale_discount,2) }} ({{ number_format($sale_detail->sale->sale_discount,2) }}%)</td>
                         <td style="text-align: right !important; font-size: 8.5pt; padding: 10px;">
-                            L. {{ number_format($sale->sale_total_amount - $sale->sale_isv_amount,2) }}
+                            {{ $currency }} {{ number_format($sale->sale_total_amount - $sale->sale_isv_amount,2) }}
                             <span>{{ $sale->sale_type == 'ET' ? 'E':$sale->sale_type }}</span>
                         </td>
                     </tr>
@@ -223,63 +225,63 @@
                     </td>
                     @if($sale->sale_type == 'G' && $sale->sale_exempt_tax == 0) <!-- Gravada con ISV -->
                     <td style="line-height: 0.9; padding: 10px; vertical-align: top; text-align: right;">
-                        <p style="font-size: 10pt; margin-top: 3px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_total_amount - $sale->sale_isv_amount,2) }}</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ $sale->sale_type == 'G' ? number_format($sale->sale_isv_amount,2):'0.00' }}</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-weight: bolder; font-size: 10.6pt; margin-top: -3px;">L. {{ number_format($sale->sale_total_amount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: 3px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_total_amount - $sale->sale_isv_amount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ $sale->sale_type == 'G' ? number_format($sale->sale_isv_amount,2):'0.00' }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-weight: bolder; font-size: 10.6pt; margin-top: -3px;">{{ $currency }} {{ number_format($sale->sale_total_amount,2) }}</p>
                         <div style="margin-top: 10px"></div>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_discount,2) }}</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_received,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_discount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_payment_received,2) }}</p>
                         <div style="margin-top: 10px"></div>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_change,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_payment_change,2) }}</p>
                     </td>
                     @elseif($sale->sale_type == 'G' || $sale->sale_type == 'ET' && $sale->sale_exempt_tax == 1)
                     <td style="line-height: 0.9; padding: 10px; vertical-align: top; text-align: right;">
-                        <p style="font-size: 10pt; margin-top: 3px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_total_amount,2) }}</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-weight: bolder; font-size: 10.6pt; margin-top: -3px;">L. {{ number_format($sale->sale_total_amount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: 3px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_total_amount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-weight: bolder; font-size: 10.6pt; margin-top: -3px;">{{ $currency }} {{ number_format($sale->sale_total_amount,2) }}</p>
                         <div style="margin-top: 10px"></div>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_discount,2) }}</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_received,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_discount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_payment_received,2) }}</p>
                         <div style="margin-top: 10px"></div>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_change,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_payment_change,2) }}</p>
                     </td>
                     @elseif($sale->sale_type == 'E')
                     <td style="line-height: 0.9; padding: 10px; vertical-align: top; text-align: right;">
-                        <p style="font-size: 10pt; margin-top: 3px;">L. {{ number_format($sale->sale_total_amount,2) }}</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-weight: bolder; font-size: 10.6pt; margin-top: -3px;">L. {{ number_format($sale->sale_total_amount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: 3px;">{{ $currency }} {{ number_format($sale->sale_total_amount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-weight: bolder; font-size: 10.6pt; margin-top: -3px;">{{ $currency }} {{ number_format($sale->sale_total_amount,2) }}</p>
                         <div style="margin-top: 10px"></div>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_discount,2) }}</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_received,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_discount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_payment_received,2) }}</p>
                         <div style="margin-top: 10px"></div>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_change,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_payment_change,2) }}</p>
                     </td>
                     @else
                     <td style="line-height: 0.9; padding: 10px; vertical-align: top; text-align: right;">
-                        <p style="font-size: 10pt; margin-top: 3px;">L. {{ $sale->sale_type == 'G' ? '0.00':$sale->sale_total_amount }}</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. (X)</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ $sale->sale_type == 'G' ? number_format($sale->sale_total_amount - $sale->sale_isv_amount,2):'0.00' }}</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ $sale->sale_type == 'G' ? number_format($sale->sale_isv_amount,2):'0.00' }}</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-weight: bolder; font-size: 10.6pt; margin-top: -3px;">L. {{ number_format($sale->sale_total_amount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: 3px;">{{ $currency }} {{ $sale->sale_type == 'G' ? '0.00':$sale->sale_total_amount }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} (X)</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ $sale->sale_type == 'G' ? number_format($sale->sale_total_amount - $sale->sale_isv_amount,2):'0.00' }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ $sale->sale_type == 'G' ? number_format($sale->sale_isv_amount,2):'0.00' }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-weight: bolder; font-size: 10.6pt; margin-top: -3px;">{{ $currency }} {{ number_format($sale->sale_total_amount,2) }}</p>
                         <div style="margin-top: 10px"></div>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_discount,2) }}</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_received,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_discount,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_payment_received,2) }}</p>
                         <div style="margin-top: 10px"></div>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. {{ number_format($sale->sale_payment_change,2) }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} {{ number_format($sale->sale_payment_change,2) }}</p>
                     </td>
                     @endif
                 </tr>

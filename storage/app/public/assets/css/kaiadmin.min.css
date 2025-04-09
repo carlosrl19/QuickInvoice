@@ -10190,7 +10190,7 @@ body[data-background-color=dark] .jvm-zoom-btn {
 }
 
 .bg-primary2 {
-   background-color: #1269db !important
+   background-color: #1269db33 !important
 }
 
 .bg-secondary {
@@ -10198,7 +10198,7 @@ body[data-background-color=dark] .jvm-zoom-btn {
 }
 
 .bg-secondary2 {
-   background-color: #5c55bf !important
+   background-color: #5c55bf33 !important
 }
 
 .bg-info {
@@ -10206,7 +10206,7 @@ body[data-background-color=dark] .jvm-zoom-btn {
 }
 
 .bg-info2 {
-   background-color: #3697e1 !important
+   background-color: #3697e133 !important
 }
 
 .bg-success {
@@ -10214,7 +10214,7 @@ body[data-background-color=dark] .jvm-zoom-btn {
 }
 
 .bg-success2 {
-   background-color: #2bb930 !important
+   background-color: #00e13933 !important
 }
 
 .bg-warning {
@@ -10222,7 +10222,7 @@ body[data-background-color=dark] .jvm-zoom-btn {
 }
 
 .bg-warning2 {
-   background-color: #ff9e27 !important
+   background-color: #ff9e2733 !important
 }
 
 .bg-danger {
@@ -10230,7 +10230,7 @@ body[data-background-color=dark] .jvm-zoom-btn {
 }
 
 .bg-danger2 {
-   background-color: #ea4d56 !important
+   background-color: #ea4d5633 !important;
 }
 
 .bg-gray1 {

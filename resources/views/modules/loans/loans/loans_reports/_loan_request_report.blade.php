@@ -4,6 +4,8 @@
 <head>
 	<meta charset="utf-8" />
 	<title>#SC-{{ $loan->loan_code_number }}</title>
+
+	@php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
 </head>
 
 <body>
@@ -149,9 +151,9 @@
 			</div>
 
 			<div class="mt-2">
-				<span class="text_sm">Monto:&nbsp;L. {{ number_format($loan->loan_amount,2) }} ({{ number_format($loan->loan_interest,0)}}%)</span> <br />
-				<span class="text_sm">Prima:&nbsp;L. {{ number_format($loan->loan_down_payment,2) }}</span> <br />
-				<span class="text_sm">Monto a financiar:&nbsp;L. {{ number_format($loan->loan_total,2) }}</span> <br />
+				<span class="text_sm">Monto:&nbsp;{{ $currency }} {{ number_format($loan->loan_amount,2) }} ({{ number_format($loan->loan_interest,0)}}%)</span> <br />
+				<span class="text_sm">Prima:&nbsp;{{ $currency }} {{ number_format($loan->loan_down_payment,2) }}</span> <br />
+				<span class="text_sm">Monto a financiar:&nbsp;{{ $currency }} {{ number_format($loan->loan_total,2) }}</span> <br />
 				@if($loan->loan_payment_type == 1)
 				<span class="text_sm">Frecuencia de pago:&nbsp;&nbsp;</span><span class="text_sm text_bold">DIARIO</span>
 				@elseif($loan->loan_payment_type == 2)
@@ -175,7 +177,7 @@
 					<span class="text_sm"> meses</span>
 					@endif
 				</span> <br />
-				<span class="text_sm">Cuota: L. {{ number_format($loan->loan_quote_value,2) }}</span> <br />
+				<span class="text_sm">Cuota: {{ $currency }} {{ number_format($loan->loan_quote_value,2) }}</span> <br />
 				<span class="text_sm">Nº cuotas: {{ $loan->loan_quote_number }}</span> <br />
 			</div>
 		</div>

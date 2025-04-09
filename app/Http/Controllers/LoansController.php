@@ -176,6 +176,7 @@ class LoansController extends Controller
                 'loan_payment_type' => $request->input('loan_payment_type'), // 1-4
                 'loan_amount' => $request->input('loan_amount'),
                 'loan_down_payment' => $request->input('loan_down_payment'),
+                'loan_amount_weekly_arrears' => $request->input('loan_amount_weekly_arrears'),
                 'loan_quote_value' => $loan_total / $request->input('loan_quote_number'),
                 'loan_interest' => $request->input('loan_interest'),
                 'loan_total' => $loan_total,
@@ -670,5 +671,66 @@ class LoansController extends Controller
         return response($pdf->output(), 200)
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'inline; filename="' . $fileName . '"');
+    }
+
+    public function update_quotes_status()
+    {
+        try {
+            // Obtener todos los préstamos activos
+            $loans = Loans::where('loan_status', 1)->get();
+
+            foreach ($loans as $loan) {
+                // Obtener los pagos del préstamo actual
+                $loan_payments = LoanPayments::where('loan_id', $loan->id)->get();
+
+                foreach ($loan_payments as $payment) {
+                    try {
+                        if (Carbon::now() > Carbon::parse($payment->loan_quote_payment_date) && $payment->loan_quote_payment_status == 0 || $payment->loan_quote_payment_status == 2) {
+                            // Calcular días desde la fecha de vencimiento
+                            $dueDate = Carbon::parse($payment->loan_quote_payment_date);
+                            $now = Carbon::now();
+
+                            if ($now > $dueDate) {
+                                $daysSinceDueDate = abs($now->diffInDays($dueDate));
+                            } else {
+                                $daysSinceDueDate = 0; // Si la fecha de vencimiento es posterior a la fecha actual
+                            }
+
+                            // Calcular mora por día
+                            $dailyArrears = $loan->loan_amount_weekly_arrears; // Mora por día
+
+                            $mora = $daysSinceDueDate * $dailyArrears;
+
+                            // Asegurarse de que la mora sea positiva
+                            $mora = max($mora, 0);
+
+                            LoanPayments::where('id', $payment->id)->update([
+                                'loan_quote_arrears' => $mora,
+                                'loan_quote_payment_status' => 2,
+                            ]);
+                        }
+                    } catch (\Exception $e) {
+                        // Mostrar o registrar el error
+                        return redirect()->back()->with("error", "Error al actualizar el estado de la cuota: " . $e->getMessage());
+                    }
+                }
+
+                // Volver a obtener los registros actualizados (si es necesario)
+                $loan_payments = LoanPayments::where('loan_id', $loan->id)->get();
+
+                // Calcular el total a pagar para la cuota pendiente (si es necesario)
+                $pendingPayment = $loan_payments->where('loan_quote_payment_status', '!=', 1)->first();
+                if ($pendingPayment) {
+                    $totalToPay = $pendingPayment->loan_quote_payment_amount + $pendingPayment->loan_quote_arrears;
+                } else {
+                    $totalToPay = 0;
+                }
+            }
+
+            return redirect()->back()->with('success', 'Estados de préstamos actualizados');
+        } catch (\Exception $e) {
+            // Mostrar o registrar el error
+            return redirect()->back()->with("error", "Error al actualizar el estado de las cuotas: " . $e->getMessage());
+        }
     }
 }

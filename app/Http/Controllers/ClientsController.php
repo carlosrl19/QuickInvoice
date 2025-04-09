@@ -118,7 +118,7 @@ class ClientsController extends Controller
 
             return redirect()->route("clients.index")->with("success", "Registro actualizado exitosamente.");
         } catch (\Exception $e) {
-            return back()->with("error", "Ocurrió un error al actualizar el registro.");
+            return back()->with("error", "Ocurrió un error al actualizar el registro.")->withInput()->withErrors($e->getMessage());
         }
     }
 
@@ -135,11 +135,12 @@ class ClientsController extends Controller
             $client->delete();
 
             SystemLogs::create([
+                'module_log' => 'Clientes',
                 'log_description' => 'Cliente ' . $client->client_name . ' eliminado.'
             ]);
             return redirect()->route("clients.index")->with("success", "Registro eliminado exitosamente.");
         } catch (\Exception $e) {
-            return back()->with("error", "Ocurrió un error al eliminar el registro.");
+            return back()->with("error", "Ocurrió un error al eliminar el registro.")->withInput()->withErrors($e->getMessage());
         }
     }
 }

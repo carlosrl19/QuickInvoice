@@ -5,6 +5,8 @@
     <meta charset="utf-8" />
     <title>Cotización #{{ $quote->quote_code }}</title>
 
+    {{ $currency = App\Models\Settings::value('default_currency_symbol') }}
+
     <style>
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -133,16 +135,16 @@
                             N/A
                         </td>
                         <td style="text-align: center !important; font-size: 8.5pt; padding: 10px;">
-                            L. {{ number_format($quote_detail->quote_price,2) }}
+                            {{ $currency }} {{ number_format($quote_detail->quote_price,2) }}
                         </td>
                         <td style="text-align: center !important; font-size: 8.2pt; padding: 10px;">
-                            L. {{ number_format($quote->quote_discount,2) }}
+                            {{ $currency }} {{ number_format($quote->quote_discount,2) }}
                         </td>
                         <td style="text-align: center !important; font-size: 8.5pt; padding: 10px;">
                             {{ $quote->quote_tax }} %
                         </td>
                         <td style="text-align: right !important; font-size: 8.5pt; padding: 10px;">
-                            L. {{ number_format($quote_detail->quote_subtotal,2) }}
+                            {{ $currency }} {{ number_format($quote_detail->quote_subtotal,2) }}
                             <span>{{ $quote->quote_type == 'ET' ? 'E':$quote->quote_type }}</span>
                         </td>
                     </tr>
@@ -189,51 +191,51 @@
                     </td>
                     @if($quote->quote_type == 'G' && $quote->quote_exempt_tax == 0) <!-- Gravada con ISV -->
                     <td style="line-height: 1.1; padding: 10px; vertical-align: top; text-align: right;">
-                        <p style="font-size: 8.5pt; margin-top: 3px;">L. 0.00</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. {{ number_format($quote->quote_total_amount - $quote->quote_isv_amount,2) }}</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. {{ $quote->quote_type == 'G' ? number_format($quote->quote_isv_amount,2):'0.00' }}</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-weight: bolder; font-size: 9.6pt; margin-top: -3px;">L. {{ number_format($quote->quote_total_amount,2) }}</p>
+                        <p style="font-size: 8.5pt; margin-top: 3px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} {{ number_format($quote->quote_total_amount - $quote->quote_isv_amount,2) }}</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} {{ $quote->quote_type == 'G' ? number_format($quote->quote_isv_amount,2):'0.00' }}</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-weight: bolder; font-size: 9.6pt; margin-top: -3px;">{{ $currency }} {{ number_format($quote->quote_total_amount,2) }}</p>
                         <div style="margin-top: 10px"></div>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. {{ number_format($quote->quote_discount,2) }}</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} {{ number_format($quote->quote_discount,2) }}</p>
                     </td>
                     @elseif($quote->quote_type == 'G' || $quote->quote_type == 'ET' && $quote->quote_exempt_tax == 1) <!-- Exenta -->
                     <td style="line-height: 1.1; padding: 10px; vertical-align: top; text-align: right;">
-                        <p style="font-size: 8.5pt; margin-top: 3px;">L. 0.00</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. {{ number_format($quote->quote_total_amount,2) }}</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-weight: bolder; font-size: 9.6pt; margin-top: -3px;">L. {{ number_format($quote->quote_total_amount,2) }}</p>
+                        <p style="font-size: 8.5pt; margin-top: 3px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} {{ number_format($quote->quote_total_amount,2) }}</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-weight: bolder; font-size: 9.6pt; margin-top: -3px;">{{ $currency }} {{ number_format($quote->quote_total_amount,2) }}</p>
                         <div style="margin-top: 10px"></div>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. {{ number_format($quote->quote_discount,2) }}</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} {{ number_format($quote->quote_discount,2) }}</p>
                     </td>
                     @elseif($quote->quote_type == 'E') <!-- Exonerada -->
                     <td style="line-height: 1.1; padding: 10px; vertical-align: top; text-align: right;">
-                        <p style="font-size: 8.5pt; margin-top: 3px;">L. {{ number_format($quote->quote_total_amount,2) }}</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-weight: bolder; font-size: 9.6pt; margin-top: -3px;">L. {{ number_format($quote->quote_total_amount,2) }}</p>
+                        <p style="font-size: 8.5pt; margin-top: 3px;">{{ $currency }} {{ number_format($quote->quote_total_amount,2) }}</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-weight: bolder; font-size: 9.6pt; margin-top: -3px;">{{ $currency }} {{ number_format($quote->quote_total_amount,2) }}</p>
                         <div style="margin-top: 10px"></div>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. {{ number_format($quote->quote_discount,2) }}</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} {{ number_format($quote->quote_discount,2) }}</p>
                     </td>
                     @else
                     <td style="line-height: 1.1; padding: 10px; vertical-align: top; text-align: right;">
-                        <p style="font-size: 8.5pt; margin-top: 3px;">L. {{ $quote->quote_type == 'G' ? '0.00':$quote->quote_total_amount }}</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. (X)</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. {{ $quote->quote_type == 'G' ? number_format($quote->quote_total_amount - $quote->quote_isv_amount,2):'0.00' }}</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. {{ $quote->quote_type == 'G' ? number_format($quote->quote_isv_amount,2):'0.00' }}</p>
-                        <p style="font-size: 10pt; margin-top: -8px;">L. 0.00</p>
-                        <p style="font-weight: bolder; font-size: 9.6pt; margin-top: -3px;">L. {{ number_format($quote->quote_total_amount,2) }}</p>
+                        <p style="font-size: 8.5pt; margin-top: 3px;">{{ $currency }} {{ $quote->quote_type == 'G' ? '0.00':$quote->quote_total_amount }}</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} (X)</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} {{ $quote->quote_type == 'G' ? number_format($quote->quote_total_amount - $quote->quote_isv_amount,2):'0.00' }}</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} {{ $quote->quote_type == 'G' ? number_format($quote->quote_isv_amount,2):'0.00' }}</p>
+                        <p style="font-size: 10pt; margin-top: -8px;">{{ $currency }} 0.00</p>
+                        <p style="font-weight: bolder; font-size: 9.6pt; margin-top: -3px;">{{ $currency }} {{ number_format($quote->quote_total_amount,2) }}</p>
                         <div style="margin-top: 10px"></div>
-                        <p style="font-size: 8.5pt; margin-top: -8px;">L. {{ number_format($quote->quote_discount,2) }}</p>
+                        <p style="font-size: 8.5pt; margin-top: -8px;">{{ $currency }} {{ number_format($quote->quote_discount,2) }}</p>
                     </td>
                     @endif
                 </tr>

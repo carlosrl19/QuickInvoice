@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class ClientsFactory extends Factory
 {
     protected $model = Clients::class;
-    
+
     public function definition(): array
     {
         return [
@@ -23,10 +23,10 @@ class ClientsFactory extends Factory
             'client_phone2' => $this->faker->unique()->numberBetween(80000000, 99999999),
             'client_birthdate' => $this->faker->date(),
             'client_phone_home' => $this->faker->unique()->numberBetween(80000000, 99999999),
-            'client_actual_job' => $this->faker->jobTitle(),
+            'client_actual_job' => substr($this->faker->jobTitle(), 0, 55),
             'client_job_length' => $this->faker->randomNumber(2),
             'client_phone_work' => $this->faker->unique()->numberBetween(80000000, 99999999),
-            'client_last_job' => $this->faker->jobTitle(),
+            'client_last_job' => substr($this->faker->jobTitle(), 0, 55),
             'client_own_business' => $this->faker->boolean(),
             'client_email' => $this->faker->unique()->safeEmail(),
             'client_exonerated' => $this->faker->boolean(),

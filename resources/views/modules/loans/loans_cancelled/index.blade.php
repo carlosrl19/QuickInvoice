@@ -3,6 +3,8 @@
 @section('head')
 <!-- SweetAlert -->
 <script src="{{ Storage::url('assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
+
+{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
 @endsection
 
 @section('title')
@@ -81,16 +83,16 @@ Créditos anulados
                                     $loan_payment_amount_sum = App\Models\LoanPayments::where('loan_id', $loan->id)->sum('loan_quote_payment_amount');
                                     $actual_debt = $loan->loan_total - $loan_payment_amount_sum;
                                     ?>
-                                    L. {{ number_format($actual_debt, 2) }}
+                                    {{ $currency }} {{ number_format($actual_debt, 2) }}
                                 </td>
                                 <td>
-                                    L. {{ number_format($loan->loan_quote_value,2) }}
+                                    {{ $currency }} {{ number_format($loan->loan_quote_value,2) }}
                                 </td>
                                 <td>
-                                    L. {{ number_format($loan->loan_amount, 2) }}
+                                    {{ $currency }} {{ number_format($loan->loan_amount, 2) }}
                                 </td>
                                 <td>{{ $loan->loan_quote_number }} cuotas</td>
-                                <td>L. {{ number_format($loan->loan_total, 2) }}</td>
+                                <td>{{ $currency }} {{ number_format($loan->loan_total, 2) }}</td>
                             </tr>
                             @endforeach
                         </tbody>

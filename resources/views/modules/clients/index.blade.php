@@ -69,6 +69,7 @@ Clientes
                                 <th>Tipo cliente</th>
                                 <th>Teléfono 1</th>
                                 <th>Teléfono 2</th>
+                                <th>Estado</th>
                                 <th>Domicilio</th>
                             </tr>
                         </thead>
@@ -81,7 +82,7 @@ Clientes
                                     </a>
                                 </td>
                                 <td>
-                                    {{ $client->client_code }}
+                                    <span class="badge bg-secondary2 text-secondary">{{ $client->client_code }}</span>
                                 </td>
                                 <td>
                                     <a href="{{ route('clients.edit', $client->id) }}">
@@ -101,6 +102,13 @@ Clientes
                                     <span class="{{ $client->client_phone2 ? 'text-dark':'text-muted op-3' }}">
                                         {{ $client->client_phone2 ?? 'N/A' }}
                                     </span>
+                                </td>
+                                <td>
+                                    @if($client->client_status == 1)
+                                    <span class="badge bg-success2 text-success fw-bold">ACTIVO</span>
+                                    @else
+                                    <span class="badge bg-danger2 text-danger fw-bold">INACTIVO</span>
+                                    @endif
                                 </td>
                                 <td>
                                     <span class="{{ $client->client_address ? 'text-dark':'text-muted op-3' }}">

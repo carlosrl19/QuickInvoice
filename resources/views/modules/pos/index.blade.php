@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('head')
+{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
+@endsection
+
 @section('title')
 POS
 @endsection
@@ -36,13 +40,14 @@ POS
                         <thead>
                             <tr>
                                 <th>Detalles</th>
-                                <th>Fecha</th>
                                 <th>Factura</th>
                                 <th>Cliente</th>
                                 <th>Tipo venta</th>
+                                <th>Estado</th>
                                 <th>Tipo pago</th>
                                 <th>Total</th>
                                 <th>Vendedor</th>
+                                <th>Fecha</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -54,18 +59,24 @@ POS
                                         Factura
                                     </a>
                                 </td>
-                                <td>{{ $sale->created_at }}</td>
-                                <td>{{ $sale->folio_invoice_number }}</td>
+                                <td>
+                                    <span class="badge bg-danger2 text-danger">
+                                        {{ $sale->folio_invoice_number }}
+                                    </span>
+                                </td>
                                 <td>{{ $sale->client->client_name }}</td>
                                 <td>
                                     {{ $sale->sale_type == 'E' ? 'EXONERADA' : ($sale->sale_type == 'G' ? 'GRAVADA' : 'EXENTA') }}
                                 </td>
                                 <td>
+                                    <span class="badge bg-secondary2 text-secondary">PAGADO</span>
+                                </td>
+                                <td>
                                     @php
                                     $classes = [
-                                    1 => 'bg-success',
-                                    2 => 'bg-warning',
-                                    3 => 'bg-primary',
+                                    1 => 'bg-success2 text-success',
+                                    2 => 'bg-warning2 text-warning',
+                                    3 => 'bg-primary2 text-primary',
                                     ];
                                     $class = $classes[$sale->sale_payment_type] ?? 'bg-dark';
                                     @endphp
@@ -82,10 +93,16 @@ POS
                                     <span class="badge {{ $class }}">{{ $paymentTypeText }}</span>
                                 </td>
                                 <td>
-                                    L. {{ number_format($sale->sale_total_amount,2) }}
+                                    {{ $currency }} {{ number_format($sale->sale_total_amount,2) }}
                                 </td>
                                 <td>
                                     {{ $sale->seller->seller_name }}
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary2 text-primary">
+                                        {{ $sale->created_at->format('H:i A') }}<br>
+                                        {{ $sale->created_at->format('d/m/Y') }}
+                                    </span>
                                 </td>
                             </tr>
 

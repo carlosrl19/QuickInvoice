@@ -1,8 +1,6 @@
-<nav
-    class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+<nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
     <div class="container-fluid">
-        <nav
-            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+        <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <button type="submit" class="btn btn-search pe-1">
@@ -15,20 +13,12 @@
 
         <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
             <li class="nav-item topbar-icon dropdown hidden-caret">
-                <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="notifDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-bell"></i>
                     <span class="notification">4</span>
                 </a>
-                <ul
-                    class="dropdown-menu notif-box animated fadeIn"
-                    aria-labelledby="notifDropdown">
+                <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                     <li>
                         <div class="dropdown-title">
                             Créditos por cobrar
@@ -72,15 +62,9 @@
                 </ul>
             </li>
             <li class="nav-item topbar-user dropdown hidden-caret">
-                <a
-                    class="dropdown-toggle profile-pic"
-                    data-bs-toggle="dropdown"
-                    href="#"
-                    aria-expanded="false">
+                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                     <div class="avatar-sm">
-                        <img
-                            src="{{ Storage::url('assets/img/profile.jpg') }}"
-                            alt="..."
+                        <img src="{{ Storage::url('assets/img/profile.jpg') }}" alt="..."
                             class="avatar-img rounded-circle" />
                     </div>
                     <span class="profile-username">
@@ -93,9 +77,7 @@
                         <li>
                             <div class="user-box">
                                 <div class="avatar-lg">
-                                    <img
-                                        src="{{ Storage::url('assets/img/profile.jpg') }}"
-                                        alt="image profile"
+                                    <img src="{{ Storage::url('assets/img/profile.jpg') }}" alt="image profile"
                                         class="avatar-img rounded" />
                                 </div>
                                 <div class="u-text">

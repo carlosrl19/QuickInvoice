@@ -11,6 +11,8 @@
 use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
 @endphp
 
+{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
+{{ $default_seller = App\Models\Settings::value('default_seller_id') }}
 @endsection
 
 @section('title')
@@ -102,10 +104,10 @@ Solicitud de créditos
                                     {{ $loan->client->client_document }}
                                 </td>
                                 <td>
-                                    L. {{ number_format($loan->loan_amount, 2) }}
+                                    {{ $currency }} {{ number_format($loan->loan_amount, 2) }}
                                 </td>
                                 <td>{{ $loan->loan_quote_number }} cuotas</td>
-                                <td>L. {{ number_format($loan->loan_total, 2) }}</td>
+                                <td>{{ $currency }} {{ number_format($loan->loan_total, 2) }}</td>
                             </tr>
 
                             <!-- Include -->

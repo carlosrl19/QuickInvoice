@@ -22,17 +22,20 @@ class StoreRequest extends FormRequest
             'client_id' => 'required|integer|exists:clients,id',
             'seller_id' => 'required|integer|exists:sellers,id',
             'folio_id' => 'required|integer|exists:fiscal_folios,id',
-            'sale_type' => 'required|string|min:1|max:2',
-            'exempt_purchase_order_correlative' => 'nullable|string|min:12|max:12|unique:pos,exempt_purchase_order_correlative',
-            'exonerated_certificate' => 'nullable|string|min:11|max:11|unique:pos,exonerated_certificate',
+            'bank_id' => 'nullable|required_if:sale_payment_type,3|integer|exists:banks,id',
+            'sale_type' => 'required|string|min:1|max:2', // E, G, ET
+            'exempt_purchase_order_correlative' => 'nullable|required_if:sale_type,E|string|min:12|max:12|unique:pos,exempt_purchase_order_correlative',
+            'exonerated_certificate' => 'nullable|required_if:sale_type,E|string|min:11|max:11|unique:pos,exonerated_certificate',
             'folio_invoice_number' => 'required|string|min:19|max:19|unique:pos,folio_invoice_number',
             'sale_total_amount' => 'required|numeric|min:1',
             'sale_discount' => 'required|numeric|min:0|max:100',
             'sale_tax' => 'required|numeric|min:0|max:100',
             'sale_payment_received' => 'required|numeric|min:1|gte:sale_total_amount',
-            'sale_payment_type' => 'required|numeric|in:1,2,3',
-            'sale_card_last_digits' => 'nullable|string|min:4|max:4|regex:/^[0-9]+$/', // Solo si se usa Tarjeta como sale_payment_type
-            'sale_card_auth_number' => 'nullable|string|min:6|max:12|regex:/^[A-Z0-9]+$/', // Solo si se usa Tarjeta como sale_payment_type
+            'sale_payment_type' => 'required|numeric|in:1,2,3,4',
+            'sale_card_last_digits' => 'nullable|required_if:sale_payment_type,2|string|min:4|max:4|regex:/^[0-9]+$/', // Solo si se usa Tarjeta como sale_payment_type
+            'sale_card_auth_number' => 'nullable|required_if:sale_payment_type,2|string|min:6|max:12|regex:/^[A-Z0-9]+$/', // Solo si se usa Tarjeta como sale_payment_type
+            'sale_bank_operation_number' => 'nullable|required_if:sale_payment_type,3|string|min:6|max:12|regex:/^[A-Z0-9]+$/', // Solo si se usa Deposito como sale_payment_type
+            'sale_bankcheck_info' => 'nullable|required_if:sale_payment_type,4|string|min:10|max:40|regex:/^[A-Z0-9\/]+$/', // Solo si se usa Cheque como sale_payment_type
             'sale_payment_change' => 'required|numeric|min:0',
 
             // POS Details
@@ -66,6 +69,11 @@ class StoreRequest extends FormRequest
             'folio_id.required' => 'El folio fiscal es obligatorio.',
             'folio_id.integer' => 'El folio fiscal debe ser un número entero (dev.request).',
             'folio_id.exists' => 'El folio fiscal seleccionado no existe.',
+
+            // Bank_id messages
+            'bank_id.required_if' => 'El banco es obligatorio.',
+            'bank_id.integer' => 'El banco debe ser un número entero (dev.request).',
+            'bank_id.exists' => 'El banco seleccionado no existe.',
 
             // Sale type messages
             'sale_type.required' => 'El tipo de venta es obligatorio',
@@ -120,14 +128,32 @@ class StoreRequest extends FormRequest
             'sale_payment_type.in' => 'El tipo de pago debe ser mayor o igual a :min',
 
             // Card last digits messages
-            'sale_card_last_digits.string' => 'Los últimos 4 digitos de la tarjeta deben contener solo números.',
-            'sale_card_last_digits.min' => 'Los últimos 4 digitos de la tarjeta deben contener al menos :min números.',
-            'sale_card_last_digits.max' => 'Los últimos 4 digitos de la tarjeta no puede contener más de :max números.',
+            'sale_card_last_digits.required_if' => 'Los últimos 4 digitos son obligatorios.',
+            'sale_card_last_digits.string' => 'Los últimos 4 digitos deben contener solo números.',
+            'sale_card_last_digits.regex' => 'Los últimos 4 digitos deben contener solo números.',
+            'sale_card_last_digits.min' => 'Los últimos 4 digitos deben contener al menos :min caracteres.',
+            'sale_card_last_digits.max' => 'Los últimos 4 digitos no puede contener más de :max caracteres.',
 
             // Card auth number messages
-            'sale_card_auth_number.string' => 'La autorización de transferencia debe contener solo letras y números.',
-            'sale_card_auth_number.min' => 'La autorización de transferencia debe contener al menos :min números.',
-            'sale_card_auth_number.max' => 'La autorización de transferencia no puede contener más de :max números.',
+            'sale_card_auth_number.required_if' => 'La autorización es obligatoria.',
+            'sale_card_auth_number.string' => 'La autorización debe contener solo letras y caracteres.',
+            'sale_card_auth_number.regex' => 'La autorización debe contener solo letras y caracteres.',
+            'sale_card_auth_number.min' => 'La autorización debe contener al menos :min caracteres.',
+            'sale_card_auth_number.max' => 'La autorización no puede contener más de :max caracteres.',
+
+            // Sale bank operation number messages
+            'sale_bank_operation_number.required_if' => 'El Nº de operación es obligatorio.',
+            'sale_bank_operation_number.string' => 'El Nº de operación debe contener solo letras y caracteres.',
+            'sale_bank_operation_number.regex' => 'El Nº de operación no debe contener símbolos.',
+            'sale_bank_operation_number.min' => 'El Nº de operación debe contener al menos :min caracteres.',
+            'sale_bank_operation_number.max' => 'El Nº de operación no puede contener más de :max caracteres.',
+
+            // Sale bankcheck info messages
+            'sale_bankchek_info.required_if' => 'El Banco / Nº cuenta es obligatorio.',
+            'sale_bankchek_info.string' => 'El Banco / Nº cuenta debe contener solo letras, números y signo /.',
+            'sale_bankchek_info.regex' => 'El Banco / Nº cuenta no debe contener símbolos distintos a /.',
+            'sale_bankchek_info.min' => 'El Banco / Nº cuenta debe contener al menos :min caracteres.',
+            'sale_bankchek_info.max' => 'El Banco / Nº cuenta no puede contener más de :max caracteres.',
 
             // Sale payment change messages
             'sale_payment_change.required' => 'El cambio del pago de la venta es obligatorio.',

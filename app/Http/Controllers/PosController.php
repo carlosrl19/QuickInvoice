@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Pos\StoreRequest;
 use App\Http\Requests\Pos\StoreExoneratedRequest;
+use App\Models\Banks;
 use App\Models\Clients;
 use App\Models\FiscalFolio;
 use App\Models\Pos;
@@ -29,18 +30,20 @@ class PosController extends Controller
 
     public function create()
     {
+        $banks = Banks::get();
         $services = Services::where('service_type', 1)->get();
         $clients = Clients::where('client_exonerated', 0)->get();
         $sellers = Seller::get();
-        return view('modules.pos.create', compact('services', 'clients', 'sellers'));
+        return view('modules.pos.create', compact('banks', 'services', 'clients', 'sellers'));
     }
 
     public function exonerated_sale()
     {
+        $banks = Banks::get();
         $services = Services::where('service_type', 0)->get();
         $clients = Clients::where('client_exonerated', 1)->get();
         $sellers = Seller::get();
-        return view('modules.pos.create_exonerated_sale', compact('services', 'clients', 'sellers'));
+        return view('modules.pos.create_exonerated_sale', compact('banks', 'services', 'clients', 'sellers'));
     }
 
     public function store(StoreRequest $request)
@@ -49,9 +52,17 @@ class PosController extends Controller
         $validatedData = $request->validated();
         $folio = FiscalFolio::where('folio_status', 1)->first();
 
+        // Pago por tarjeta
         $sale_payment_type = $request->input('sale_payment_type');
         $sale_card_last_digits = $request->input('sale_card_last_digits');
         $sale_card_auth_number = $request->input('sale_card_auth_number');
+
+        // Pago por deposito
+        $sale_bank_id = $request->input('bank_id');
+        $sale_bank_operation_number = $request->input('sale_bank_operation_number');
+
+        // Pago por cheque
+        $sale_bankcheck_info = $request->input('sale_bankcheck_info');
 
         if (!$folio) {
             return redirect()->back()->with('error', 'No hay ningún folio fiscal en uso actualmente.');
@@ -64,6 +75,21 @@ class PosController extends Controller
         // Se valida que se ingresen los 4 digitos de la tarjeta junto a su autorización, en caso de utilizarse TARJETA como tipo de pago
         if ($sale_payment_type == 2 && (empty($sale_card_last_digits) || empty($sale_card_auth_number))) {
             return redirect()->back()->with('error', 'Los últ. 4 digitos de la tarjeta y el número de autorización son obligatorios.');
+        }
+
+        // Se valida que se seleccione algún banco en caso de utilizarse DEPOSITO como tipo de pago
+        if ($sale_payment_type == 3 && empty($sale_bank_id)) {
+            return redirect()->back()->with('error', 'El banco utilizado para el depósito es obligatorio.');
+        }
+
+        // Se valida que se ingrese el input de Nº operación, en caso de utilizarse DEPOSITO como tipo de pago
+        if ($sale_payment_type == 3 && empty($sale_bank_operation_number)) {
+            return redirect()->back()->with('error', 'El número de operación es obligatorio.');
+        }
+
+        // Se valida que se ingrese el input de Banco/Nº cuenta, en caso de utilizarse CHEQUE como tipo de pago
+        if ($sale_payment_type == 4 && empty($sale_bankcheck_info)) {
+            return redirect()->back()->with('error', 'El Banco / Nº cuenta es obligatorio.');
         }
 
         if ($request->input('sale_exempt_tax') == 1) {
@@ -101,6 +127,7 @@ class PosController extends Controller
                 'client_id' => $request->input('client_id'),
                 'seller_id' => $request->input('seller_id'),
                 'folio_id' => $folio->id,
+                'bank_id' => $request->input('bank_id'),
                 'sale_type' => $sale_type,
                 'folio_invoice_number' => $folioInvoiceNumber,
                 'sale_total_amount' => $request->input('sale_total_amount'),
@@ -112,6 +139,8 @@ class PosController extends Controller
                 'sale_payment_type' => $request->input('sale_payment_type'),
                 'sale_card_last_digits' => $request->input('sale_card_last_digits'),
                 'sale_card_auth_number' => $request->input('sale_card_auth_number'),
+                'sale_bank_operation_number' => $request->input('sale_bank_operation_number'),
+                'sale_bankcheck_info' => $request->input('sale_bankcheck_info'),
                 'sale_payment_change' => $request->input('sale_payment_change'),
                 'created_at' => $this->getTodayDate(),
                 'updated_at' => $this->getTodayDate(),
@@ -165,9 +194,17 @@ class PosController extends Controller
         $correlative2 = $request->input('exonerated_certificate');
         $services = $request->input('service_id');
 
+        // Pago por tarjeta
         $sale_payment_type = $request->input('sale_payment_type');
         $sale_card_last_digits = $request->input('sale_card_last_digits');
         $sale_card_auth_number = $request->input('sale_card_auth_number');
+
+        // Pago por deposito
+        $sale_bank_id = $request->input('bank_id');
+        $sale_bank_operation_number = $request->input('sale_bank_operation_number');
+
+        // Pago por cheque
+        $sale_bankcheck_info = $request->input('sale_bankcheck_info');
 
         if (!$folio) {
             return redirect()->back()->with('error', 'No hay ningún folio fiscal en uso actualmente.');
@@ -189,6 +226,21 @@ class PosController extends Controller
         // Se valida que se ingresen los 4 digitos de la tarjeta junto a su autorización, en caso de utilizarse TARJETA como tipo de pago
         if ($sale_payment_type == 2 && (empty($sale_card_last_digits) || empty($sale_card_auth_number))) {
             return redirect()->back()->with('error', 'Los últ. 4 digitos de la tarjeta y el número de autorización son obligatorios.');
+        }
+
+        // Se valida que se seleccione algún banco en caso de utilizarse DEPOSITO como tipo de pago
+        if ($sale_payment_type == 3 && empty($sale_bank_id)) {
+            return redirect()->back()->with('error', 'El banco utilizado para el depósito es obligatorio.');
+        }
+
+        // Se valida que se ingrese el input de Nº operación, en caso de utilizarse DEPOSITO como tipo de pago
+        if ($sale_payment_type == 3 && empty($sale_bank_operation_number)) {
+            return redirect()->back()->with('error', 'El número de operación es obligatorio.');
+        }
+
+        // Se valida que se ingrese el input de Banco/Nº cuenta, en caso de utilizarse CHEQUE como tipo de pago
+        if ($sale_payment_type == 4 && empty($sale_bankcheck_info)) {
+            return redirect()->back()->with('error', 'El Banco / Nº cuenta es obligatorio.');
         }
 
         DB::beginTransaction();
@@ -219,6 +271,7 @@ class PosController extends Controller
                 'client_id' => $request->input('client_id'),
                 'seller_id' => $request->input('seller_id'),
                 'folio_id' => $folio->id,
+                'bank_id' => $request->input('bank_id'),
                 'sale_type' => $request->input('sale_type'),
                 'folio_invoice_number' => $folioInvoiceNumber,
                 'exempt_purchase_order_correlative' => $request->input('exempt_purchase_order_correlative'),
@@ -232,6 +285,8 @@ class PosController extends Controller
                 'sale_payment_type' => $request->input('sale_payment_type'),
                 'sale_card_last_digits' => $request->input('sale_card_last_digits'),
                 'sale_card_auth_number' => $request->input('sale_card_auth_number'),
+                'sale_bank_operation_number' => $request->input('sale_bank_operation_number'),
+                'sale_bankcheck_info' => $request->input('sale_bankcheck_info'),
                 'sale_payment_change' => $request->input('sale_payment_change'),
                 'created_at' => $this->getTodayDate(),
                 'updated_at' => $this->getTodayDate(),

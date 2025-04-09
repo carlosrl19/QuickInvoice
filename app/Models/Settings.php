@@ -17,5 +17,13 @@ class Settings extends Model
         'company_email',
         'company_address',
         'company_short_address',
+        'default_currency_symbol',
+        'default_seller_id',
     ];
+
+    // Relationships
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class, 'default_seller_id');
+    }
 }

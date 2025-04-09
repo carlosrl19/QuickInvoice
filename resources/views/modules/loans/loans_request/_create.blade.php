@@ -19,7 +19,7 @@
                             <select class="tom-select @error('seller_id') is-invalid @enderror" id="seller_id_select" name="seller_id">
                                 <option value="" selected disabled>Seleccione el vendedor</option>
                                 @foreach ($sellers as $seller)
-                                <option value="{{ $seller->id }}" {{ $seller->id == 1 ? 'selected' : '' }}>{{ $seller->seller_name }}</option>
+                                <option value="{{ $seller->id }}" {{ $default_seller == $seller->id ? 'selected' : '' }}>{{ $seller->seller_name }}</option>
                                 @endforeach
                             </select>
                             @error('seller_id')
@@ -95,7 +95,7 @@
 
                     <!-- Down payment / interest -->
                     <div class="row mb-3">
-                        <div class="col">
+                        <div class="col-6">
                             <div class="form-floating">
                                 <input type="number" name="loan_interest" min="0" max="100" value="0.00" id="loan_interest" value="{{ old('loan_interest') }}" class="form-control @error('loan_interest') is-invalid @enderror" />
                                 @error('loan_interest')
@@ -116,6 +116,18 @@
                                 </span>
                                 @enderror
                                 <label for="loan_down_payment">Prima del préstamo</label>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="number" name="loan_amount_weekly_arrears" step="any" id="loan_amount_weekly_arrears" value="{{ old('loan_amount_weekly_arrears') }}" class="form-control @error('loan_amount_weekly_arrears') is-invalid @enderror" />
+                                @error('loan_amount_weekly_arrears')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                                <label for="loan_amount_weekly_arrears">Monto diario por mora <span class="text-danger">*</span></label>
                             </div>
                         </div>
                     </div>

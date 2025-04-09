@@ -3,10 +3,20 @@
 @section('head')
 <!-- SweetAlert -->
 <script src="{{ Storage::url('assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
+
+{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
 @endsection
 
 @section('title')
 Créditos vigentes
+@endsection
+
+@section('create')
+<a href="{{ route('loans.update_quotes_status') }}" class="btn btn-sm btn-label-info btn-round me-2">
+    <x-heroicon-o-arrow-path style="width: 20px; height: 20px;" class="bg-label-info" />
+    Actualizar estado de préstamos
+</a>
+
 @endsection
 
 @section('breadcrumb')
@@ -54,13 +64,27 @@ Créditos vigentes
                         </thead>
                         <tbody>
                             @foreach ($loans as $loan)
+                            {{ $quote_arrears_counter = App\Models\LoanPayments::where('loan_id', $loan->id)->where('loan_quote_arrears', '>', 0)->count() }}
                             <tr>
                                 <td>
+                                    @if($quote_arrears_counter > 0)
+                                    <button class="btn btn-sm btn-danger btn-border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px;" class="bg-label-danger" />
+                                        Más acciones
+                                    </button>
+                                    @else
                                     <button class="btn btn-sm btn-primary btn-border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Más acciones
                                     </button>
+                                    @endif
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{ route('loan_payments.new_pay', $loan->id) }}">Abonar</a>
+                                        <a class="dropdown-item" href="{{ route('loan_payments.new_pay', $loan->id) }}">
+                                            @if($quote_arrears_counter > 0)
+                                            <span class="text-danger">Abonar cuotas atrasadas</span>
+                                            @else
+                                            Abonar
+                                            @endif
+                                        </a>
                                         <div role="separator" class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{ route('loans.loan_receipt_delivery_show', $loan->id) }}">Comprobante entrega</a>
                                         <a class="dropdown-item" href="{{ route('loans.loan_account_statement_show', $loan->id) }}">Estado de cuenta</a>
@@ -80,11 +104,11 @@ Créditos vigentes
                                 </td>
                                 <td>
                                     @if($loan->loan_status == 0)
-                                    <span class="badge bg-dark fw-bold">SOLICITUD EN ESPERA</span>
+                                    <span class="badge bg-dark text-white fw-bold">SOLICITUD EN ESPERA</span>
                                     @elseif($loan->loan_status == 1)
-                                    <span class="badge bg-warning fw-bold">EN PROCESO</span>
+                                    <span class="badge bg-warning2 text-warning fw-bold">EN PROCESO</span>
                                     @elseif($loan->loan_status == 2)
-                                    <span class="badge bg-success fw-bold">PAGADO</span>
+                                    <span class="badge bg-success2 text-success fw-bold">PAGADO</span>
                                     @endif
                                 </td>
                                 <td>
@@ -98,13 +122,13 @@ Créditos vigentes
                                     $loan_payment_amount_sum = App\Models\LoanPayments::where('loan_id', $loan->id)->where('loan_quote_payment_status', 1)->sum('loan_quote_payment_amount');
                                     $actual_debt = $loan->loan_total - $loan_payment_amount_sum;
                                     ?>
-                                    L. {{ number_format($actual_debt, 2) }}
+                                    <span class="badge bg-danger2 text-danger">{{ $currency }} {{ number_format($actual_debt, 2) }}</span>
                                 </td>
                                 <td>
-                                    L. {{ number_format($loan->loan_quote_value,2) }}
+                                    {{ $currency }} {{ number_format($loan->loan_quote_value,2) }}
                                 </td>
                                 <td>
-                                    L. {{ number_format($loan->loan_amount, 2) }}
+                                    {{ $currency }} {{ number_format($loan->loan_amount, 2) }}
                                 </td>
                                 <td>
                                     {{ $loan->loan_quote_number }} cuotas

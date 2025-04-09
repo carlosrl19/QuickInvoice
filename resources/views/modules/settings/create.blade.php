@@ -4,6 +4,9 @@
 <!-- SweetAlert -->
 <script src="{{ Storage::url('assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
 
+<!-- Tomselect -->
+<link href="{{ Storage::url('assets/js/plugin/tomselect/tom-select.min.css') }}" rel="stylesheet">
+
 <!-- IMask.JS -->
 <script src="{{ Storage::url('assets/js/plugin/imask/imask.js') }}"></script>
 
@@ -155,6 +158,37 @@ Configuración
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Default currency symbol / Seller -->
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <div class="form-floating">
+                                                <input type="text" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z.$€£¥₹]/g, '')" class="form-control @error('default_currency_symbol') is-invalid @enderror" autocomplete="off"
+                                                    maxlength="3" name="default_currency_symbol" id="default_currency_symbol" value="{{ old('default_currency_symbol') }}">
+                                                @error('default_currency_symbol')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                                @enderror
+                                                <label for="default_currency_symbol">Moneda por defecto <span class="text-danger">*</span></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col">
+                                            <label for="default_seller_id">Vendedor predeterminado <span class="text-danger">*</span></label>
+                                            <select class="tom-select @error('default_seller_id') is-invalid @enderror" id="default_seller_id_select" name="default_seller_id">
+                                                <option value="" selected disabled>Seleccione el vendedor predeterminado</option>
+                                                @foreach ($sellers as $seller)
+                                                <option value="{{ $seller->id }}" {{ old('default_seller_id') ? 'selected' : '' }}>{{ $seller->seller_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('default_seller_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -267,6 +301,10 @@ Configuración
         imgPreview.src = objectURL;
     }
 </script>
+
+<!-- Tomselect -->
+<script src="{{ Storage::url('assets/js/plugin/tomselect/tom-select.complete.js') }}"></script>
+<script src="{{ Storage::url('customjs/tomselect/ts_init.js') }}"></script>
 
 <!-- Laravel Javascript validation -->
 <script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>

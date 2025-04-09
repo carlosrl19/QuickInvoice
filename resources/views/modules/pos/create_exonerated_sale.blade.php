@@ -11,6 +11,7 @@
 use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
 @endphp
 
+{{ $default_seller = App\Models\Settings::value('default_seller_id') }}
 @endsection
 
 @section('title')
@@ -69,7 +70,7 @@ POS
                                 <!-- Selección de Servicios y Clientes -->
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                     <div class="row mb-3">
-                                        <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12" id="client_select_container">
+                                        <div class="col-xl-3 col-lg-3 col-sm-12 col-xs-12" id="client_select_container">
                                             <label for="client_id">Cliente <span class="text-danger">*</span></label>
                                             <select class="tom-select @error('client_id') is-invalid @enderror" id="client_id_select" name="client_id">
                                                 <option value="" selected disabled>Seleccione el cliente</option>
@@ -83,12 +84,12 @@ POS
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12" id="seller_select_container">
+                                        <div class="col-xl-3 col-lg-3 col-sm-12 col-xs-12" id="seller_select_container">
                                             <label for="seller_id">Vendedor <span class="text-danger">*</span></label>
                                             <select class="tom-select @error('seller_id') is-invalid @enderror" id="seller_id_select" name="seller_id">
                                                 <option value="" selected disabled>Seleccione el vendedor</option>
                                                 @foreach ($sellers as $seller)
-                                                <option value="{{ $seller->id }}" {{ $seller->id == 1 ? 'selected' : '' }}>{{ $seller->seller_name }}</option>
+                                                <option value="{{ $seller->id }}" {{ $default_seller == $seller->id ? 'selected' : '' }}>{{ $seller->seller_name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('seller_id')
@@ -97,19 +98,22 @@ POS
                                             </span>
                                             @enderror
                                         </div>
+
                                         <!-- Selección de servicio -->
-                                        <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12" id="service_select_container">
+                                        <div class="col-xl-6 col-lg-6 col-sm-12 col-xs-12" id="service_select_container">
                                             <label for="service_id">Servicio <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <select class="tom-select w-75 @error('service_id') is-invalid @enderror" id="service_id_select" name="service_id">
                                                     <option value="" selected disabled>Seleccione los productos o servicios</option>
                                                     @foreach ($services as $service)
-                                                    <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}
-                                                        data-price="{{ $service->price }}">{{ $service->service_nomenclature }} - {{ $service->service_name }}</option>
+                                                    <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>
+                                                        {{ $service->service_nomenclature }} - {{ $service->service_name }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                                 <button type="button" class="btn btn-sm btn-danger" id="add_service_button">
                                                     <x-heroicon-o-plus style="width: 20px; height: 20px; color: white" />
+                                                    Agregar
                                                 </button>
                                                 @error('service_id')
                                                 <span class="invalid-feedback" role="alert">
@@ -219,7 +223,8 @@ POS
                                         <div class="col">
                                             <select class="tom-select-no-search @error('sale_payment_type') is-invalid @enderror" name="sale_payment_type" id="sale_payment_type_select">
                                                 <option value="0" selected disabled>Seleccione el tipo de pago</option>
-                                                <option value="3" {{ old('sale_payment_type') == '3' ? 'selected' : '' }}>DEPOSITO (X)</option>
+                                                <option value="4" {{ old('sale_payment_type') == '4' ? 'selected' : '' }}>CHEQUE</option>
+                                                <option value="3" {{ old('sale_payment_type') == '3' ? 'selected' : '' }}>DEPOSITO</option>
                                                 <option value="1" {{ old('sale_payment_type') == '1' ? 'selected' : '' }}>EFECTIVO</option>
                                                 <option value="2" {{ old('sale_payment_type') == '2' ? 'selected' : '' }}>TARJETA</option>
                                             </select>
@@ -260,7 +265,7 @@ POS
                                         <div class="row mb-3">
                                             <div class=" col-xl-6 col-lg-6 col-md-12 col-sm-12">
                                                 <div class="form-floating">
-                                                    <input type="text" minlength="4" maxlength="4" name="sale_card_last_digits" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')"
+                                                    <input type="text" oninput="this.value = this.value.replace(/\D/g, '')" minlength="4" maxlength="4" name="sale_card_last_digits"
                                                         value="" id="sale_card_last_digits" class="form-control @error('sale_card_last_digits') is-invalid @enderror" autocomplete="off" />
                                                     @error('sale_card_last_digits')
                                                     <span class="invalid-feedback" role="alert">
@@ -273,7 +278,7 @@ POS
 
                                             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                                                 <div class="form-floating">
-                                                    <input type="text" minlength="6" maxlength="12" name="sale_card_auth_number" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')"
+                                                    <input type="text" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')" minlength="6" maxlength="12" name="sale_card_auth_number"
                                                         value="" id="sale_card_auth_number" class="form-control @error('sale_card_auth_number') is-invalid @enderror" autocomplete="off" />
                                                     @error('sale_card_auth_number')
                                                     <span class="invalid-feedback" role="alert">
@@ -281,6 +286,57 @@ POS
                                                     </span>
                                                     @enderror
                                                     <label for="sale_card_auth_number">Nº autorización <span class="text-danger">*</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Bank check selected options -->
+                                    <div id="bankcheck_option_selected" style="display: none;">
+                                        <div class="row mb-3">
+                                            <div class=" col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <div class="form-floating">
+                                                    <input type="text" oninput="this.value = this.value.replace(/[^a-zA-Z0-9\/]/g, '').toUpperCase();" minlength="40" maxlength="40" name="sale_bankcheck_info"
+                                                        value="" id="sale_bankcheck_info" class="form-control @error('sale_bankcheck_info') is-invalid @enderror" autocomplete="off" />
+                                                    @error('sale_bankcheck_info')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        {{ $message }}
+                                                    </span>
+                                                    @enderror
+                                                    <label for="sale_bankcheck_info">Banco / Nº cuenta<span class="text-danger">*</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Deposito selected options -->
+                                    <div id="bank_option_selected" style="display: none;">
+                                        <div class="row mb-3">
+                                            <div class=" col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                                <select class="tom-select @error('bank_id') is-invalid @enderror" id="bank_id_select" name="bank_id">
+                                                    <option value="" selected disabled>Seleccione el banco</option>
+                                                    @foreach ($banks as $bank)
+                                                    <option value="{{ $bank->id }}" {{ old('bank_id') == $bank->id ? 'selected' : '' }}>
+                                                        {{ $bank->bank_name }} / {{ $bank->bank_account_number }}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('bank_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                                <div class="form-floating">
+                                                    <input type="text" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')" minlength="6" maxlength="12" name="sale_bank_operation_number" value="" id="sale_bank_operation_number" class="form-control @error('sale_bank_operation_number') is-invalid @enderror" autocomplete="off" />
+                                                    @error('sale_bank_operation_number')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        {{ $message }}
+                                                    </span>
+                                                    @enderror
+                                                    <label for="sale_bank_operation_number">Nº operación <span class="text-danger">*</span></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -340,4 +396,10 @@ POS
 
 <!-- Ocultar campos de card si no se usa Tarjeta -->
 <script src="{{ Storage::url('customjs/pos/hide_card_inputs.js') }}"></script>
+
+<!-- Ocultar campos de bank si no se usa Deposito -->
+<script src="{{ Storage::url('customjs/pos/hide_bank_inputs.js') }}"></script>
+
+<!-- Ocultar campos de bankcheck si no se usa Cheque -->
+<script src="{{ Storage::url('customjs/pos/hide_bankcheck_inputs.js') }}"></script>
 @endsection

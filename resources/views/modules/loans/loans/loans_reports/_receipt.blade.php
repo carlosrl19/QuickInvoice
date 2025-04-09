@@ -5,6 +5,8 @@
     <meta charset="utf-8" />
     <title>#RP-{{ $loan_payment->loan_payment_doc_number }}</title>
 
+    @php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
+
     <style>
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -194,11 +196,11 @@
                 <tr style="text-align: left !important;">
                     <td>
                         Abono al préstamo #{{ $loan->loan_code_number }} | Int. Corriente: 0.00 | Mora: 0.00<br>
-                        Capital: L. {{ number_format($loan_payment->loan_quote_payment_amount, 2) }}<br>
-                        Saldo Anterior: L. {{ number_format($loan_payment->loan_old_debt,2) }}<br>
-                        Nuevo Saldo: L. {{ number_format($loan_payment->loan_new_debt,2) }}
+                        Capital: {{ $currency }} {{ number_format($loan_payment->loan_quote_payment_amount, 2) }}<br>
+                        Saldo Anterior: {{ $currency }} {{ number_format($loan_payment->loan_old_debt,2) }}<br>
+                        Nuevo Saldo: {{ $currency }} {{ number_format($loan_payment->loan_new_debt,2) }}
                     </td>
-                    <td>L. {{ number_format($loan_payment->loan_quote_payment_amount, 2) }}</td>
+                    <td>{{ $currency }} {{ number_format($loan_payment->loan_quote_payment_amount, 2) }}</td>
                 </tr>
                 <tr style="text-align: left !important;">
                     <td>---- ULTIMA LÍNEA ----</td>
@@ -206,11 +208,11 @@
                 </tr>
                 <tr style="text-align: right !important; font-weight: bold">
                     <td>Total</td>
-                    <td>L. {{ number_format($loan_payment->loan_quote_payment_amount, 2) }}</td>
+                    <td>{{ $currency }} {{ number_format($loan_payment->loan_quote_payment_amount, 2) }}</td>
                 </tr>
                 <tr style="text-align: right !important; font-weight: bold">
                     <td>Cambio</td>
-                    <td>L. 0.00</td>
+                    <td>{{ $currency }} 0.00</td>
                 </tr>
             </tbody>
         </table>

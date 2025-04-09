@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('head')
+{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
+@endsection
+
 @section('title')
 Dashboard
 @endsection
@@ -32,7 +36,7 @@ Dashboard
                     <div>
                         <h1 class="text-white fw-bold">
                             {{ $pos_counter_actual_month }} ventas
-                            <small>( L. {{ number_format($pos_counter_amount_sum,2) }})</small>
+                            <small>( {{ $currency }} {{ number_format($pos_counter_amount_sum,2) }})</small>
                         </h1>
                         <h6 class="text-white"><b>Ventas del mes</b></h6>
                     </div>
@@ -52,7 +56,7 @@ Dashboard
                     <div>
                         <h1 class="text-white fw-bold">
                             {{ $newQuotesThisMonth }}
-                            <small>( L. {{ number_format($newQuotesThisMonthSum,2) }})</small>
+                            <small>( {{ $currency }} {{ number_format($newQuotesThisMonthSum,2) }})</small>
                         </h1>
                         <h6 class="text-white"><b>Cotizaciones del mes</b></h6>
                     </div>
@@ -90,7 +94,7 @@ Dashboard
                 <div class="d-flex justify-content-between">
                     <div>
                         <h1 class="text-white fw-bold">
-                            {{ $loans_counter }} <small>(L. {{ number_format($loan_counter_amount_sum,2) }})</small>
+                            {{ $loans_counter }} <small>( {{ $currency }} {{ number_format($loan_counter_amount_sum,2) }})</small>
                         </h1>
                         <h6 class="text-white"><b>Nuevos créditos del mes</b></h6>
                     </div>
@@ -106,7 +110,7 @@ Dashboard
 <!-- Información general II -->
 <div class="row">
     <!-- Ventas del día -->
-    <div class="col-12 col-sm-4 col-md-4 col-xl-3 mb-3">
+    <div class="col-12 col-sm-4 col-md-4 col-xl-4 mb-3">
         <div class="card">
             <div class="card-body pb-0">
                 <div class="h5 fw-bold float-end text-primary op-3 text-capitalize">
@@ -119,7 +123,7 @@ Dashboard
     </div>
 
     <!-- Cotizaciones activas actualmente -->
-    <div class="col-12 col-sm-4 col-md-4 col-xl-3 mb-3">
+    <div class="col-12 col-sm-4 col-md-4 col-xl-4 mb-3">
         <div class="card">
             <div class="card-body pb-0">
                 <div class="h5 fw-bold float-end text-primary op-3">
@@ -132,14 +136,14 @@ Dashboard
     </div>
 
     <!-- Créditos activos actualmente -->
-    <div class="col-12 col-sm-4 col-md-4 col-xl-3 mb-3">
+    <div class="col-12 col-sm-4 col-md-4 col-xl-4 mb-3">
         <div class="card">
             <div class="card-body pb-0">
                 <div class="h5 fw-bold float-end text-primary op-3">
                     <x-heroicon-o-document-duplicate style="width: 80px; height: 100%; color: rgba(0,0,0,0.2)" />
                 </div>
                 <h2 class="mb-2">{{ $loans_active_counter }}</h2>
-                <p class="text-muted">Créditos activos / <span class="op-5 text-uppercase text-primary">L. {{ number_format($loan_active_amount_sum,2) }}</span></p>
+                <p class="text-muted">Créditos activos / <span class="op-5 text-uppercase text-primary">{{ $currency }} {{ number_format($loan_active_amount_sum,2) }}</span></p>
             </div>
         </div>
     </div>

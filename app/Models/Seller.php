@@ -25,4 +25,9 @@ class Seller extends Model
     {
         return $this->hasMany(Loans::class, 'seller_id');
     }
+
+    public function setting()
+    {
+        return $this->belongsTo(Loans::class, 'default_seller_id');
+    }
 }

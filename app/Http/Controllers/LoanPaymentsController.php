@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoanPayments\StoreRequest;
+use App\Models\Banks;
 use App\Models\LoanPayments;
 use App\Models\Loans;
 use App\Models\SystemLogs;
@@ -30,6 +31,7 @@ class LoanPaymentsController extends Controller
     public function new_pay($id)
     {
         $loan = Loans::findOrFail($id);
+        $banks = Banks::get();
         $loan_payments = LoanPayments::where('loan_id', $loan->id)->get();
         $loan_payments_sum = LoanPayments::where('loan_id', $loan->id)->where('loan_quote_payment_status', 1)->sum('loan_quote_payment_amount');
         $actual_debt = $loan->loan_total - $loan_payments_sum;
@@ -49,7 +51,7 @@ class LoanPaymentsController extends Controller
                     }
 
                     // Calcular mora por día
-                    $dailyArrears = 10; // Mora por día
+                    $dailyArrears = $loan->loan_amount_weekly_arrears; // Mora por día
 
                     $mora = $daysSinceDueDate * $dailyArrears;
 
@@ -63,7 +65,7 @@ class LoanPaymentsController extends Controller
                 }
             } catch (\Exception $e) {
                 // Mostrar o registrar el error
-                return redirect()->back()->with("error", "Error al actualizar el pago: " . $e->getMessage());
+                return redirect()->back()->with("error", "Error al actualizar el estado de la cuota: " . $e->getMessage());
             }
         }
 
@@ -80,6 +82,7 @@ class LoanPaymentsController extends Controller
 
         return view('modules.loans.loans_payments.create', compact(
             'loan',
+            'banks',
             'loan_payments',
             'actual_debt',
             'totalToPay',
@@ -109,8 +112,8 @@ class LoanPaymentsController extends Controller
                 'loan_quote_payment_status' => 1, // Pagado
                 'loan_quote_payment_comment' => 'Cuota pagada',
                 'loan_quote_payment_mode' => $request->input('loan_quote_payment_mode'),
-                'card_last_digits' => $request->input('card_last_digits'),
-                'card_auth_number' => $request->input('card_auth_number'),
+                'loan_card_last_digits' => $request->input('loan_card_last_digits'),
+                'loan_card_auth_number' => $request->input('loan_card_auth_number'),
                 'loan_quote_payment_received' => $request->input('loan_quote_payment_received'),
                 'loan_quote_payment_change' => $request->input('loan_quote_payment_change'),
                 'updated_at' => $this->getTodayDate(),

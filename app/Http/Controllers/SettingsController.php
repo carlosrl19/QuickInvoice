@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Settings\StoreRequest;
 use App\Http\Requests\Settings\UpdateRequest;
+use App\Models\Seller;
 use App\Models\Settings;
 use App\Models\SystemLogs;
 
@@ -17,13 +18,15 @@ class SettingsController extends Controller
 
     public function create()
     {
-        return view('modules.settings.create');
+        $sellers = Seller::get();
+        return view('modules.settings.create', compact('sellers'));
     }
 
     public function edit($id)
     {
         $setting = Settings::findOrFail($id);
-        return view('modules.settings.edit', compact('setting'));
+        $sellers = Seller::get();
+        return view('modules.settings.edit', compact('setting', 'sellers'));
     }
 
     public function store(StoreRequest $request)
@@ -63,6 +66,8 @@ class SettingsController extends Controller
                 'company_email' => $request->input('company_email'),
                 'company_address' => $request->input('company_address'),
                 'company_short_address' => $request->input('company_short_address'),
+                'default_currency_symbol' => $request->input('default_currency_symbol'),
+                'default_seller_id' => $request->input('default_seller_id'),
             ]);
 
             SystemLogs::create([
@@ -116,6 +121,8 @@ class SettingsController extends Controller
             $settings->company_email = $request->input('company_email');
             $settings->company_address = $request->input('company_address');
             $settings->company_short_address = $request->input('company_short_address');
+            $settings->default_currency_symbol = $request->input('default_currency_symbol');
+            $settings->default_seller_id = $request->input('default_seller_id');
 
             // Actualizar el registro en la base de datos
             $settings->save();

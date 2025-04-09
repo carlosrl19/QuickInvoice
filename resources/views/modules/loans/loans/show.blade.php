@@ -33,6 +33,8 @@
         /* Ancho del dato */
     }
 </style>
+
+{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
 @endsection
 
 @section('title')
@@ -141,16 +143,16 @@ Créditos
                         </tr>
                         <tr>
                             <td><strong>Préstamo</strong></td>
-                            <td class="text-muted">L. {{ number_format($loan->loan_amount, 2) }}
+                            <td class="text-muted">{{ $currency }} {{ number_format($loan->loan_amount, 2) }}
                                 ({{ number_format($loan->loan_interest, 0) }}%)</td>
                         </tr>
                         <tr>
                             <td><strong>Prima</strong></td>
-                            <td class="text-muted">L. {{ number_format($loan->loan_down_payment, 2) }}</td>
+                            <td class="text-muted">{{ $currency }} {{ number_format($loan->loan_down_payment, 2) }}</td>
                         </tr>
                         <tr>
                             <td><strong>Total a pagar</strong></td>
-                            <td class="text-muted">L. {{ number_format($loan->loan_total, 2) }}</td>
+                            <td class="text-muted">{{ $currency }} {{ number_format($loan->loan_total, 2) }}</td>
                         </tr>
                         <tr>
                             <td><strong>Nº cuotas</strong></td>
@@ -158,11 +160,11 @@ Créditos
                         </tr>
                         <tr>
                             <td><strong>Pagado</strong></td>
-                            <td class="text-muted">L. {{ number_format($loan_payment_amount_sum, 2) }}</td>
+                            <td class="text-muted">{{ $currency }} {{ number_format($loan_payment_amount_sum, 2) }}</td>
                         </tr>
                         <tr>
                             <td><strong>Deuda actual</strong></td>
-                            <td class="text-muted">L. {{ number_format($actual_debt, 2) }}</td>
+                            <td class="text-muted">{{ $currency }} {{ number_format($actual_debt, 2) }}</td>
                         </tr>
                     </tbody>
                     <tfoot>
@@ -191,7 +193,7 @@ Créditos
                             <x-heroicon-o-plus style="width: 20px; height: 20px; color: white" />
                             &nbsp;Nuevo abono
                         </a>
-                    @elseif($actual_debt > 0 && $actual_debt >= $loan->loan_quote_value)
+                        @elseif($actual_debt > 0 && $actual_debt >= $loan->loan_quote_value)
                         <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#quote_payment_{{ $loan->id }}">
                             <x-heroicon-o-plus style="width: 20px; height: 20px; color: white" />
                             &nbsp;Nuevo pago
@@ -200,7 +202,7 @@ Créditos
                             <x-heroicon-o-plus style="width: 20px; height: 20px; color: white" />
                             &nbsp;Nuevo abono
                         </a>
-                    @endif
+                        @endif
                 </div>
             </div>
             <div class="card-body">
@@ -240,9 +242,9 @@ Créditos
                                             {{ $loan_payment->loan_payment_comment ? $loan_payment->loan_payment_comment : 'N/D' }}
                                         </span>
                                     </td>
-                                    <td>L. {{ number_format($loan_payment->loan_old_debt, 2) }}</td>
-                                    <td>L. {{ number_format($loan_payment->loan_quote_payment_amount, 2) }}</td>
-                                    <td>L. {{ number_format($loan_payment->loan_new_debt, 2) }}</td>
+                                    <td>{{ $currency }} {{ number_format($loan_payment->loan_old_debt, 2) }}</td>
+                                    <td>{{ $currency }} {{ number_format($loan_payment->loan_quote_payment_amount, 2) }}</td>
+                                    <td>{{ $currency }} {{ number_format($loan_payment->loan_new_debt, 2) }}</td>
                                 </tr>
 
                                 <!-- Include -->
@@ -260,7 +262,7 @@ Créditos
                                     @else
                                     <td colspan="2" class="bg-dark fw-bold text-white">TOTAL DEUDA</td>
                                     <td class="bg-dark">
-                                        <span class="fw-bold text-white">L.
+                                        <span class="fw-bold text-white">{{ $currency }}
                                             {{ number_format($actual_debt, 2) }}</span>
                                     </td>
                                     @endif

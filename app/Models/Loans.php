@@ -14,6 +14,7 @@ class Loans extends Model
         'loan_payment_type',
         'loan_amount',
         'loan_down_payment',
+        'loan_amount_weekly_arrears',
         'loan_quote_value',
         'loan_interest',
         'loan_total',
