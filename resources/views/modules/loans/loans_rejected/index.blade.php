@@ -4,7 +4,7 @@
 <!-- SweetAlert -->
 <script src="{{ Storage::url('assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
 
-{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
+@php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
 
 @endsection
 

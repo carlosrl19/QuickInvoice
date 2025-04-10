@@ -15,7 +15,7 @@
                    </li>
                    <li class="nav-item">
                        <a href="{{ route('dashboard.index') }}"
-                           @class([ 'bg-info2 m-2 rounded'=> Route::currentRouteName() === 'dashboard.index',
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'dashboard.index',
                            ])>
                            <x-heroicon-o-home style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Dashboard</span>
@@ -30,7 +30,7 @@
                    </li>
                    <li class="nav-item">
                        <a href="{{ route('clients.index') }}"
-                           @class([ 'bg-info2 m-2 rounded'=> Str::startsWith(Route::currentRouteName(), 'clients.'),
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'clients.'),
                            ])>
                            <x-heroicon-o-users style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Clientes</span>
@@ -38,7 +38,7 @@
                    </li>
                    <li class="nav-item">
                        <a href="{{ route('sellers.index') }}"
-                           @class([ 'bg-info2 m-2 rounded'=> Route::currentRouteName() === 'sellers.index',
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'sellers.index',
                            ])>
                            <x-heroicon-o-rectangle-group style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Vendedores</span>
@@ -52,7 +52,7 @@
                    </li>
                    <li class="nav-item">
                        <a href="{{ route('services.index') }}"
-                           @class([ 'bg-info2 m-2 rounded'=> Route::currentRouteName() === 'services.index',
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'services.index',
                            ])>
                            <x-heroicon-o-bolt style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Servicios</span>
@@ -66,40 +66,51 @@
                    </li>
                    <li class="nav-item">
                        <a href="{{ route('loans.loans_request') }}"
-                           @class([ 'bg-info2 m-2 rounded'=> Route::currentRouteName() === 'loans.loans_request',
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'loans.loans_request',
                            ])>
                            <x-heroicon-o-banknotes style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Solicitud de créditos</span>
                        </a>
                    </li>
                    <li class="nav-item">
-                       <a data-bs-toggle="collapse" href="#credits_collapse">
+                       <a data-bs-toggle="collapse" href="#credits_collapse"
+                           @class(['show'=> in_array(Route::currentRouteName(), [
+                           'loans.index',
+                           'loans.loans_paid_index',
+                           'loans.loans_rejected_index',
+                           'loans.loans_cancelled_index',
+                           ])] )>
                            <x-heroicon-o-book-open style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <p>Créditos</p>
                            <span class="caret"></span>
                        </a>
-                       <div class="collapse" id="credits_collapse">
+                       <div class="collapse @if(in_array(Route::currentRouteName(), [
+                                'loans.index',
+                                'loans.loans_paid_index',
+                                'loans.loans_rejected_index',
+                                'loans.loans_cancelled_index',
+                            ])) show @endif" id="credits_collapse">
                            <ul class="nav nav-collapse">
                                <a href="{{ route('loans.index') }}"
-                                   @class([ 'bg-info2 m-2 rounded'=> Route::currentRouteName() === 'loans.index',
+                                   @class([ 'bg-info2 m-1 rounded alert-primary'=> Route::currentRouteName() === 'loans.index',
                                    ])>
                                    <x-heroicon-o-book-open style="width: 20px; height: 20px; color: lightgreen;" class="me-2 op-5" />
                                    <span class="sub-item">Créditos vigentes</span>
                                </a>
                                <a href="{{ route('loans.loans_paid_index') }}"
-                                   @class([ 'bg-info2 m-2 rounded'=> Route::currentRouteName() === 'loans.loans_paid_index',
+                                   @class([ 'bg-info2 m-1 rounded alert-primary'=> Route::currentRouteName() === 'loans.loans_paid_index',
                                    ])>
                                    <x-heroicon-o-book-open style="width: 20px; height: 20px; color: lightblue;" class="me-2 op-5" />
                                    <span class="sub-item">Créditos cancelados</span>
                                </a>
                                <a href="{{ route('loans.loans_rejected_index') }}"
-                                   @class([ 'bg-info2 m-2 rounded'=> Route::currentRouteName() === 'loans.loans_rejected_index',
+                                   @class([ 'bg-info2 m-1 rounded alert-primary'=> Route::currentRouteName() === 'loans.loans_rejected_index',
                                    ])>
                                    <x-heroicon-o-book-open style="width: 20px; height: 20px; color: red;" class="me-2 op-5" />
                                    <span class="sub-item">Créditos rechazados</span>
                                </a>
                                <a href="{{ route('loans.loans_cancelled_index') }}"
-                                   @class([ 'bg-info2 m-2 rounded'=> Route::currentRouteName() === 'loans.loans_cancelled_index',
+                                   @class([ 'bg-info2 m-1 rounded alert-primary'=> Route::currentRouteName() === 'loans.loans_cancelled_index',
                                    ])>
                                    <x-heroicon-o-book-open style="width: 20px; height: 20px; color: orange;" class="me-2 op-5" />
                                    <span class="sub-item">Créditos anulados</span>
@@ -107,6 +118,7 @@
                            </ul>
                        </div>
                    </li>
+
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
@@ -115,7 +127,7 @@
                    </li>
                    <li class="nav-item">
                        <a href="{{ route('quotes.index') }}"
-                           @class([ 'bg-info2 m-2 rounded'=> Str::startsWith(Route::currentRouteName(), 'quotes.') || Str::startsWith(Route::currentRouteName(), 'quote_details.'),
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'quotes.') || Str::startsWith(Route::currentRouteName(), 'quote_details.'),
                            ])>
                            <x-heroicon-o-square-3-stack-3d style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Cotizaciones</span>
@@ -123,7 +135,7 @@
                    </li>
                    <li class="nav-item">
                        <a href="{{ route('pos.index') }}"
-                           @class([ 'bg-info2 m-2 rounded'=> Str::startsWith(Route::currentRouteName(), 'pos.index') || Str::startsWith(Route::currentRouteName(), 'pos_details.'),
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'pos.index') || Str::startsWith(Route::currentRouteName(), 'pos_details.'),
                            ])>
                            <x-heroicon-o-computer-desktop style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Registro de ventas</span>
@@ -159,7 +171,7 @@
                        </a>
                        @else
                        <a href="{{ route('pos.create') }}"
-                           @class([ 'bg-info2 m-2 rounded'=> Str::startsWith(Route::currentRouteName(), 'pos.create') || Str::startsWith(Route::currentRouteName(), 'pos.exonerated_sale'),
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'pos.create') || Str::startsWith(Route::currentRouteName(), 'pos.exonerated_sale'),
                            ])>
                            <x-heroicon-o-currency-dollar style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">POS</span>
@@ -180,7 +192,7 @@
                        </a>
                        @else
                        <a href="{{ route('settings.index') }}"
-                           @class([ 'bg-info2 m-2 rounded'=> Str::startsWith(Route::currentRouteName(), 'settings.')
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'settings.')
                            || Str::startsWith(Route::currentRouteName(), 'fiscalfolio.')
                            || Str::startsWith(Route::currentRouteName(), 'banks.')
                            ])>

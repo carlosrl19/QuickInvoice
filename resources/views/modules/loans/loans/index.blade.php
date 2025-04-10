@@ -4,7 +4,7 @@
 <!-- SweetAlert -->
 <script src="{{ Storage::url('assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
 
-{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
+@php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
 @endsection
 
 @section('title')
@@ -16,7 +16,6 @@ Créditos vigentes
     <x-heroicon-o-arrow-path style="width: 20px; height: 20px;" class="bg-label-info" />
     Actualizar estado de préstamos
 </a>
-
 @endsection
 
 @section('breadcrumb')
@@ -67,16 +66,9 @@ Créditos vigentes
                             {{ $quote_arrears_counter = App\Models\LoanPayments::where('loan_id', $loan->id)->where('loan_quote_arrears', '>', 0)->count() }}
                             <tr>
                                 <td>
-                                    @if($quote_arrears_counter > 0)
-                                    <button class="btn btn-sm btn-danger btn-border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px;" class="bg-label-danger" />
-                                        Más acciones
+                                    <button class="btn btn-sm {{ $quote_arrears_counter > 0 ? 'btn-danger':'btn-primary'  }} btn-border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ $quote_arrears_counter > 0 ? 'Cuotas mora (' . $quote_arrears_counter . ')':'Más acciones' }}
                                     </button>
-                                    @else
-                                    <button class="btn btn-sm btn-primary btn-border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Más acciones
-                                    </button>
-                                    @endif
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="{{ route('loan_payments.new_pay', $loan->id) }}">
                                             @if($quote_arrears_counter > 0)
@@ -89,9 +81,6 @@ Créditos vigentes
                                         <a class="dropdown-item" href="{{ route('loans.loan_receipt_delivery_show', $loan->id) }}">Comprobante entrega</a>
                                         <a class="dropdown-item" href="{{ route('loans.loan_account_statement_show', $loan->id) }}">Estado de cuenta</a>
                                         <a class="dropdown-item" href="{{ route('loans.loan_payment_plan_show', $loan->id) }}">Plan de pagos</a>
-                                        <div role="separator" class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Ajustes (X)</a>
-                                        <a class="dropdown-item" href="#">Modificar precios (X)</a>
                                         <div role="separator" class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#" id="loan_cancellation{{ $loan->id }}">Anular</a>
                                     </div>

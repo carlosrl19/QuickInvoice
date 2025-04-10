@@ -35,6 +35,7 @@ class LoanPaymentsController extends Controller
         $loan_payments = LoanPayments::where('loan_id', $loan->id)->get();
         $loan_payments_sum = LoanPayments::where('loan_id', $loan->id)->where('loan_quote_payment_status', 1)->sum('loan_quote_payment_amount');
         $actual_debt = $loan->loan_total - $loan_payments_sum;
+        $loan_arrears_amount_sum = LoanPayments::where('loan_id', $loan->id)->sum('loan_quote_arrears');
 
         // Calcular mora para cada cuota y actualizar en la base de datos
         foreach ($loan_payments as $payment) {
@@ -85,6 +86,7 @@ class LoanPaymentsController extends Controller
             'banks',
             'loan_payments',
             'actual_debt',
+            'loan_arrears_amount_sum',
             'totalToPay',
         ));
     }

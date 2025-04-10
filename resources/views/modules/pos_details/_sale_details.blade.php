@@ -12,6 +12,9 @@
     </div>
 </div>
 
+<!-- JQuery -->
+<script src="{{ Storage::url('assets/js/core/jquery-3.7.1.min.js') }}"></script>
+
 <script>
     // Espera a que el documento esté listo
     $(document).ready(function() {

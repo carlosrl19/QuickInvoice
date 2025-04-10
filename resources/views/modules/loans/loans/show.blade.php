@@ -34,7 +34,7 @@
     }
 </style>
 
-{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
+@php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
 @endsection
 
 @section('title')

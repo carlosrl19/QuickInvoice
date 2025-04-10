@@ -3132,6 +3132,10 @@ label {
    background: #6861ce !important
 }
 
+.card-secondary2 {
+   background: #1d023a !important
+}
+
 .card-info {
    background: #48abf7 !important
 }
@@ -10199,6 +10203,10 @@ body[data-background-color=dark] .jvm-zoom-btn {
 
 .bg-secondary2 {
    background-color: #5c55bf33 !important
+}
+
+.bg-secondary3 {
+   background-color: #2d1f53 !important
 }
 
 .bg-info {

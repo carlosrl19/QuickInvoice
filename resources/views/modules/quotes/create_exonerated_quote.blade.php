@@ -11,7 +11,7 @@
 use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
 @endphp
 
-{{ $default_seller = App\Models\Settings::value('default_seller_id') }}
+@php $default_seller = App\Models\Settings::value('default_seller_id') @endphp
 @endsection
 
 @section('title')

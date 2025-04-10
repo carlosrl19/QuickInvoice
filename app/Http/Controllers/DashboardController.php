@@ -15,7 +15,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-
         $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->locale('es')->translatedFormat('F d - Y');
         $actualMonth = Carbon::now()->setTimezone('America/Costa_Rica')->locale('es')->translatedFormat('F');
         $colorsList = ['secondary', 'success', 'info', 'warning', 'danger', 'primary', 'black'];
@@ -43,6 +42,7 @@ class DashboardController extends Controller
             Carbon::today()->startOfDay(),
             Carbon::today()->endOfDay()
         ])->count();
+        $pos_lastest = Pos::latest('id')->take(4)->get();
 
         $pos_counter_year = Pos::whereMonth('created_at', Carbon::now()->year)->count();
         $pos_counter_actual_month = PosDetails::whereMonth('created_at', Carbon::now()->month)->count();
@@ -50,6 +50,18 @@ class DashboardController extends Controller
             ->sum('sale_price');
 
         // Sale charts
+        $chart_big_sales = [
+            'chart_title' => 'Top 3: Mejores ventas',
+            'report_type' => 'group_by_string',
+            'model' => 'App\Models\Pos',
+            'top_results' => 3,
+            'group_by_field' => 'sale_total_amount',
+            'group_by_period' => 'month',
+            'aggregate_function' => 'sum',
+            'aggregate_field' => 'sale_total_amount',
+            'chart_type' => 'line',
+        ];
+
         $chart_actual_month = [
             'chart_title' => 'Ventas por día',
             'report_type' => 'group_by_date',
@@ -78,6 +90,7 @@ class DashboardController extends Controller
             'chart_color' => '153,188,133',
         ];
 
+        $chart_bigger_sales = new LaravelChart($chart_big_sales);
         $chart_sales_actual_month = new LaravelChart($chart_actual_month);
         $chart_sales_actual_year = new LaravelChart($chart_actual_year);
 
@@ -108,9 +121,11 @@ class DashboardController extends Controller
             'activeQuotes',
             'newQuotesThisMonthSum',
             'pos_counter_actual_day',
+            'pos_lastest',
             'pos_counter_actual_month',
             'pos_counter_year',
             'pos_counter_amount_sum',
+            'chart_bigger_sales',
             'chart_sales_actual_month',
             'chart_sales_actual_year',
             'loans_active_counter',

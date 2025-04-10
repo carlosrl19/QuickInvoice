@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <title>Cotización #{{ $quote->quote_code }}</title>
 
-    {{ $currency = App\Models\Settings::value('default_currency_symbol') }}
+    @php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
 
     <style>
         body {

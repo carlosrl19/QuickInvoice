@@ -11,7 +11,7 @@
 use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
 @endphp
 
-{{ $default_seller = App\Models\Settings::value('default_seller_id') }}
+@php $default_seller = App\Models\Settings::value('default_seller_id') @endphp
 @endsection
 
 @section('title')
@@ -223,10 +223,10 @@ POS
                                         <div class="col">
                                             <select class="tom-select-no-search @error('sale_payment_type') is-invalid @enderror" name="sale_payment_type" id="sale_payment_type_select">
                                                 <option value="0" selected disabled>Seleccione el tipo de pago</option>
-                                                <option value="4" {{ old('sale_payment_type') == '4' ? 'selected' : '' }}>CHEQUE</option>
-                                                <option value="3" {{ old('sale_payment_type') == '3' ? 'selected' : '' }}>DEPOSITO</option>
-                                                <option value="1" {{ old('sale_payment_type') == '1' ? 'selected' : '' }}>EFECTIVO</option>
-                                                <option value="2" {{ old('sale_payment_type') == '2' ? 'selected' : '' }}>TARJETA</option>
+                                                <option value="4" {{ old('sale_payment_type') == '4' ? 'selected' : '' }}>Cheque HNL</option>
+                                                <option value="3" {{ old('sale_payment_type') == '3' ? 'selected' : '' }}>Depósito bancario</option>
+                                                <option value="1" {{ old('sale_payment_type') == '1' ? 'selected' : '' }}>Efectivo HNL</option>
+                                                <option value="2" {{ old('sale_payment_type') == '2' ? 'selected' : '' }}>Tarjeta HNL</option>
                                             </select>
                                             @error('sale_payment_type')
                                             <span class="invalid-feedback" role="alert">

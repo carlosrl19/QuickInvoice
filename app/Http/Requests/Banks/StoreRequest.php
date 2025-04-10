@@ -14,7 +14,8 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "bank_name" => "required|string|min:3|max:55|unique:banks,bank_name",
+            "account_name" => "required|string|min:3|max:55",
+            "bank_name" => "required|string|min:3|max:55",
             "bank_account_number" => "required|string|min:16|max:16|unique:banks,bank_account_number",
         ];
     }
@@ -22,12 +23,17 @@ class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
+            // Account name messages
+            "account_name.required" => "El nombre del titular de la cuenta es obligatorio",
+            "account_name.string" => "El nombre del titular de la cuenta debe ser una cadena de texto",
+            "account_name.min" => "El nombre del titular de la cuenta debe tener al menos :min caracteres",
+            "account_name.max" => "El nombre del titular de la cuenta no debe superar los :max caracteres",
+
             // Bank name messages
             "bank_name.required" => "El nombre del banco es obligatorio",
             "bank_name.string" => "El nombre del banco debe ser una cadena de texto",
             "bank_name.min" => "El nombre del banco debe tener al menos :min caracteres",
             "bank_name.max" => "El nombre del banco no debe superar los :max caracteres",
-            "bank_name.unique" => "El nombre del banco ya existe",
 
             // Bank account number messages
             "bank_account_number.required" => "El número de cuenta bancaria es obligatorio",

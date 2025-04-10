@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('head')
-{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
+@php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
 @endsection
 
 @section('title')
@@ -18,7 +18,7 @@ Dashboard
     <li class="separator">
         <i class="icon-arrow-right"></i>
     </li>
-    <li class="nav-item d-none d-xl-inline d-lg-inline">
+    <li class="nav-item">
         <a href="#">Panel administrador</a>
     </li>
 </ul>
@@ -29,13 +29,13 @@ Dashboard
 <!-- Información general I -->
 <div class="row row-card-no-pd">
     <!-- Ventas del mes actual -->
-    <div class="col-12 col-sm-6 col-md-6 col-xl-3 mb-3">
+    <div class="col-12 col-sm-6 col-md-6 col-xl-3 mb-sm-3">
         <div class="card bg-info">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
                         <h1 class="text-white fw-bold">
-                            {{ $pos_counter_actual_month }} ventas
+                            {{ $pos_counter_actual_month }}
                             <small>( {{ $currency }} {{ number_format($pos_counter_amount_sum,2) }})</small>
                         </h1>
                         <h6 class="text-white"><b>Ventas del mes</b></h6>
@@ -149,7 +149,80 @@ Dashboard
     </div>
 </div>
 
-<!-- Ventas -->
+<!-- Ventas recientes (4) / gráfica pie -->
+<div class="row">
+    <!-- Ventas reciente -->
+    <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="fw-bold">Ultimas ventas</h5>
+                <div class="table-responsive">
+                    <table id="dt_pos_dashboard" class="display table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Factura</th>
+                                <th>Cliente</th>
+                                <th>Total</th>
+                                <th>Vendedor</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($pos_lastest as $sale)
+                            <tr>
+                                <td>
+                                    <a href="{{ route('pos_details.pos_details_show', $sale->id) }}" target="_blank" class="btn btn-sm btn-primary btn-border">
+                                        <x-heroicon-o-document-text style="width: 20px; height: 20px; color: #2f77f0" />
+                                        Factura
+                                    </a>
+                                </td>
+                                <td>{{ $sale->client->client_name }}</td>
+                                <td>
+                                    {{ $currency }} {{ number_format($sale->sale_total_amount,2) }}
+                                </td>
+                                <td>
+                                    {{ $sale->seller->seller_name }}
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary2 text-primary">
+                                        {{ $sale->created_at->format('d/m/Y') }}
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <!-- Details Include -->
+                            @include('modules.pos_details._sale_details')
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5">
+                                    <a class="text-muted" href="{{ route('pos.index') }}">
+                                        VER MÁS REGISTROS ...
+                                    </a>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top ventas más grandes -->
+    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Top ventas del mes</div>
+            </div>
+            <div class="card-body">
+                {!! $chart_bigger_sales->renderHtml() !!}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ventas del mes / año -->
 <div class="row">
     <!-- Ventas del mes actual -->
     <div class="col-md-6">
@@ -243,6 +316,14 @@ Dashboard
 @endsection
 
 @section('scripts')
+<!-- Datatables -->
+<script src="{{ Storage::url('assets/js/plugin/datatables/datatables.min.js') }}"></script>
+<script src="{{ Storage::url('customjs/datatables/pos/dt_pos_dashboard.js') }}"></script>
+
+<!-- Chart ventas más grandes  -->
+{!! $chart_bigger_sales->renderChartJsLibrary() !!}
+{!! $chart_bigger_sales->renderJs() !!}
+
 <!-- Chart mes actual -->
 {!! $chart_sales_actual_month->renderChartJsLibrary() !!}
 {!! $chart_sales_actual_month->renderJs() !!}

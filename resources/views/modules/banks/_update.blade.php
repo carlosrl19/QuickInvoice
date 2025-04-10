@@ -12,6 +12,20 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
+                                <input type="text" maxlength="55" name="account_name" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ\s]/g, '')" value="{{ $bank->account_name }}" id="account_name" class="form-control @error('bank_name') is-invalid @enderror" autocomplete="off" />
+                                @error('account_name')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                                <label for="account_name">Titular cuenta bancaria <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
                                 <input type="text" maxlength="55" name="bank_name" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ\s]/g, '')" value="{{ $bank->bank_name }}" id="bank_name" class="form-control @error('bank_name') is-invalid @enderror" autocomplete="off" />
                                 @error('bank_name')
                                 <span class="invalid-feedback" role="alert">

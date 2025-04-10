@@ -53,6 +53,7 @@ Bancos
                         <thead>
                             <tr>
                                 <th>Acciones</th>
+                                <th>Titular de cuenta</th>
                                 <th>Nombre banco</th>
                                 <th>Nº de cuenta</th>
                             </tr>
@@ -67,9 +68,10 @@ Bancos
                                 </td>
                                 <td>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#update_bank{{ $bank->id }}">
-                                        {{ $bank->bank_name }}
+                                        {{ $bank->account_name }}
                                     </a>
                                 </td>
+                                <td>{{ $bank->bank_name }}</td>
                                 <td>
                                     {{ $bank->bank_account_number }}
                                 </td>

@@ -11,8 +11,8 @@
 use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
 @endphp
 
-{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
-{{ $default_seller = App\Models\Settings::value('default_seller_id') }}
+@php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
+@php $default_seller = App\Models\Settings::value('default_seller_id') @endphp
 @endsection
 
 @section('title')

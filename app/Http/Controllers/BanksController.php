@@ -27,6 +27,7 @@ class BanksController extends Controller
         try {
 
             Banks::create([
+                'account_name' => $request->input('account_name'),
                 'bank_name' => $request->input('bank_name'),
                 'bank_account_number' => $request->input('bank_account_number'),
                 'created_at' => $this->getTodayDate(),
@@ -41,6 +42,27 @@ class BanksController extends Controller
             return redirect()->route("banks.index")->with("success", "Registro creado exitosamente.");
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al crear el registro.")->withInput()->withErrors($e->getMessage());
+        }
+    }
+
+    public function update(UpdateRequest $request, $id)
+    {
+        $bank = Banks::findOrFail($id);
+        
+        try {
+            $bank->account_name = $request->input('account_name');
+            $bank->bank_name = $request->input('bank_name');
+            $bank->bank_account_number = $request->input('bank_account_number');
+            $bank->update($request->all());
+
+            SystemLogs::create([
+                'module_log' => 'Bancos',
+                'log_description' => 'Banco ' . $bank->bank_account_number . ' modificado.'
+            ]);
+
+            return redirect()->route("banks.index")->with("success", "Registro actualizado exitosamente.");
+        } catch (\Exception $e) {
+            return back()->with("error", "Ocurrió un error al actualizar el registro.");
         }
     }
 

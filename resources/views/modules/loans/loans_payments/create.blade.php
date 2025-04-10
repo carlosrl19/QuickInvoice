@@ -11,7 +11,7 @@
 use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
 @endphp
 
-{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
+@php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
 
 @endsection
 
@@ -66,14 +66,14 @@ Créditos vigentes
                                     <div class="form-floating" style="background-color: #fff !important;">
                                         <input type="text" class="form-control" style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
                                             readonly value="{{ $currency }} {{ number_format($totalToPay - $loan->loan_quote_value,2) }}">
-                                        <label for="loan_quote_arrears">Mora</label>
+                                        <label for="loan_quote_arrears">Mora cuota actual</label>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-floating" style="background-color: #fff !important;">
                                         <input type="text" class="form-control" style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;"
                                             readonly value="{{ $currency }} {{ number_format($loan->loan_quote_value,2) }}">
-                                        <label for="loan_quote_amount">Total</label>
+                                        <label for="loan_quote_amount">Valor cuota</label>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -107,12 +107,12 @@ Créditos vigentes
                                     <tbody>
                                         @foreach ($loan_payments as $index => $loan_payment)
                                         <tr class="text-center" style="max-height: 22rem; overflow: auto;">
-                                            <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.5rem !important;">{{ $index + 1 }}</td>
-                                            <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.5rem !important;">{{ $loan_payment->loan_quote_payment_date }}</td>
-                                            <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.5rem !important;">{{ number_format($loan_payment->loan_quote_payment_amount,2) }}</td>
-                                            <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.5rem !important;">{{ number_format($loan_payment->loan_quote_arrears,2) }}</td>
-                                            <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.5rem !important;">{{ number_format($loan_payment->loan_quote_payment_amount + $loan_payment->loan_quote_arrears,2) }}</td>
-                                            <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.5rem !important;">
+                                            <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.9rem !important;">{{ $index + 1 }}</td>
+                                            <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.9rem !important;">{{ $loan_payment->loan_quote_payment_date }}</td>
+                                            <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.9rem !important;">{{ number_format($loan_payment->loan_quote_payment_amount,2) }}</td>
+                                            <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.9rem !important;">{{ number_format($loan_payment->loan_quote_arrears,2) }}</td>
+                                            <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.9rem !important;">{{ number_format($loan_payment->loan_quote_payment_amount + $loan_payment->loan_quote_arrears,2) }}</td>
+                                            <td style="font-size: clamp(0.80rem, 3vw, 0.82rem) !important; line-height: 0.9rem !important;">
                                                 @if($loan_payment->loan_quote_payment_status == 0 || $loan_payment->loan_quote_payment_status == 2)
                                                 0.00
                                                 @elseif($loan_payment->loan_quote_payment_mode == 4)
@@ -147,12 +147,11 @@ Créditos vigentes
                                     <tfoot>
                                         <tr class="text-center fw-bold">
                                             <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);"></td>
-                                            <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);"></td>
-                                            <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);">
+                                            <td colspan="2" style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);">
                                                 <x-heroicon-o-calendar-days style="width: 20px; height: 20px; color: white;" />
                                                 TOTAL PRESTAMO: {{ $currency }} {{ number_format($loan->loan_total,2)}}
                                             </td>
-                                            <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);">
+                                            <td colspan="2" style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);">
                                                 <x-heroicon-o-calendar-days style="width: 20px; height: 20px; color: white;" />
                                                 TOTAL PAGADO: {{ $currency }} {{ number_format($loan->loan_total - $actual_debt,2)}}
                                             </td>
@@ -160,7 +159,10 @@ Créditos vigentes
                                                 <x-heroicon-o-calendar-days style="width: 20px; height: 20px; color: white;" />
                                                 DEUDA ACTUAL: {{ $currency }} {{ number_format($actual_debt,2) }}
                                             </td>
-                                            <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);"></td>
+                                            <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);">
+                                                <x-heroicon-o-calendar-days style="width: 20px; height: 20px; color: white;" />
+                                                MORA ACTUAL: {{ $currency }} {{ number_format($loan_arrears_amount_sum,2) }}
+                                            </td>
                                             <td style="background-color: #1879d5; color: white; font-size: clamp(0.80rem, 3vw, 0.82rem);"></td>
                                         </tr>
                                     </tfoot>
@@ -323,7 +325,7 @@ Créditos vigentes
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col">
                                     <a href="{{ route('loans.index') }}" class="btn btn-sm btn-danger w-100">

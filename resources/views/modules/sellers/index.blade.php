@@ -53,6 +53,7 @@ Vendedores
                         <thead>
                             <tr>
                                 <th>Acciones</th>
+                                <th>Nº ventas</th>
                                 <th>Nombre vendedor</th>
                                 <th>Documento</th>
                                 <th>Teléfono</th>
@@ -65,6 +66,9 @@ Vendedores
                                     <a href="#" class="badge bg-danger text-white" id="delete_seller{{ $seller->id }}">
                                         <x-heroicon-o-trash style="width: 20px; height: 20px; color: white;" />
                                     </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary2 text-primary">{{ $seller->pos->count() > 1 ? $seller->pos->count() . ' ventas': $seller->pos->count() .' venta' }}</span>
                                 </td>
                                 <td>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#update_seller{{ $seller->id }}">

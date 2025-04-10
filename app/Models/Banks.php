@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Banks extends Model
 {
     protected $fillable = [
+        "account_name",
         "bank_name",
         "bank_account_number",
         "created_at",

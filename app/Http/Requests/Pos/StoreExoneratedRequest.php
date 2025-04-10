@@ -31,7 +31,7 @@ class StoreExoneratedRequest extends FormRequest
             'sale_discount' => 'required|numeric|min:0|max:100',
             'sale_tax' => 'required|numeric|min:0|max:100',
             'sale_payment_received' => 'required|numeric|min:0.01|gte:sale_total_amount',
-            'sale_payment_type' => 'required|numeric|in:1,2,3,4',
+            'sale_payment_type' => 'required|numeric|in:1,2,3,4,5', // 1: Efectivo, 2: Tarjeta, 3: Deposito, 4: Cheque, 5: Transferencia
             'sale_card_last_digits' => 'nullable|required_if:sale_payment_type,2|string|min:4|max:4|regex:/^[0-9]+$/', // Solo si se usa Tarjeta como sale_payment_type
             'sale_card_auth_number' => 'nullable|required_if:sale_payment_type,2|string|min:6|max:12|regex:/^[A-Z0-9]+$/', // Solo si se usa Tarjeta como sale_payment_type
             'sale_bank_operation_number' => 'nullable|required_if:sale_payment_type,3|string|min:6|max:12|regex:/^[A-Z0-9]+$/', // Solo si se usa Deposito como sale_payment_type

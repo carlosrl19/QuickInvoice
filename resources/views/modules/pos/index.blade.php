@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('head')
-{{ $currency = App\Models\Settings::value('default_currency_symbol') }}
+@php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
 @endsection
 
 @section('title')
