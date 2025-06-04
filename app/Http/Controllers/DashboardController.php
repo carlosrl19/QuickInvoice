@@ -44,7 +44,7 @@ class DashboardController extends Controller
         ])->count();
         $pos_lastest = Pos::latest('id')->take(4)->get();
 
-        $pos_counter_year = Pos::whereMonth('created_at', Carbon::now()->year)->count();
+        $pos_counter_year = Pos::whereYear('created_at', Carbon::now()->year)->count();
         $pos_counter_actual_month = PosDetails::whereMonth('created_at', Carbon::now()->month)->count();
         $pos_counter_amount_sum = PosDetails::whereMonth('created_at', Carbon::now()->month)
             ->sum('sale_price');

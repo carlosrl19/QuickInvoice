@@ -86,6 +86,7 @@ POS
                                     1 => 'EFECTIVO',
                                     2 => 'TARJETA',
                                     3 => 'DEPOSITO',
+                                    4 => 'CHEQUE',
                                     default => 'Tipo desconocido',
                                     };
                                     @endphp

@@ -171,7 +171,7 @@ Dashboard
                             @foreach ($pos_lastest as $sale)
                             <tr>
                                 <td>
-                                    <a href="{{ route('pos_details.pos_details_show', $sale->id) }}" target="_blank" class="btn btn-sm btn-primary btn-border">
+                                    <a href="{{ route('pos_details.pos_details_show', $sale->id) }}" class="btn btn-sm btn-primary btn-border">
                                         <x-heroicon-o-document-text style="width: 20px; height: 20px; color: #2f77f0" />
                                         Factura
                                     </a>
