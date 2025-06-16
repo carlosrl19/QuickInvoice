@@ -67,7 +67,7 @@
 <header style="margin-top: -20px; display: flex; justify-content: space-between; align-items: center; position: relative;">
     <!-- Imagen posicionada a la derecha -->
     <div style="position: absolute; top: 0; left: 220; opacity: 0.8;">
-        <img src="{{ public_path('../storage/app/public/sys_config/img/' . $settings->logo_company) ?? public_path('../storage/app/public/assets/img/kaiadmin/favicon.png') }}" alt="" style="min-width: 90px; min-height: 90px; max-width: 180px; max-height: 100px" />
+        <img src="{{ 'storage/sys_config/img/' . $settings->logo_company ?? 'storage/assets/img/kaiadmin/favicon.png' }}" alt="" style="min-width: 90px; min-height: 90px; max-width: 180px; max-height: 100px" />
     </div>
     <div style="width: 100%; text-align: center; margin-top: 110px">
         <h3 style="margin: 5px;">{{ $settings->company_name ?? 'Nombre empresa' }}</h3>

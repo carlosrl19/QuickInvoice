@@ -211,7 +211,15 @@ small {
 }
 
 .text-xs {
-   font-size: 12px
+   font-size: 12px !important;
+}
+
+.text-xs-10 {
+   font-size: 10px !important;
+}
+
+.text-xs-8 {
+   font-size: 8px !important;
 }
 
 .b,

@@ -128,7 +128,7 @@
 		<div class="header">
 			<!-- Imagen posicionada a la derecha -->
 			<div style="position: absolute; top: 0; right: 230; opacity: 0.8;">
-				<img src="{{ public_path('../storage/app/public/sys_config/img/' . $settings->logo_company) ?? public_path('../storage/app/public/assets/img/kaiadmin/favicon.png') }}" alt="" style="min-width: 90px; min-height: 90px; max-width: 180px; max-height: 100px" />
+				<img src="{{ 'storage/sys_config/img/' . $settings->logo_company ?? 'storage/assets/img/kaiadmin/favicon.png' }}" alt="" style="min-width: 90px; min-height: 90px; max-width: 180px; max-height: 100px" />
 			</div><br>
 			<p style="margin-top: 60px; margin-bottom: -2px;" class="subtitle">{{ $settings->company_name ?? 'Nombre empresa' }}</p>
 			<span class="text_header_sm">{{ $settings->company_address ?? 'Dirección empresa' }}</span><br />

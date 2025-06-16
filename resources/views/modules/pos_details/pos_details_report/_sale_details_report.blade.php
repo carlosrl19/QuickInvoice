@@ -92,7 +92,7 @@
 
     <!-- Imagen posicionada a la derecha -->
     <div style="position: absolute; top: 20; right: 20; opacity: 0.8;">
-        <img src="{{ public_path('../storage/app/public/sys_config/img/' . $settings->logo_company) ?? public_path('../storage/app/public/assets/img/kaiadmin/favicon.png') }}" alt="" style="min-width: 100px; min-height: 100px; max-width: 190px; max-height: 110px" />
+        <img src="{{ 'storage/sys_config/img/' . $settings->logo_company ?? 'storage/assets/img/kaiadmin/favicon.png' }}" alt="" style="min-width: 100px; min-height: 100px; max-width: 190px; max-height: 110px" />
     </div>
 </header>
 
@@ -106,7 +106,7 @@
                 <p style="font-size: 8.5pt; margin-top: -3px;">{{ $sale->client->client_code }} - {{ $sale->client->client_name }}</p>
                 <p style="font-size: 8.5pt; margin-top: -8px;">R.T.N.: {{ $sale->client->client_document }}</p>
                 <p style="font-size: 8.5pt; margin-top: -8px;">{{ $settings->company_short_address }}</p>
-                <p style="font-size: 8.5pt; margin-top: -8px;">Comentario: <span style="color: gray">N/A</span></p>
+                <p style="font-size: 8.5pt; margin-top: -8px;">Comentario: <span style="color: gray">&nbsp;N/A</span></p>
                 <p style="font-size: 8.5pt; margin-top: -8px;">Vendedor: {{ $sale->seller->seller_name }}</p>
             </div>
 

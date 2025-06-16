@@ -14,8 +14,8 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'logo_company' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
-            'system_icon' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
+            'logo_company' => 'nullable|string', // Es un token, no un archivo
+            'system_icon' => 'nullable|string', // Es un token, no un archivo
             'show_system_name' => 'required|in:0,1',
             'company_name' => 'required|string|min:3|max:25',
             'company_cai' => 'required|string|min:37|max:37',

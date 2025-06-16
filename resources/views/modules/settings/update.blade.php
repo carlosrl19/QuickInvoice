@@ -10,6 +10,10 @@
 <!-- IMask.JS -->
 <script src="{{ Storage::url('assets/js/plugin/imask/imask.js') }}"></script>
 
+<!-- Filepond -->
+<link rel="stylesheet" href="{{ Storage::url('assets/js/plugin/filepond/filepond.css') }}">
+<link rel="stylesheet" href="{{ Storage::url('assets/js/plugin/filepond/filepond-plugin-image-preview.css') }}">
+
 @php
 use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
 @endphp
@@ -184,10 +188,20 @@ Configuración
                                     Configuración general
                                 </div>
                                 <div class="card-body">
+                                    <div class="row text-center mb-3">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                            <img class="mb-3" style="margin: auto" id="logoPreviewOld" width="100" height="100" src="{{ Storage::url('sys_config/img/' . $setting->logo_company) }}"><br>
+                                            <label for="logoPreviewOld"></label>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                            <img class="mb-3" style="margin: auto" id="systemIconPreviewOld" width="100" height="100" src="{{ Storage::url('sys_config/img/' . $setting->system_icon) }}"><br>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                             <div class="row mb-3">
                                                 <div class="col">
+                                                    <label for="show_system_name" class="text-xs">Mostrar/Ocultar ícono del sistema <span class="text-danger"> *</span></label>
                                                     <select class="form-select @error('show_system_name') is-invalid @enderror" name="show_system_name">
                                                         <option value="" selected disabled>Seleccione si mostrar nombre del sistema en panel izquierdo</option>
                                                         <option value="1" {{ old('show_system_name') ?? $setting->show_system_name == '1' ? 'selected' : '' }}>MOSTRAR NOMBRE DEL SISTEMA EN PANEL IZQUIERDO</option>
@@ -201,87 +215,83 @@ Configuración
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                            <div class="row mb-3">
-                                                <div class="col">
-                                                    <div class="row mb-3">
-                                                        <div class="col-6 text-center">
-                                                            <img class="mb-3" style="margin: auto" id="logoPreviewOld" width="100" height="100" src="{{ Storage::url('sys_config/img/' . $setting->logo_company) }}"><br>
-                                                            <label for="logoPreviewOld">Imagen actual</label>
-                                                        </div>
-                                                        <div class="col-6 text-center">
-                                                            <img class="mb-3" style="margin: auto" src="https://placehold.co/800?text=Sin\nimagen&font=roboto" id="logoPreview" width="100" height="100"><br>
-                                                            <label for="logoPreview">Imagen nueva</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-floating">
-                                                        <input type="file" class="form-control @error('logo_company') is-invalid @enderror" accept="image/*" id="logo_company" name="logo_company" onchange="previewImage(event, '#logoPreview')">
-                                                        <label for="logo_company">Logo para reportes</label>
-                                                        @error('logo_company')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            {{ $message }}
-                                                        </span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                            <div class="row mb-3">
-                                                <div class="col">
-                                                    <div class="row mb-3">
-                                                        <div class="col-6 text-center">
-                                                            <img class="mb-3" style="margin: auto" id="systemIconPreviewOld" width="100" height="100" src="{{ Storage::url('sys_config/img/' . $setting->system_icon) }}"><br>
-                                                            <label for="systemIconPreviewOld">Imagen actual</label>
-                                                        </div>
-                                                        <div class="col-6 text-center">
-                                                            <img class="mb-3" style="margin: auto" src="https://placehold.co/800?text=Sin\nimagen&font=roboto/" id="systemIconPreview" width="100" height="100"><br>
-                                                            <label for="systemIconPreview">Imagen nueva</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-floating">
-                                                        <input type="file" class="form-control @error('system_icon') is-invalid @enderror" accept="image/*" id="system_icon" name="system_icon" onchange="previewImage(event, '#systemIconPreview')">
-                                                        <label for="system_icon">Icono del sistema</label>
-                                                        @error('system_icon')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            {{ $message }}
-                                                        </span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
 
                                         <!-- Default currency symbol / Seller -->
-                                        <div class="row mb-3">
-                                            <div class="col">
-                                                <div class="form-floating">
-                                                    <input type="text" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z.$€£¥₹]/g, '')" class="form-control @error('default_currency_symbol') is-invalid @enderror" autocomplete="off"
-                                                        maxlength="3" name="default_currency_symbol" id="default_currency_symbol" value="{{ $setting->default_currency_symbol }}">
-                                                    @error('default_currency_symbol')
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div class="row mb-3">
+                                                <div class="col">
+                                                    <div class="form-floating">
+                                                        <input type="text" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z.$€£¥₹]/g, '')" class="form-control @error('default_currency_symbol') is-invalid @enderror" autocomplete="off"
+                                                            maxlength="3" name="default_currency_symbol" id="default_currency_symbol" value="{{ $setting->default_currency_symbol }}">
+                                                        @error('default_currency_symbol')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            {{ $message }}
+                                                        </span>
+                                                        @enderror
+                                                        <label for="default_currency_symbol">Moneda predeterminada <span class="text-danger">*</span></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div class="row mb-3">
+                                                <div class="col">
+                                                    <label for="default_seller_id" class="text-xs">Vendedor predeterminado <span class="text-danger"> *</span></label>
+                                                    <select class="tom-select @error('default_seller_id') is-invalid @enderror" id="default_seller_id_select" name="default_seller_id">
+                                                        <option value="" selected disabled>Seleccione el vendedor predeterminado</option>
+                                                        @foreach ($sellers as $seller)
+                                                        <option value="{{ $seller->id }}" {{ $seller->id == $setting->default_seller_id ? 'selected' : '' }}>{{ $seller->seller_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('default_seller_id')
                                                     <span class="invalid-feedback" role="alert">
                                                         {{ $message }}
                                                     </span>
                                                     @enderror
-                                                    <label for="default_currency_symbol">Moneda predeterminada <span class="text-danger">*</span></label>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="row mb-3">
-                                            <div class="col">
-                                                <select class="tom-select @error('default_seller_id') is-invalid @enderror" id="default_seller_id_select" name="default_seller_id">
-                                                    <option value="" selected disabled>Seleccione el vendedor predeterminado</option>
-                                                    @foreach ($sellers as $seller)
-                                                    <option value="{{ $seller->id }}" {{ $seller->id == $setting->default_seller_id ? 'selected' : '' }}>{{ $seller->seller_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('default_seller_id')
-                                                <span class="invalid-feedback" role="alert">
-                                                    {{ $message }}
-                                                </span>
-                                                @enderror
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div class="card">
+                                                <div class="card-header bg-danger text-white fw-bold">
+                                                    <x-heroicon-o-photo style="width: 20px; height: 20px; color: white" />
+                                                    Logo para reportes
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row mb-3">
+                                                        <div class="col">
+                                                            <input type="file" class="filepond @error('logo_company') is-invalid @enderror" accept="image/*" name="logo_company" id="logo_company">
+                                                            @error('logo_company')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                {{ $message }}
+                                                            </span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <div class="card">
+                                                <div class="card-header bg-danger text-white fw-bold">
+                                                    <x-heroicon-o-photo style="width: 20px; height: 20px; color: white" />
+                                                    Icono del sistema
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row mb-3">
+                                                        <div class="col">
+                                                            <input type="file" class="filepond @error('system_icon') is-invalid @enderror" accept="image/png, image/jpeg, image/jpg, image/webp, image/svg+xml" id="system_icon" name="system_icon">
+                                                            @error('system_icon')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                {{ $message }}
+                                                            </span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -312,20 +322,6 @@ Configuración
 @endsection
 
 @section('scripts')
-<!-- Images preview -->
-<script>
-    function previewImage(event, querySelector) {
-        const input = event.target;
-        const imgPreview = document.querySelector(querySelector);
-
-        if (!input.files.length) return;
-
-        const file = input.files[0];
-        const objectURL = URL.createObjectURL(file);
-        imgPreview.src = objectURL;
-    }
-</script>
-
 <!-- Tomselect -->
 <script src="{{ Storage::url('assets/js/plugin/tomselect/tom-select.complete.js') }}"></script>
 <script src="{{ Storage::url('customjs/tomselect/ts_init.js') }}"></script>
@@ -336,4 +332,32 @@ Configuración
 <!-- Laravel Javascript validation -->
 <script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
 {!! JsValidator::formRequest('App\Http\Requests\Settings\UpdateRequest') !!}
+
+<!-- Filepond -->
+<script src="{{ Storage::url('assets/js/plugin/filepond/filepond.js') }}"></script>
+<script src="{{ Storage::url('assets/js/plugin/filepond/filepond-plugin-file-validate-type.js') }}"></script>
+<script src="{{ Storage::url('assets/js/plugin/filepond/filepond-plugin-image-preview.js') }}"></script>
+<script>
+    FilePond.registerPlugin(
+        FilePondPluginFileValidateType,
+        FilePondPluginImagePreview
+    );
+
+    // Inicializar FilePond en los inputs
+    FilePond.create(document.querySelector('input[name="logo_company"]'));
+    FilePond.create(document.querySelector('input[name="system_icon"]'));
+
+    FilePond.setOptions({
+        server: {
+            process: '/filepond/process',
+            revert: '/filepond/revert',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        },
+        acceptedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/svg+xml'],
+        labelFileTypeNotAllowed: 'Tipo de archivo no permitido',
+        fileValidateTypeLabelExpectedTypes: 'Debe ser una imagen: {allTypes}'
+    });
+</script>
 @endsection

@@ -135,7 +135,7 @@
 
 	<div class="container">
 		<div class="header">
-			<img src="../public/storage/static/logo-rounded.png" width="120" height="94">
+			<img src="{{ 'storage/sys_config/img/' . $settings->logo_company ?? 'storage/assets/img/kaiadmin/favicon.png' }}" width="120" height="94">
 			<br /><br />
 			<span class="subtitle">{{ $settings->company_name ?? 'Nombre empresa' }}</span><br />
 			<span class="subtitle_sm">{{ $settings->company_address ?? 'Dirección empresa' }}</span><br />

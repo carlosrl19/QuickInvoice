@@ -58,6 +58,22 @@
                            <span class="sub-item">Servicios</span>
                        </a>
                    </li>
+                   <li class="nav-item">
+                       <a href="{{ route('categories.index') }}"
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), needles: 'categories.'),
+                           ])>
+                           <x-heroicon-o-table-cells style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                           <span class="sub-item">Categorías</span>
+                       </a>
+                   </li>
+                   <li class="nav-item">
+                       <a href="{{ route('products.index') }}"
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'products.'),
+                           ])>
+                           <x-heroicon-o-rectangle-stack style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                           <span class="sub-item">Productos</span>
+                       </a>
+                   </li>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>

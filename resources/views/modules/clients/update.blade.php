@@ -36,7 +36,7 @@ Clientes
 @endsection
 
 @section('content')
-<form method="POST" id="create_client_form" action="{{ route('clients.update', $client->id)}}" novalidate spellcheck="false">
+<form method="POST" id="update_client_form" action="{{ route('clients.update', $client->id)}}" novalidate spellcheck="false">
     @method('PUT')
     @csrf
     <div class="row">

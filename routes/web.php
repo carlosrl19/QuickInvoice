@@ -1,12 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use RahulHaque\Filepond\Http\Controllers\FilepondController;
+
+// Filepond
+Route::post('/filepond/process', [FilepondController::class, 'process']);
+Route::delete('/filepond/revert', [FilepondController::class, 'revert']);
 
 // Rutas de clientes
 Route::resource('clients', 'App\Http\Controllers\ClientsController')->names('clients');
 
 // Rutas de servicios
 Route::resource('services', 'App\Http\Controllers\ServicesController')->names('services');
+
+// Rutas de categorias
+Route::resource('categories', 'App\Http\Controllers\CategoriesController')->names('categories');
+
+// Rutas de productos
+Route::resource('products', 'App\Http\Controllers\ProductsController')->names('products');
 
 // Rutas de préstamos
 Route::resource('loans', 'App\Http\Controllers\LoansController')->names('loans');

@@ -24,6 +24,7 @@ class StoreRequest extends FormRequest
             'loan_quote_value' => 'required|numeric|min:1|regex:/^\d+(\.\d{1,2})?$/',
             'loan_interest' => 'required|numeric|min:0|max:100',
             'loan_total' => 'required|numeric|min:1|regex:/^\d+(\.\d{1,2})?$/',
+            'loan_amount_weekly_arrears' => 'required|numeric|min:0',
             'loan_start_date' => 'required|date:Y-m-d H:i:s',
             'loan_end_date' => 'required|date:Y-m-d H:i:s|after:loan_start_date',
             'loan_quote_number' => 'required|numeric|min:1',
@@ -95,6 +96,12 @@ class StoreRequest extends FormRequest
             'loan_total.numeric' => 'El monto final del préstamo (P+I) solo debe contener números.',
             'loan_total.regex' => 'El monto final del préstamo (P+I) no puede contener letras ni símbolos.',
             'loan_total.min' => 'El monto final del préstamo (P+I) debe ser mayor a :min lps.',
+
+            // Loan amount weekly arrears messages
+            'loan_amount_weekly_arrears.required' => 'El monto diario por mora es obligatoria.',
+            'loan_amount_weekly_arrears.numeric' => 'El monto diario por mora solo debe contener números.',
+            'loan_amount_weekly_arrears.regex' => 'El monto diario por mora no puede contener letras ni símbolos.',
+            'loan_amount_weekly_arrears.min' => 'El monto diario por mora debe ser mayor a :min lps.',
 
             // Loan start date messages
             'loan_start_date.required' => 'La fecha del primer pago del préstamo es obligatoria.',

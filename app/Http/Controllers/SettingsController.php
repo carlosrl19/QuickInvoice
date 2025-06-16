@@ -7,6 +7,7 @@ use App\Http\Requests\Settings\UpdateRequest;
 use App\Models\Seller;
 use App\Models\Settings;
 use App\Models\SystemLogs;
+use RahulHaque\Filepond\Filepond;
 
 class SettingsController extends Controller
 {
@@ -26,7 +27,7 @@ class SettingsController extends Controller
     {
         $setting = Settings::findOrFail($id);
         $sellers = Seller::get();
-        return view('modules.settings.edit', compact('setting', 'sellers'));
+        return view('modules.settings.update', compact('setting', 'sellers'));
     }
 
     public function store(StoreRequest $request)
@@ -86,33 +87,46 @@ class SettingsController extends Controller
         $settings = Settings::find($id);
 
         try {
-            // Eliminar las imágenes antiguas si se suben nuevas
-            if ($request->hasFile('logo_company')) {
-                $oldLogoPath = storage_path('app/public/sys_config/img/') . $settings->logo_company;
-                if (file_exists($oldLogoPath) && is_file($oldLogoPath)) {
-                    unlink($oldLogoPath);
+            // Procesar el logo de la empresa (si se subió)
+            $logoFilepond = app(Filepond::class)->field($request->input('logo_company'));
+            $logo = $logoFilepond ? $logoFilepond->getFile() : null;
+
+            if ($logo instanceof \Illuminate\Http\UploadedFile) {
+                $imageName = 'logo_company.' . $logo->getClientOriginalExtension();
+
+                // Crear carpeta si no existe
+                $folderPath = storage_path('app/public/sys_config/img/');
+                if (!file_exists($folderPath)) {
+                    mkdir($folderPath, 0775, true);
                 }
 
-                // Procesar y guardar la imagen para 'logo_company'
-                $image = $request->file('logo_company');
-                $imageName = 'logo_company.' . $image->getClientOriginalExtension();
-                $image->move(storage_path('app/public/sys_config/img/'), $imageName);
+                $logo->move($folderPath, $imageName);
                 $settings->logo_company = $imageName;
             }
 
-            if ($request->hasFile('system_icon')) {
+            // Procesar el ícono del sistema (si se subió)
+            $iconFilepond = app(Filepond::class)->field($request->input('system_icon'));
+            $icon = $iconFilepond ? $iconFilepond->getFile() : null;
+
+            if ($icon instanceof \Illuminate\Http\UploadedFile) {
                 $oldIconPath = storage_path('app/public/sys_config/img/') . $settings->system_icon;
-                if (file_exists($oldIconPath) && is_file($oldIconPath)) {
+                if (file_exists($oldIconPath)) {
                     unlink($oldIconPath);
                 }
 
-                // Procesar y guardar la imagen para 'system_icon'
-                $icon = $request->file('system_icon');
                 $iconName = 'system_icon.' . $icon->getClientOriginalExtension();
-                $icon->move(storage_path('app/public/sys_config/img/'), $iconName);
+
+                // Crear carpeta si no existe
+                $folderPath = storage_path('app/public/sys_config/img/');
+                if (!file_exists($folderPath)) {
+                    mkdir($folderPath, 0775, true);
+                }
+
+                $icon->move($folderPath, $iconName);
                 $settings->system_icon = $iconName;
             }
 
+            // Actualizar otros campos
             $settings->show_system_name = $request->input('show_system_name');
             $settings->company_name = $request->input('company_name');
             $settings->company_cai = $request->input('company_cai');
@@ -124,7 +138,6 @@ class SettingsController extends Controller
             $settings->default_currency_symbol = $request->input('default_currency_symbol');
             $settings->default_seller_id = $request->input('default_seller_id');
 
-            // Actualizar el registro en la base de datos
             $settings->save();
 
             SystemLogs::create([
@@ -134,7 +147,10 @@ class SettingsController extends Controller
 
             return back()->with('success', 'Configuración actualizada correctamente');
         } catch (\Exception $e) {
-            return back()->with("error", "Ocurrió un error al actualizar el registro.")->withInput()->withErrors($e->getMessage());
+            return back()
+                ->with("error", "Ocurrió un error al actualizar el registro.")
+                ->withInput()
+                ->withErrors($e->getMessage());
         }
     }
 }

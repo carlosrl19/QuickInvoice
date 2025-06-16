@@ -69,10 +69,10 @@ Cotizaciones
                                         <x-heroicon-o-question-mark-circle style="width: 20px; height: 20px;" class="bg-label-info" />
                                         Cambiar estado
                                     </a>
-                                    @elseif($quote->quote_status == 4)
-                                    <span class="text-danger fw-bold">{{ $quote->quote_answer }}</span>
+                                    @elseif($quote->quote_answer == '')
+                                    <span class="text-muted op-4">N/A</span>
                                     @else
-                                    {{ $quote->quote_answer }}
+                                    <button onclick="this.textContent = this.textContent == 'Mostrar' ? '{{ $quote->quote_answer }}' : 'Mostrar'" class="btn btn-sm btn-border btn-secondary">Mostrar</button>
                                     @endif
                                 </td>
                                 <td>
