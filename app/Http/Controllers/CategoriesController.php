@@ -7,6 +7,7 @@ use App\Http\Requests\Categories\UpdateRequest;
 use App\Models\Categories;
 use App\Models\SystemLogs;
 use Carbon\Carbon;
+use Proengsoft\JsValidation\Facades\JsValidatorFacade;
 
 class CategoriesController extends Controller
 {
@@ -52,7 +53,9 @@ class CategoriesController extends Controller
     public function edit($id)
     {
         $category = Categories::findOrFail($id);
-        return view('modules.categories.update', compact('category'));
+        $validator = JsValidatorFacade::formRequest(UpdateRequest::class);
+
+        return view('modules.categories.update', compact('category', 'validator'));
     }
 
     public function update(UpdateRequest $request, Categories $category)

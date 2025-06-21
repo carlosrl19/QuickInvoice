@@ -92,12 +92,8 @@ Productos
                                 </td>
                                 <td>
                                     <img class="rounded-circle" width="50" height="50"
-                                        src="{{ Storage::url('uploads/products/' . $product->product_image) 
-                                        ? Storage::url('uploads/products/' . $product->product_image) 
-                                        : Storage::url('sys_config/img/no_image_available.png') }}"
-                                        onerror="this.onerror=null;this.src='{{ Storage::url('sys_config/img/image_loading_failed.png') }}'"
-                                        style="cursor:pointer;"
-                                        data-image="{{ Storage::url('uploads/products/' . $product->product_image) }}"
+                                        src="{{ Storage::url('uploads/products/' . $product->product_image) ?: Storage::url('sys_config/img/no_image_available.png') }}"
+                                        onerror="this.onerror=null;this.src='{{ $product_error_image }}'"
                                         alt="Imagen de {{ $product->product_name }}">
                                 </td>
                                 <td>
@@ -122,20 +118,6 @@ Productos
                             @endforeach
                         </tbody>
                     </table>
-
-                    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true" aria-labelledby="imageModalLabel">
-                        <div class="modal-dialog modal-sm modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header bg-danger text-white fw-bold">
-                                    Presentación de producto
-                                    <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body text-center p-4">
-                                    <img id="modalImage" src="" class="img-fluid rounded">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -187,26 +169,5 @@ Productos
 <!-- Laravel Javascript validation -->
 <script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
 {!! JsValidator::formRequest('App\Http\Requests\Products\StoreRequest') !!}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const modalElement = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-        const bootstrapModal = new bootstrap.Modal(modalElement);
-
-        document.querySelectorAll('img[data-image]').forEach(img => {
-            img.addEventListener('click', () => {
-                const imageSrc = img.getAttribute('data-image');
-                modalImage.src = imageSrc; // Carga la imagen solo al abrir modal
-                bootstrapModal.show();
-            });
-        });
-
-        // Limpiar imagen al cerrar modal para liberar memoria y evitar carga innecesaria
-        modalElement.addEventListener('hidden.bs.modal', () => {
-            modalImage.src = '';
-        });
-    });
-</script>
 
 @endsection

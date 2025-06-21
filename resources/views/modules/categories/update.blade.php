@@ -71,3 +71,9 @@ Categorías
     </div>
 </form>
 @endsection
+
+@section('scripts')
+<!-- Laravel Javascript validation -->
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
+{!! $validator !!}
+@endsection

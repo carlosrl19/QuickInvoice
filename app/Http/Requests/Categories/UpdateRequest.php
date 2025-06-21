@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Categories;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -18,10 +19,20 @@ class UpdateRequest extends FormRequest
 
     public function rules()
     {
-        $categoryId = $this->route('category')->id;
+        $categoryId = $this->route('category');
 
         return [
-            'category_name' => 'required|string|min:3|max:55|regex:/^[^\d]+$/|unique:categories,category_name,' . $categoryId . '',
+            'category_name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:55',
+                'regex:/^[^\d]+$/',
+                Rule::unique('categories', 'category_name')->ignore($categoryId)
+                    ->where(function ($query) use ($categoryId) {
+                        return $query->where('id', '!=', $categoryId);
+                    }),
+            ],
         ];
     }
 

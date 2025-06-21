@@ -10,6 +10,11 @@
 <!-- Filepond -->
 <link rel="stylesheet" href="{{ Storage::url('assets/js/plugin/filepond/filepond.css') }}">
 <link rel="stylesheet" href="{{ Storage::url('assets/js/plugin/filepond/filepond-plugin-image-preview.css') }}">
+
+@php
+use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
+@endphp
+
 @endsection
 
 @section('title')
@@ -55,7 +60,7 @@ Productos
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col text-center">
-                            <img class="rounded-circle p-1" src="{{ Storage::url('uploads/products/' . $product->product_image ) }}" onerror="this.onerror=null;this.src='{{ Storage::url('sys_config/img/image_loading_failed.png') }}'" width="180" height="180">
+                            <img class="rounded-circle p-1" src="{{ Storage::url('uploads/products/' . $product->product_image ) }}" onerror="this.onerror=null;this.src='{{ $product_error_image }}'" width="180" height="180">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -226,4 +231,8 @@ Productos
         fileValidateTypeLabelExpectedTypes: 'Debe ser una imagen: {allTypes}'
     });
 </script>
+
+<!-- Laravel Javascript validation -->
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\Products\UpdateRequest') !!}
 @endsection

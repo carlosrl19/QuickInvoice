@@ -8,6 +8,7 @@ use App\Models\Categories;
 use App\Models\Products;
 use COM;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use RahulHaque\Filepond\Filepond;
 
 class ProductsController extends Controller
@@ -29,8 +30,9 @@ class ProductsController extends Controller
             ->paginate(500);
 
         $categories = Categories::orderBy('category_name')->get();
+        $product_error_image = Storage::url('sys_config/img/image_loading_failed.png');
 
-        return view('modules.products.index', compact('products', 'letters', 'selectedLetter', 'categories'));
+        return view('modules.products.index', compact('products', 'letters', 'selectedLetter', 'categories', 'product_error_image'));
     }
 
     public function store(StoreRequest $request)
@@ -73,8 +75,9 @@ class ProductsController extends Controller
     {
         $product = Products::findOrFail($id);
         $categories = Categories::all();
+        $product_error_image = Storage::url('sys_config/img/image_loading_failed.png');
 
-        return view("modules.products.update", compact("product", "categories"));
+        return view("modules.products.update", compact('product', 'categories', 'product_error_image'));
     }
 
     public function update(UpdateRequest $request, $id)

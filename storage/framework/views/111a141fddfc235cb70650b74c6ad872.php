@@ -85,4 +85,11 @@ unset($__errorArgs, $__bag); ?>
     </div>
 </form>
 <?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+<!-- Laravel Javascript validation -->
+<script src="<?php echo e(asset('vendor/jsvalidation/js/jsvalidation.js')); ?>"></script>
+<?php echo $validator; ?>
+
+<?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/carlos/Code/Code/QuickInvoice/resources/views/modules/categories/update.blade.php ENDPATH**/ ?>

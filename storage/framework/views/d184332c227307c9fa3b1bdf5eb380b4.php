@@ -134,7 +134,7 @@ unset($__errorArgs, $__bag); ?>
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" readonly id="client_code" name="client_code" value=" <?php echo e($client->client_code); ?>" class="form-control"
+                                <input type="text" readonly id="client_code" name="client_code" value="<?php echo e($client->client_code); ?>" class="form-control"
                                     style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" />
                                 <label for=" client_code">Código del cliente <span class="text-danger">*</span></label>
                             </div>
@@ -302,7 +302,7 @@ unset($__errorArgs, $__bag); ?>
         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="card-header bg-secondary fw-bold text-white">
-                    Información adicional
+                    Actualización información adicional
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
@@ -546,5 +546,12 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 </form>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+<!-- Laravel Javascript validation -->
+<script src="<?php echo e(asset('vendor/jsvalidation/js/jsvalidation.js')); ?>"></script>
+<?php echo $validator; ?>
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/carlos/Code/Code/QuickInvoice/resources/views/modules/clients/update.blade.php ENDPATH**/ ?>

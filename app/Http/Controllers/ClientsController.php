@@ -8,6 +8,7 @@ use App\Models\Clients;
 use App\Models\SystemLogs;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Proengsoft\JsValidation\Facades\JsValidatorFacade;
 
 class ClientsController extends Controller
 {
@@ -83,33 +84,37 @@ class ClientsController extends Controller
     public function edit($id)
     {
         $client = Clients::findOrFail($id);
-        return view('modules.clients.update', compact('client'));
+        $validator = JsValidatorFacade::formRequest(UpdateRequest::class);
+
+        return view('modules.clients.update', compact('client', 'validator'));
     }
 
     public function update(UpdateRequest $request, Clients $client)
     {
         try {
-            //Required data
-            $client->client_name = $request->input('client_name');
-            $client->client_document = $request->input('client_document');
-            $client->client_type = $request->input('client_type');
-            $client->client_phone1 = $request->input('client_phone1');
+            // Solo actualiza los campos permitidos (evita inyección de datos no deseados)
+            $data = $request->only([
+                'client_name',
+                'client_document',
+                'client_type',
+                'client_phone1',
+                'client_phone2',
+                'client_birthdate',
+                'client_phone_home',
+                'client_actual_job',
+                'client_job_length',
+                'client_phone_work',
+                'client_last_job',
+                'client_own_business',
+                'client_email',
+                'client_exonerated',
+                'client_status',
+                'client_address'
+            ]);
 
-            // No required data (nullable)
-            $client->client_phone2 = $request->input('client_phone2');
-            $client->client_birthdate = $request->input('client_birthdate');
-            $client->client_phone_home = $request->input('client_phone_home');
-            $client->client_actual_job = $request->input('client_actual_job');
-            $client->client_job_length = $request->input('client_job_length');
-            $client->client_phone_work = $request->input('client_phone_work');
-            $client->client_last_job = $request->input('client_last_job');
-            $client->client_own_business = $request->input('client_own_business');
-            $client->client_email = $request->input('client_email');
-            $client->client_exonerated = $request->input('client_exonerated');
-            $client->client_status = $request->input('client_status');
-            $client->client_address = $request->input('client_address');
-            $client->updated_at = $this->getTodayDate();
-            $client->update($request->all());
+            $data['updated_at'] = $this->getTodayDate(); // Actualiza fecha manualmente
+
+            $client->update($data); // Guarda solo los campos permitidos
 
             SystemLogs::create([
                 'module_log' => 'Clientes',
@@ -118,7 +123,10 @@ class ClientsController extends Controller
 
             return redirect()->route("clients.index")->with("success", "Registro actualizado exitosamente.");
         } catch (\Exception $e) {
-            return back()->with("error", "Ocurrió un error al actualizar el registro.")->withInput()->withErrors($e->getMessage());
+            return back()
+                ->with("error", "Ocurrió un error al actualizar el registro.")
+                ->withInput()
+                ->withErrors($e->getMessage());
         }
     }
 

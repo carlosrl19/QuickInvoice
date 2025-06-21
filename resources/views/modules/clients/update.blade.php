@@ -90,7 +90,7 @@ Clientes
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" readonly id="client_code" name="client_code" value=" {{ $client->client_code }}" class="form-control"
+                                <input type="text" readonly id="client_code" name="client_code" value="{{ $client->client_code }}" class="form-control"
                                     style="background-color: transparent !important; border-left: 4px solid #A0C878 !important; border-bottom: 1px solid #A0C878 !important;" />
                                 <label for=" client_code">Código del cliente <span class="text-danger">*</span></label>
                             </div>
@@ -183,7 +183,7 @@ Clientes
         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="card-header bg-secondary fw-bold text-white">
-                    Información adicional
+                    Actualización información adicional
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
@@ -307,4 +307,10 @@ Clientes
         </div>
     </div>
 </form>
+@endsection
+
+@section('scripts')
+<!-- Laravel Javascript validation -->
+<script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
+{!! $validator !!}
 @endsection

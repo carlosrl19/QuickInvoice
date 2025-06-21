@@ -8,6 +8,11 @@
 <!-- Filepond -->
 <link rel="stylesheet" href="<?php echo e(Storage::url('assets/js/plugin/filepond/filepond.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(Storage::url('assets/js/plugin/filepond/filepond-plugin-image-preview.css')); ?>">
+
+<?php
+use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
+?>
+
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('title'); ?>
@@ -54,7 +59,7 @@ Productos
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col text-center">
-                            <img class="rounded-circle p-1" src="<?php echo e(Storage::url('uploads/products/' . $product->product_image )); ?>" onerror="this.onerror=null;this.src='<?php echo e(Storage::url('sys_config/img/image_loading_failed.png')); ?>'" width="180" height="180">
+                            <img class="rounded-circle p-1" src="<?php echo e(Storage::url('uploads/products/' . $product->product_image )); ?>" onerror="this.onerror=null;this.src='<?php echo e($product_error_image); ?>'" width="180" height="180">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -346,5 +351,10 @@ unset($__errorArgs, $__bag); ?>
         fileValidateTypeLabelExpectedTypes: 'Debe ser una imagen: {allTypes}'
     });
 </script>
+
+<!-- Laravel Javascript validation -->
+<script src="<?php echo e(asset('vendor/jsvalidation/js/jsvalidation.js')); ?>"></script>
+<?php echo JsValidator::formRequest('App\Http\Requests\Products\UpdateRequest'); ?>
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/carlos/Code/Code/QuickInvoice/resources/views/modules/products/update.blade.php ENDPATH**/ ?>

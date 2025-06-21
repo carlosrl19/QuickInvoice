@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\Clients;
 
+use App\Models\Clients;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateRequest extends FormRequest
+class UpdateJSRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,79 +17,19 @@ class UpdateRequest extends FormRequest
         $clientId = $this->route('client');
 
         return [
-            'client_name' => [
-                'required',
-                'string',
-                'min:3',
-                'max:55',
-                'regex:/^[^\d]+$/',
-                Rule::unique('clients', 'client_name')->ignore($clientId)
-                    ->where(function ($query) use ($clientId) {
-                        return $query->where('id', '!=', $clientId);
-                    }),
-            ],
-            'client_code' => [
-                'required',
-                'string',
-                'min:9',
-                'max:9',
-                'regex:/^[a-zA-Z0-9]+$/',
-                Rule::unique('clients', 'client_code')->ignore($clientId)
-                    ->where(function ($query) use ($clientId) {
-                        return $query->where('id', '!=', $clientId);
-                    }),
-            ],
-            'client_document' => [
-                'required',
-                'string',
-                'min:13',
-                'max:14',
-                'regex:/^[0-9]+$/',
-                Rule::unique('clients', 'client_document')->ignore($clientId)
-                    ->where(function ($query) use ($clientId) {
-                        return $query->where('id', '!=', $clientId);
-                    }),
-            ],
-            'client_phone1' => [
-                'required',
-                'string',
-                'min:8',
-                'max:11',
-                'regex:/^[0-9]+$/',
-                Rule::unique('clients', 'client_phone1')->ignore($clientId)
-                    ->where(function ($query) use ($clientId) {
-                        return $query->where('id', '!=', $clientId);
-                    }),
-            ],
-            'client_phone2' => [
-                'nullable',
-                'string',
-                'min:8',
-                'max:11',
-                'regex:/^[0-9]+$/',
-                Rule::unique('clients', 'client_phone2')->ignore($clientId)
-                    ->where(function ($query) use ($clientId) {
-                        return $query->where('id', '!=', $clientId);
-                    }),
-            ],
-            'client_email' => [
-                'nullable',
-                'email',
-                'min:3',
-                'max:55',
-                Rule::unique('clients', 'client_email')->ignore($clientId)
-                    ->where(function ($query) use ($clientId) {
-                        return $query->where('id', '!=', $clientId);
-                    }),
-            ],
-            
+            'client_name' => 'required|string|min:3|max:55|regex:/^[^\d]+$/|unique:clients,client_name,' . $clientId . '',
+            'client_code' => 'required|string|min:9|max:9|regex:/^[a-zA-Z0-9]+$/|unique:clients,client_code,' . $clientId . '',
+            'client_document' => 'required|string|min:13|max:14|regex:/^[0-9]+$/|unique:clients,client_document,' . $clientId . '',
             'client_type' => 'required|string|min:1|max:1|regex:/^[^\d]+$/',
+            'client_phone1' => 'required|string|min:8|max:11|regex:/^[0-9]+$/|unique:clients,client_phone1,' . $clientId . '',
+            'client_phone2' => 'nullable|string|min:8|max:11|regex:/^[0-9]+$/|unique:clients,client_phone2,' . $clientId . '',
             'client_birthdate' => 'nullable|date:Y-m-d',
             'client_phone_home' => 'nullable|string|min:8|max:8|regex:/^[0-9]+$/',
             'client_actual_job' => 'nullable|string|min:3|max:55|regex:/^[^\d]+$/',
-            'client_job_length' => 'nullable|numeric|min:1',
+            'client_job_length' => 'nullable|numeric|min:1|',
             'client_phone_work' => 'nullable|string|min:8|max:8|regex:/^[0-9]+$/',
             'client_last_job' => 'nullable|string|min:3|max:55|regex:/^[^\d]+$/',
+            'client_email' => 'nullable|email|min:3|max:55|unique:clients,client_email,' . $clientId . '',
             'client_own_business' => 'nullable|numeric|in:0,1',
             'client_exonerated' => 'nullable|numeric|in:0,1',
             'client_status' => 'nullable|numeric|in:0,1',
