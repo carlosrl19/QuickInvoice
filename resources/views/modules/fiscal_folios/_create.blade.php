@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('fiscalfolio.store')}}" novalidate spellcheck="false">
+                <form method="POST" action="{{ route('fiscalfolio.store')}}" novalidate autocomplete="off"spellcheck="false">
                     @csrf
                     <input type="hidden" name="folio_validation_status" value="1"> <!-- Controller get this -->
                     <input type="hidden" name="folio_status" value="0"> <!-- Controller get this -->

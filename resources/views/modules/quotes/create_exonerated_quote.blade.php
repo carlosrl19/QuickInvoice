@@ -55,7 +55,7 @@ Cotizaciones
                 REGISTRO DE NUEVA COTIZACIÓN EXONERADA (E)
             </div>
             <div class="card-body">
-                <form id="pos_creation" action="{{ route('quotes.store_exonerated') }}" method="POST" novalidate autocomplete="off" spellcheck="false">
+                <form id="pos_creation" action="{{ route('quotes.store_exonerated') }}" method="POST" novalidate autocomplete="off"autocomplete="off" spellcheck="false">
                     @csrf
                     <input type="hidden" name="quote_code" id="quote_code" value="000000000"> <!-- Controller get this -->
                     <input type="hidden" name="quote_discount" id="quote_discount" value="0"> <!-- Controller get this -->

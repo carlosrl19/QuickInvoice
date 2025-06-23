@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" id="create_category_form" action="<?php echo e(route('categories.store')); ?>" novalidate spellcheck="false">
+                <form method="POST" id="create_category_form" action="<?php echo e(route('categories.store')); ?>" novalidate autocomplete="off"spellcheck="false">
                     <?php echo csrf_field(); ?>
                     <div class="row mb-3">
                         <div class="col">
@@ -35,6 +35,36 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                                 <label for="category_name">Nombre de categoría <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <textarea oninput="this.value = this.value.toUpperCase()"
+                                    class="form-control <?php $__errorArgs = ['category_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" autocomplete="off" maxlength="155"
+                                    name="category_description" rows="6" id="category_description" style="resize: none;"><?php echo e(old('category_description')); ?></textarea>
+                                <?php $__errorArgs = ['category_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="invalid-feedback" role="alert">
+                                    <?php echo e($message); ?>
+
+                                </span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                <label for="category_description">Descripción</label>
                             </div>
                         </div>
                     </div>

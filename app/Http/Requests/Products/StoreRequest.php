@@ -14,62 +14,87 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id' => 'required|integer|exists:categories,id',
-            'product_barcode' =>  'nullable|string|regex:/^[0-9]+$/|min:4|max:13|unique:products',
-            'product_name' => 'required|string|min:3|max:40|unique:products',
-            'product_description' => 'nullable|string|min:3|max:255',
-            'product_stock' =>  'required|numeric|min:0',
-            'product_buy_price' => 'required|numeric|min:0.01|lt:product_sell_price',
-            'product_sell_price' => 'required|numeric|gt:product_buy_price',
+            'product_code' => 'required|string|max:10',
+            'product_nomenclature' => 'required|string|max:20|unique:products',
+            'product_name' => 'required|string|max:55|unique:products|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9 ,.\s]+$/|',
+            'product_brand' => 'required|string|max:20|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9 ,.\s]+$/|',
+            'product_model' => 'nullable|string|max:20|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9 ,.\s]+$/|',
+            'product_status' => 'required|integer|in:0,1,2,3',
+            'category_id' => 'required|numeric|exists:categories,id',
+            'product_stock' => 'required|integer',
+            'product_price' => 'required|numeric|between:0,99999999.99',
+            'product_description' => 'nullable|string|max:600',
+            'product_status_description' => 'required|string|max:600',
             'product_image' => 'nullable|string', // Es un token, no un archivo | // Default (images/resources/no_image_available.png)
+            'product_reviewed_by' => 'required|string',
         ];
     }
 
     public function messages()
     {
         return [
+            // Product code messages
+            'product_code.required' => 'El código es obligatorio.',
+            'product_code.string' => 'El código debe ser una cadena de texto.',
+            'product_code.max' => 'El código no puede tener más de :max caracteres.',
+
+            // Product nomenclature messages
+            'product_nomenclature.required' => 'La nomenclatura es obligatoria.',
+            'product_nomenclature.string' => 'La nomenclatura debe ser una cadena de texto.',
+            'product_nomenclature.max' => 'La nomenclatura no puede tener más de :max caracteres.',
+            'product_nomenclature.unique' => 'La nomenclatura ya existe.',
+
+            // Product name messages
+            'product_name.required' => 'El nombre es obligatorio.',
+            'product_name.string' => 'El nombre debe ser una cadena de texto.',
+            'product_name.max' => 'El nombre no puede tener más de :max caracteres.',
+            'product_name.unique' => 'El nombre ya existe.',
+            'product_name.regex' => 'El nombre solo debe contener letras, puntos y/o números.',
+
+            // Product brand messages
+            'product_brand.required' => 'La marca es obligatoria.',
+            'product_brand.string' => 'La marca debe ser una cadena de texto.',
+            'product_brand.max' => 'La marca no puede tener más de :max caracteres.',
+            'product_brand.regex' => 'La marca solo debe contener letras, puntos y/o números.',
+
+            // Product model messages
+            'product_model.string' => 'El modelo debe ser una cadena de texto.',
+            'product_model.max' => 'El modelo no puede tener más de :max caracteres.',
+            'product_model.regex' => 'El modelo solo debe contener letras, puntos y/o números.',
+
+            // Product status messages
+            'product_status.required' => 'El estado es obligatorio.',
+            'product_status.integer' => 'El estado debe ser un número entero.',
+            'product_status.in' => 'El estado debe estar entre 0 y 3.',
+
             // Category id messages
-            'category_id.required' => 'La categoría del producto es obligatoria.',
-            'category_id.integer' => 'La categoría debe ser un número entero (dev.request).',
+            'category_id.required' => 'La categoría es obligatoria.',
+            'category_id.numeric' => 'La categoría seleccionada es inválida (dev.request).',
             'category_id.exists' => 'La categoría seleccionada no existe.',
 
-            // Product barcode messages
-            'product_barcode.string' => 'El código de barra del producto solo acepta números.',
-            'product_barcode.min' => 'El código de barra del producto debe contener al menos :min digitos.',
-            'product_barcode.max' => 'El código de barra del producto no puede exceder :max digitos.',
-            'product_barcode.unique' => 'El código de barra del producto ya existe.',
-            'product_barcode.regex' => 'El código de barra del producto debe contener únicamente números.',
+            // Product stock messages
+            'product_stock.required' => 'El stock es obligatorio.',
+            'product_stock.integer' => 'El stock debe ser un número entero.',
 
-            // Product product_name messages
-            'product_name.required' => 'El nombre del producto es obligatorio.',
-            'product_name.string' => 'El nombre del producto solo debe contener letras y números.',
-            'product_name.min' => 'El nombre del producto debe contener al menos :min letras.',
-            'product_name.unique' => 'El nombre del producto ya existe.',
-            'product_name.max' => 'El nombre del producto no puede exceder :max letras.',
+            // Product price messages
+            'product_price.required' => 'El precio es obligatorio.',
+            'product_price.numeric' => 'El precio debe ser un número.',
+            'product_price.between' => 'El precio debe estar entre 0 y 99,999,999.99.',
 
             // Product description messages
-            'product_description.string' => 'La descripción del producto solo debe contener letras.',
-            'product_description.min' => 'La descripción del producto debe contener al menos :min letras.',
-            'product_description.max' => 'La descripción del producto no puede exceder :max letras.',
+            'product_description.string' => 'La descripción debe ser una cadena de texto.',
+            'product_description.max' => 'La descripción no puede tener más de :max caracteres.',
 
-            // Product existance messages
-            'product_stock.required' => 'La existencia del producto es obligatoria.',
-            'product_stock.numeric' => 'La existencia del producto solo debe contener números.',
-            'product_stock.min' => 'La existencia del producto debe ser mayor o igual a L. :min.',
+            // Product status description messages
+            'product_status_description.required' => 'La descripción del estado es obligatoria.',
+            'product_status_description.string' => 'La descripción del estado debe ser una cadena de texto.',
+            'product_status_description.max' => 'La descripción del estado no puede tener más de 600 caracteres.',
 
-            // Product purchase price
-            'product_buy_price.numeric' => 'El precio de compra solo debe contener números.',
-            'product_buy_price.required' => 'El precio de compra es obligatorio.',
-            'product_buy_price.min' => 'El precio de compra debe ser superior a L. :min.',
-            'product_buy_price.lt' => 'El precio de compra debe ser inferior al precio de venta.',
+            // Product reviewed by messages
+            'product_reviewed_by.required' => 'El encargado es obligatorio.',
+            'product_reviewed_by.string' => 'El encargado debe ser una nombre válido.',
 
-            // Product final price
-            'product_sell_price.numeric' => 'El precio de venta solo acepta números.',
-            'product_sell_price.required' => 'El precio de venta es obligatorio.',
-            'product_sell_price.min' => 'El precio de venta debe ser superior al precio de venta al por mayor.',
-            'product_sell_price.gt' => 'El precio de venta debe ser mayor al precio de compra.',
-
-            // Product image
+            // Product image messages
             'product_image.image' => 'La imagen del producto debe ser un archivo de tipo imagen (.png, .jpeg, .jpg, .webp).',
             'product_image.max' => 'La imagen que intenta subir es demasiado grande, intente optimizar la imagen.()',
         ];

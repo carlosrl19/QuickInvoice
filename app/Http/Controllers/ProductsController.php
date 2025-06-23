@@ -6,13 +6,20 @@ use App\Http\Requests\Products\StoreRequest;
 use App\Http\Requests\Products\UpdateRequest;
 use App\Models\Categories;
 use App\Models\Products;
+use Carbon\Carbon;
 use COM;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use RahulHaque\Filepond\Filepond;
 
 class ProductsController extends Controller
 {
+    private function getTodayDate()
+    {
+        return Carbon::now()->setTimezone('America/Costa_Rica')->format('Y-m-d H:i:s');
+    }
+
     public function index(Request $request)
     {
         // Obtener la letra seleccionada o la letra 'A' por defecto
@@ -37,15 +44,24 @@ class ProductsController extends Controller
 
     public function store(StoreRequest $request)
     {
+        $product_code = strtoupper(string: Str::random(10));
+
         try {
             $product = new Products();
-            $product->product_barcode = $request->input('product_barcode');
+            $product->product_code = $product_code;
+            $product->product_nomenclature = $request->input('product_nomenclature');
             $product->product_name = $request->input('product_name');
-            $product->product_description = $request->input('product_description');
-            $product->product_stock = $request->input('product_stock');
-            $product->product_buy_price = $request->input('product_buy_price');
-            $product->product_sell_price = $request->input('product_sell_price');
+            $product->product_brand = $request->input('product_brand');
+            $product->product_model = $request->input('product_model');
+            $product->product_status = $request->input('product_status');
             $product->category_id = $request->input('category_id');
+            $product->product_stock = $request->input('product_stock');
+            $product->product_price = $request->input('product_price');
+            $product->product_description = $request->input('product_description');
+            $product->product_status_description = $request->input('product_status_description');
+            $product->product_reviewed_by = 'PRUEBA';
+            $product->created_at = $this->getTodayDate();
+            $product->updated_at = $this->getTodayDate();
 
             // Manejo de imagen con FilePond
             $imageFilepond = app(Filepond::class)->field($request->input('product_image'));
@@ -85,13 +101,21 @@ class ProductsController extends Controller
         $product = Products::findOrFail($id);
 
         try {
-            $product->product_barcode = $request->input('product_barcode');
+            $product->product_code = $request->input('product_code');
             $product->product_name = $request->input('product_name');
             $product->product_description = $request->input('product_description');
             $product->product_stock = $request->input('product_stock');
-            $product->product_buy_price = $request->input('product_buy_price');
-            $product->product_sell_price = $request->input('product_sell_price');
             $product->category_id = $request->input('category_id');
+            $product->product_nomenclature = $request->input('product_nomenclature');
+            $product->product_brand = $request->input('product_brand');
+            $product->product_model = $request->input('product_model');
+            $product->product_status = $request->input('product_status');
+            $product->category_id = $request->input('category_id');
+            $product->product_price = $request->input('product_price');
+            $product->product_status_description = $request->input('product_status_description');
+            $product->product_reviewed_by = 'PRUEBA';
+            $product->created_at = $this->getTodayDate();
+            $product->updated_at = $this->getTodayDate();
 
             // Manejo de imagen con FilePond
             $imageFilepond = app(Filepond::class)->field($request->input('product_image'));

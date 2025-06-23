@@ -46,7 +46,7 @@ Productos
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
-<form method="POST" id="create_product_form" action="<?php echo e(route('products.update', $product->id)); ?>" enctype="multipart/form-data" novalidate spellcheck="false">
+<form method="POST" id="create_product_form" action="<?php echo e(route('products.update', $product->id)); ?>" enctype="multipart/form-data" novalidate autocomplete="off" spellcheck="false">
     <?php echo method_field('PUT'); ?>
     <?php echo csrf_field(); ?>
     <div class="row">
@@ -65,8 +65,8 @@ Productos
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" maxlength="13" name="product_barcode" oninput="this.value = this.value.replace(/\D/g, '')" value="<?php echo e($product->product_barcode); ?>"
-                                    id="product_barcode" class="form-control <?php $__errorArgs = ['product_barcode'];
+                                <input type="text" name="product_code" id="product_code" style="background-color: white !important;" readonly oninput="this.value = this.value.replace(/\D/g, '')" value="<?php echo e($product->product_code); ?>"
+                                    class="form-control <?php $__errorArgs = ['product_code'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -74,27 +74,30 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" autocomplete="off" />
-                                <?php $__errorArgs = ['product_barcode'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="invalid-feedback" role="alert">
-                                    <?php echo e($message); ?>
-
-                                </span>
-                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                <label for="product_barcode">Código del producto</label>
+                                <label for="product_code">Código del producto <span class="text-muted opacity-25">(solo lectura)</span></label>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" maxlength="40" name="product_name" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ\s]/g, '')" value="<?php echo e($product->product_name); ?>"
+                                <input type="text" name="product_nomenclature" id="product_nomenclature" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ0-9\s]/g, '')" value="<?php echo e($product->product_nomenclature); ?>"
+                                    class="form-control <?php $__errorArgs = ['product_nomenclature'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" autocomplete="off" />
+                                <label for="product_nomenclature">Nomenclatura del producto</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" maxlength="40" name="product_name" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ0-9\s]/g, '')" value="<?php echo e($product->product_name); ?>"
                                     id="product_name" class="form-control <?php $__errorArgs = ['product_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -117,6 +120,38 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                                 <label for="product_name">Nombre del producto <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" name="product_brand" id="product_brand" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ0-9\s]/g, '')" value="<?php echo e($product->product_brand); ?>"
+                                    class="form-control <?php $__errorArgs = ['product_brand'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" autocomplete="off" />
+                                <label for="product_brand">Marca del producto</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" name="product_model" id="product_model" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ0-9\s]/g, '')" value="<?php echo e($product->product_model); ?>"
+                                    class="form-control <?php $__errorArgs = ['product_model'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" autocomplete="off" />
+                                <label for="product_model">Modelo del producto</label>
                             </div>
                         </div>
                     </div>
@@ -152,8 +187,8 @@ unset($__errorArgs, $__bag); ?>
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="number" step="any" name="product_buy_price" value="<?php echo e($product->product_buy_price); ?>" id="product_buy_price"
-                                    class="form-control <?php $__errorArgs = ['product_buy_price'];
+                                <input type="number" step="any" name="product_price" value="<?php echo e($product->product_price); ?>" id="product_price"
+                                    class="form-control <?php $__errorArgs = ['product_price'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -161,7 +196,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" autocomplete="off">
-                                <?php $__errorArgs = ['product_buy_price'];
+                                <?php $__errorArgs = ['product_price'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -174,36 +209,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                                <label for="product_buy_price">Precio compra <span class="text-danger">*</span></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="form-floating">
-                                <input type="number" step="any" name="product_sell_price" value="<?php echo e($product->product_sell_price); ?>" id="product_sell_price"
-                                    class="form-control <?php $__errorArgs = ['product_sell_price'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" autocomplete="off">
-                                <?php $__errorArgs = ['product_sell_price'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="invalid-feedback" role="alert">
-                                    <?php echo e($message); ?>
-
-                                </span>
-                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                <label for="product_sell_price">Precio venta <span class="text-danger">*</span></label>
+                                <label for="product_price">Precio <span class="text-danger">*</span></label>
                             </div>
                         </div>
                     </div>
@@ -216,6 +222,7 @@ unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
         </div>
+
         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="card-header bg-warning fw-bold text-white">
@@ -282,6 +289,19 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
 
+                    <div class="row mb-3 align-items-end">
+                        <div class="col">
+                            <label for="product_status" class="text-xs">Estado del producto <span class="text-danger"> *</span></label>
+                            <select class="tom-select" id="product_status" name="product_status">
+                                <option value="" selected disabled>Seleccione el estado del producto</option>
+                                <option value="1" <?php echo e($product->product_status == 1 ? 'selected' : ''); ?>>PRODUCTO NUEVO</option>
+                                <option value="0" <?php echo e($product->product_status == 0 ? 'selected' : ''); ?>>PRODUCTO MALO</option>
+                                <option value="2" <?php echo e($product->product_status == 2 ? 'selected' : ''); ?>>PRODUCTO SEMINUEVO</option>
+                                <option value="3" <?php echo e($product->product_status == 3 ? 'selected' : ''); ?>>PRODUCTO USADO</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
@@ -293,7 +313,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" autocomplete="off" maxlength="255"
+unset($__errorArgs, $__bag); ?>" autocomplete="off" maxlength="600"
                                     name="product_description" rows="6" id="product_description" style="resize: none;"><?php echo e($product->product_description); ?></textarea>
                                 <?php $__errorArgs = ['product_description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -309,6 +329,67 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                                 <label for="product_description">Descripción</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <textarea oninput="this.value = this.value.toUpperCase()"
+                                    class="form-control <?php $__errorArgs = ['product_status_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" autocomplete="off" maxlength="600"
+                                    name="product_status_description" rows="6" id="product_status_description" style="resize: none;"><?php echo e($product->product_status_description); ?></textarea>
+                                <?php $__errorArgs = ['product_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="invalid-feedback" role="alert">
+                                    <?php echo e($message); ?>
+
+                                </span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                <label for="product_status_description">Descripción <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" readonly style="background-color: white !important;" name="product_reviewed_by" value="<?php echo e($product->product_reviewed_by); ?>" id="product_reviewed_by"
+                                    class="form-control <?php $__errorArgs = ['product_reviewed_by'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" autocomplete="off">
+                                <?php $__errorArgs = ['product_reviewed_by'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="invalid-feedback" role="alert">
+                                    <?php echo e($message); ?>
+
+                                </span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                <label for="product_reviewed_by">Técnico encargado <span class="text-danger">*</span> <span class="text-muted opacity-25">(solo lectura)</span></label>
                             </div>
                         </div>
                     </div>

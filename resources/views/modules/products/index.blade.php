@@ -46,6 +46,16 @@ Productos
 @endsection
 
 @section('create')
+<a href="{{ route('exports.products_export') }}" class="btn btn-sm btn-success btn-round me-2">
+    <x-heroicon-o-document-text style="width: 20px; height: 20px;" class="bg-label-info" />
+    Excel inventario
+</a>
+
+<a href="#" class="btn btn-sm btn-label-secondary btn-round me-2" data-bs-toggle="modal" data-bs-target="#create_category">
+    <x-heroicon-o-plus style="width: 20px; height: 20px;" class="bg-label-info" />
+    Crear categoría
+</a>
+
 <a href="#" class="btn btn-sm btn-label-info btn-round me-2" data-bs-toggle="modal" data-bs-target="#create_product">
     <x-heroicon-o-plus style="width: 20px; height: 20px;" class="bg-label-info" />
     Crear productos
@@ -57,7 +67,7 @@ Productos
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                @if($products->count() > 1)
+                @if($products->count() > 0)
                 <div class="col-12 mb-2" style="background-color: rgba(0, 0, 0, 0.05); padding: 10px; text-align: center">
                     <div class="col mt-2">
                         @foreach ($letters as $letter)
@@ -74,12 +84,15 @@ Productos
                         <thead>
                             <tr>
                                 <th>Acciones</th>
+                                <th>Código</th>
                                 <th style="max-width: 60px;">Imagen</th>
-                                <th>Código producto</th>
-                                <th>Nombre producto</th>
+                                <th>Nombre</th>
+                                <th>Nomenclatura</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Estado</th>
+                                <th>Precio</th>
                                 <th>Stock</th>
-                                <th>Precio compra</th>
-                                <th>Precio venta</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -91,13 +104,13 @@ Productos
                                     </a>
                                 </td>
                                 <td>
+                                    <span class="badge @if($product->product_code != '') bg-secondary2 text-secondary @else bg-warning text-white @endif">{{ $product->product_code ? $product->product_code:'SIN CODIGO' }}</span>
+                                </td>
+                                <td>
                                     <img class="rounded-circle" width="50" height="50"
                                         src="{{ Storage::url('uploads/products/' . $product->product_image) ?: Storage::url('sys_config/img/no_image_available.png') }}"
                                         onerror="this.onerror=null;this.src='{{ $product_error_image }}'"
                                         alt="Imagen de {{ $product->product_name }}">
-                                </td>
-                                <td>
-                                    <span class="badge @if($product->product_barcode != '') bg-secondary2 text-secondary @else bg-warning text-white @endif">{{ $product->product_barcode ? $product->product_barcode:'SIN CODIGO' }}</span>
                                 </td>
                                 <td>
                                     <a href="{{ route('products.edit', $product->id) }}">
@@ -105,13 +118,32 @@ Productos
                                     </a>
                                 </td>
                                 <td>
+                                    {{ $product->product_nomenclature }}
+                                </td>
+                                <td>
+                                    {{ $product->product_brand }}
+                                </td>
+                                <td>
+                                    {{ $product->product_model }}
+                                </td>
+                                <td>
+                                    @if($product->product_status == 0)
+                                    <span class="badge bg-danger">
+                                        Malo
+                                    </span>
+                                    @elseif($product->product_status == 1)
+                                    <span class="badge bg-success">Nuevo</span>
+                                    @elseif($product->product_status == 2)
+                                    <span class="badge bg-warning">Seminuevo</span>
+                                    @elseif($product->product_status == 3)
+                                    <span class="badge bg-secondary">Usado</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    {{ $currency }} {{ number_format($product->product_price,2) }}
+                                </td>
+                                <td>
                                     {{ $product->product_stock }}
-                                </td>
-                                <td>
-                                    {{ $currency }} {{ number_format($product->product_buy_price,2) }}
-                                </td>
-                                <td>
-                                    {{ $currency }} {{ number_format($product->product_sell_price,2) }}
                                 </td>
                             </tr>
                             @include('modules.products._sweet_alerts')
@@ -126,6 +158,7 @@ Productos
 
 <!-- Includes -->
 @include('modules.products._create')
+@include('modules.categories._create')
 
 @endsection
 

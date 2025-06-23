@@ -33,18 +33,24 @@ class UpdateRequest extends FormRequest
                         return $query->where('id', '!=', $categoryId);
                     }),
             ],
+            'category_description' => 'required|string|max:155',
         ];
     }
 
     public function messages()
     {
         return [
-            'category_name.required' => 'El nombre de la categoría es obligatorio.',
-            'category_name.string' => 'El nombre de la categoría no acepta números ni símbolos.',
-            'category_name.min' => 'El nombre de la categoría debe contener al menos 3 letras.',
-            'category_name.max' => 'El nombre de la categoría no puede exceder 55 letras.',
-            'category_name.regex' => 'El nombre de la categoría debe contener únicamente letras.',
-            'category_name.unique' => 'La categoría ya existe.',
+            // Category name messages
+            'category_name.required' => 'El nombre es obligatorio.',
+            'category_name.string' => 'El nombre debe ser una cadena de texto.',
+            'category_name.max' => 'El nombre no puede tener más de :max caracteres.',
+            'category_name.unique' => 'El nombre ya existe.',
+            'category_name.regex' => 'El nombre solo debe contener letras.',
+
+            // Category description messages
+            'category_description.required' => 'La descripción es obligatoria.',
+            'category_description.string' => 'La descripción debe ser una cadena de texto.',
+            'category_description.max' => 'La descripción no puede tener más de :max caracteres.',
         ];
     }
 }

@@ -48,7 +48,7 @@ Productos
 @endsection
 
 @section('content')
-<form method="POST" id="create_product_form" action="{{ route('products.update', $product->id)}}" enctype="multipart/form-data" novalidate spellcheck="false">
+<form method="POST" id="create_product_form" action="{{ route('products.update', $product->id)}}" enctype="multipart/form-data" novalidate autocomplete="off" spellcheck="false">
     @method('PUT')
     @csrf
     <div class="row">
@@ -66,21 +66,25 @@ Productos
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" maxlength="13" name="product_barcode" oninput="this.value = this.value.replace(/\D/g, '')" value="{{ $product->product_barcode }}"
-                                    id="product_barcode" class="form-control @error('product_barcode') is-invalid @enderror" autocomplete="off" />
-                                @error('product_barcode')
-                                <span class="invalid-feedback" role="alert">
-                                    {{ $message }}
-                                </span>
-                                @enderror
-                                <label for="product_barcode">Código del producto</label>
+                                <input type="text" name="product_code" id="product_code" style="background-color: white !important;" readonly oninput="this.value = this.value.replace(/\D/g, '')" value="{{ $product->product_code }}"
+                                    class="form-control @error('product_code') is-invalid @enderror" autocomplete="off" />
+                                <label for="product_code">Código del producto <span class="text-muted opacity-25">(solo lectura)</span></label>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="text" maxlength="40" name="product_name" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ\s]/g, '')" value="{{ $product->product_name }}"
+                                <input type="text" name="product_nomenclature" id="product_nomenclature" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ0-9\s]/g, '')" value="{{ $product->product_nomenclature }}"
+                                    class="form-control @error('product_nomenclature') is-invalid @enderror" autocomplete="off" />
+                                <label for="product_nomenclature">Nomenclatura del producto</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" maxlength="40" name="product_name" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ0-9\s]/g, '')" value="{{ $product->product_name }}"
                                     id="product_name" class="form-control @error('product_name') is-invalid @enderror" autocomplete="off" />
                                 @error('product_name')
                                 <span class="invalid-feedback" role="alert">
@@ -88,6 +92,24 @@ Productos
                                 </span>
                                 @enderror
                                 <label for="product_name">Nombre del producto <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" name="product_brand" id="product_brand" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ0-9\s]/g, '')" value="{{ $product->product_brand }}"
+                                    class="form-control @error('product_brand') is-invalid @enderror" autocomplete="off" />
+                                <label for="product_brand">Marca del producto</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" name="product_model" id="product_model" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ0-9\s]/g, '')" value="{{ $product->product_model }}"
+                                    class="form-control @error('product_model') is-invalid @enderror" autocomplete="off" />
+                                <label for="product_model">Modelo del producto</label>
                             </div>
                         </div>
                     </div>
@@ -108,28 +130,14 @@ Productos
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
-                                <input type="number" step="any" name="product_buy_price" value="{{ $product->product_buy_price }}" id="product_buy_price"
-                                    class="form-control @error('product_buy_price') is-invalid @enderror" autocomplete="off">
-                                @error('product_buy_price')
+                                <input type="number" step="any" name="product_price" value="{{ $product->product_price }}" id="product_price"
+                                    class="form-control @error('product_price') is-invalid @enderror" autocomplete="off">
+                                @error('product_price')
                                 <span class="invalid-feedback" role="alert">
                                     {{ $message }}
                                 </span>
                                 @enderror
-                                <label for="product_buy_price">Precio compra <span class="text-danger">*</span></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="form-floating">
-                                <input type="number" step="any" name="product_sell_price" value="{{ $product->product_sell_price }}" id="product_sell_price"
-                                    class="form-control @error('product_sell_price') is-invalid @enderror" autocomplete="off">
-                                @error('product_sell_price')
-                                <span class="invalid-feedback" role="alert">
-                                    {{ $message }}
-                                </span>
-                                @enderror
-                                <label for="product_sell_price">Precio venta <span class="text-danger">*</span></label>
+                                <label for="product_price">Precio <span class="text-danger">*</span></label>
                             </div>
                         </div>
                     </div>
@@ -142,6 +150,7 @@ Productos
                 </div>
             </div>
         </div>
+
         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="card-header bg-warning fw-bold text-white">
@@ -177,11 +186,24 @@ Productos
                         </div>
                     </div>
 
+                    <div class="row mb-3 align-items-end">
+                        <div class="col">
+                            <label for="product_status" class="text-xs">Estado del producto <span class="text-danger"> *</span></label>
+                            <select class="tom-select" id="product_status" name="product_status">
+                                <option value="" selected disabled>Seleccione el estado del producto</option>
+                                <option value="1" {{ $product->product_status == 1 ? 'selected' : '' }}>PRODUCTO NUEVO</option>
+                                <option value="0" {{ $product->product_status == 0 ? 'selected' : '' }}>PRODUCTO MALO</option>
+                                <option value="2" {{ $product->product_status == 2 ? 'selected' : '' }}>PRODUCTO SEMINUEVO</option>
+                                <option value="3" {{ $product->product_status == 3 ? 'selected' : '' }}>PRODUCTO USADO</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-floating">
                                 <textarea oninput="this.value = this.value.toUpperCase()"
-                                    class="form-control @error('product_description') is-invalid @enderror" autocomplete="off" maxlength="255"
+                                    class="form-control @error('product_description') is-invalid @enderror" autocomplete="off" maxlength="600"
                                     name="product_description" rows="6" id="product_description" style="resize: none;">{{ $product->product_description }}</textarea>
                                 @error('product_description')
                                 <span class="invalid-feedback" role="alert">
@@ -189,6 +211,37 @@ Productos
                                 </span>
                                 @enderror
                                 <label for="product_description">Descripción</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <textarea oninput="this.value = this.value.toUpperCase()"
+                                    class="form-control @error('product_status_description') is-invalid @enderror" autocomplete="off" maxlength="600"
+                                    name="product_status_description" rows="6" id="product_status_description" style="resize: none;">{{ $product->product_status_description }}</textarea>
+                                @error('product_description')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                                <label for="product_status_description">Descripción <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" readonly style="background-color: white !important;" name="product_reviewed_by" value="{{ $product->product_reviewed_by }}" id="product_reviewed_by"
+                                    class="form-control @error('product_reviewed_by') is-invalid @enderror" autocomplete="off">
+                                @error('product_reviewed_by')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                                <label for="product_reviewed_by">Técnico encargado <span class="text-danger">*</span> <span class="text-muted opacity-25">(solo lectura)</span></label>
                             </div>
                         </div>
                     </div>

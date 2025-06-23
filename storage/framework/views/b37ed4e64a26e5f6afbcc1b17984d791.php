@@ -71,6 +71,7 @@ Categorías
                             <tr>
                                 <th>Acciones</th>
                                 <th>Nombre categoría</th>
+                                <th>Descripción</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -105,6 +106,11 @@ Categorías
                                         <?php echo e($category->category_name); ?>
 
                                     </a>
+                                </td>
+                                <td>
+                                    <span class="<?php echo e($category->category_description ? 'text-black':'text-danger'); ?>">
+                                        <?php echo e($category->category_description ? $category->category_description : 'Error al obtener descripción'); ?>
+
                                 </td>
                             </tr>
                             <?php echo $__env->make('modules.categories._sweet_alerts', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>

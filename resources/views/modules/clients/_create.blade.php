@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" id="create_client_form" action="{{ route('clients.store')}}" novalidate spellcheck="false">
+                <form method="POST" id="create_client_form" action="{{ route('clients.store')}}" novalidate autocomplete="off"spellcheck="false">
                     @csrf
                     <input type="hidden" name="client_code" id="client_code" value="123456789"> <!-- Controller get this -->
                     <input type="hidden" name="client_status" id="client_status" value="1"> <!-- Controller get this -->

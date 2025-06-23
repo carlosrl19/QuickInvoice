@@ -47,7 +47,7 @@ Configuración
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <form method="POST" action="{{ route('settings.update', $setting->id)}}" enctype="multipart/form-data" novalidate spellcheck="false">
+                <form method="POST" action="{{ route('settings.update', $setting->id)}}" enctype="multipart/form-data" novalidate autocomplete="off"spellcheck="false">
                     @method('PUT')
                     @csrf
                     <div class="row">

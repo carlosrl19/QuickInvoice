@@ -13,15 +13,24 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('product_code', 10);
+            $table->string('product_nomenclature', 20); // tabla
+
+            $table->string('product_name', 55);
+            $table->string('product_brand', 20);
+            $table->string('product_model', 20)->nullable();
+            $table->integer('product_status'); // 0: Malo, 1: Nuevo, 2: Seminuevo, 3: Usado
+
             $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->string('product_barcode', 13)->unique()->nullable();
-            $table->string('product_name', 45);
-            $table->string('product_description', 100)->nullable();
+            $table->foreign('category_id')->references('id')->on('categories');
+
             $table->integer('product_stock');
-            $table->decimal('product_buy_price', 10, 2);
-            $table->decimal('product_sell_price', 10, 2);
+            $table->decimal('product_price', 10, 2); // tabla
+
+            $table->string('product_description', 600)->nullable();
+            $table->string('product_status_description', 600); // tabla
             $table->string('product_image')->nullable();
+            $table->string('product_reviewed_by',);
             $table->timestamps();
         });
     }

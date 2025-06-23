@@ -41,7 +41,7 @@ Configuración
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <form method="POST" action="{{ route('settings.store')}}" enctype="multipart/form-data" novalidate spellcheck="false">
+                <form method="POST" action="{{ route('settings.store')}}" enctype="multipart/form-data" novalidate autocomplete="off"spellcheck="false">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">

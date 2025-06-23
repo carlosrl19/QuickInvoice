@@ -54,6 +54,7 @@ Categorías
                             <tr>
                                 <th>Acciones</th>
                                 <th>Nombre categoría</th>
+                                <th>Descripción</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -68,6 +69,10 @@ Categorías
                                     <a class="badge bg-secondary2 text-secondary" href="{{ route('categories.edit', $category->id) }}">
                                         {{ $category->category_name }}
                                     </a>
+                                </td>
+                                <td>
+                                    <span class="{{ $category->category_description ? 'text-black':'text-danger' }}">
+                                        {{ $category->category_description ? $category->category_description : 'Error al obtener descripción' }}
                                 </td>
                             </tr>
                             @include('modules.categories._sweet_alerts')

@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" id="create_bank_form" action="{{ route('banks.store')}}" novalidate spellcheck="false">
+                <form method="POST" id="create_bank_form" action="{{ route('banks.store')}}" novalidate autocomplete="off"spellcheck="false">
                     @csrf
                     <div class="row mb-3">
                         <div class="col">

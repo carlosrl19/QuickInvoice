@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" id="update_service_form<?php echo e($service->id); ?>" action="<?php echo e(route('services.update', $service->id)); ?>" novalidate spellcheck="false">
+                <form method="POST" id="update_service_form<?php echo e($service->id); ?>" action="<?php echo e(route('services.update', $service->id)); ?>" novalidate autocomplete="off"spellcheck="false">
                     <?php echo method_field('PUT'); ?>
                     <?php echo csrf_field(); ?>
                     <div class="row mb-3">

@@ -89,3 +89,6 @@ Route::get('logs', 'App\Http\Controllers\SystemLogsController@index')->name('log
 
 // Rutas de Banks
 Route::resource('banks', 'App\Http\Controllers\BanksController')->names('banks');
+
+// Ruta de Exports
+Route::get('exports/products', 'App\Http\Controllers\ExportsController@products_export')->name('exports.products_export');

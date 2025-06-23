@@ -74,6 +74,36 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-floating">
+                            <textarea oninput="this.value = this.value.toUpperCase()"
+                                class="form-control <?php $__errorArgs = ['category_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" autocomplete="off" maxlength="155"
+                                name="category_description" rows="6" id="category_description" style="resize: none;"><?php echo e($category->category_description); ?></textarea>
+                            <?php $__errorArgs = ['category_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="invalid-feedback" role="alert">
+                                <?php echo e($message); ?>
+
+                            </span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            <label for="category_description">Descripción</label>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col">
                         <a href="<?php echo e(route('categories.index')); ?>" class="btn btn-round btn-sm bg-dark text-white">Volver</a>

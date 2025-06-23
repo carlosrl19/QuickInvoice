@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" id="create_category_form" action="{{ route('categories.store')}}" novalidate spellcheck="false">
+                <form method="POST" id="create_category_form" action="{{ route('categories.store')}}" novalidate autocomplete="off"spellcheck="false">
                     @csrf
                     <div class="row mb-3">
                         <div class="col">
@@ -20,6 +20,21 @@
                                 </span>
                                 @enderror
                                 <label for="category_name">Nombre de categoría <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <textarea oninput="this.value = this.value.toUpperCase()"
+                                    class="form-control @error('category_description') is-invalid @enderror" autocomplete="off" maxlength="155"
+                                    name="category_description" rows="6" id="category_description" style="resize: none;">{{ old('category_description') }}</textarea>
+                                @error('category_description')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                                <label for="category_description">Descripción</label>
                             </div>
                         </div>
                     </div>

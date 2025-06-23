@@ -36,7 +36,7 @@ Categorías
 @endsection
 
 @section('content')
-<form method="POST" id="update_category_form" action="{{ route('categories.update', $category->id)}}" novalidate spellcheck="false">
+<form method="POST" id="update_category_form" action="{{ route('categories.update', $category->id)}}" novalidate autocomplete="off"spellcheck="false">
     @method('PUT')
     @csrf
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -57,6 +57,21 @@ Categorías
                             </span>
                             @enderror
                             <label for="category_name">Nombre de categoría <span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-floating">
+                            <textarea oninput="this.value = this.value.toUpperCase()"
+                                class="form-control @error('category_description') is-invalid @enderror" autocomplete="off" maxlength="155"
+                                name="category_description" rows="6" id="category_description" style="resize: none;">{{ $category->category_description }}</textarea>
+                            @error('category_description')
+                            <span class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </span>
+                            @enderror
+                            <label for="category_description">Descripción</label>
                         </div>
                     </div>
                 </div>

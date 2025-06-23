@@ -25,16 +25,12 @@ class CategoriesController extends Controller
         ));
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(StoreRequest $request)
     {
         try {
             Categories::create([
                 'category_name' => $request->input('category_name'),
+                'category_description' => $request->input('category_description'),
                 'created_at' => $this->getTodayDate(),
                 'updated_at' => $this->getTodayDate(),
             ]);
