@@ -44,6 +44,14 @@
                            <span class="sub-item">Vendedores</span>
                        </a>
                    </li>
+                   <li class="nav-item">
+                       <a href="{{ route('services.index') }}"
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'services.index',
+                           ])>
+                           <x-heroicon-o-paper-airplane style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                           <span class="sub-item">Consignaciones</span>
+                       </a>
+                   </li>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
@@ -59,20 +67,34 @@
                        </a>
                    </li>
                    <li class="nav-item">
-                       <a href="{{ route('categories.index') }}"
-                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), needles: 'categories.'),
-                           ])>
-                           <x-heroicon-o-table-cells style="width: 20px; height: 20px; color: gray;" class="me-2" />
-                           <span class="sub-item">Categorías</span>
+                       <a data-bs-toggle="collapse" href="#products_collapse"
+                           @class(['show'=> in_array(Route::currentRouteName(), [
+                           'categories.index',
+                           'products.index',
+                           ])] )>
+                           <x-heroicon-o-book-open style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                           <p>Productos</p>
+                           <span class="caret"></span>
                        </a>
-                   </li>
-                   <li class="nav-item">
-                       <a href="{{ route('products.index') }}"
-                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'products.'),
-                           ])>
-                           <x-heroicon-o-rectangle-stack style="width: 20px; height: 20px; color: gray;" class="me-2" />
-                           <span class="sub-item">Productos</span>
-                       </a>
+                       <div class="collapse @if(in_array(Route::currentRouteName(), [
+                                'categories.index',
+                                'products.index',
+                            ])) show @endif" id="products_collapse">
+                           <ul class="nav nav-collapse">
+                               <a href="{{ route('categories.index') }}"
+                                   @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), needles: 'categories.'),
+                                   ])>
+                                   <x-heroicon-o-table-cells style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                                   <span class="sub-item">Lista categorías</span>
+                               </a>
+                               <a href="{{ route('products.index') }}"
+                                   @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'products.'),
+                                   ])>
+                                   <x-heroicon-o-rectangle-stack style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                                   <span class="sub-item">Lista productos</span>
+                               </a>
+                           </ul>
+                       </div>
                    </li>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">

@@ -101,6 +101,33 @@
                            <span class="sub-item">Vendedores</span>
                        </a>
                    </li>
+                   <li class="nav-item">
+                       <a href="<?php echo e(route('services.index')); ?>"
+                           class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'services.index',
+                           ]); ?>">
+                           <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-paper-airplane'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['style' => 'width: 20px; height: 20px; color: gray;','class' => 'me-2']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                           <span class="sub-item">Consignaciones</span>
+                       </a>
+                   </li>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
@@ -135,10 +162,43 @@
                        </a>
                    </li>
                    <li class="nav-item">
-                       <a href="<?php echo e(route('categories.index')); ?>"
-                           class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), needles: 'categories.'),
-                           ]); ?>">
+                       <a data-bs-toggle="collapse" href="#products_collapse"
+                           class="<?php echo \Illuminate\Support\Arr::toCssClasses(['show'=> in_array(Route::currentRouteName(), [
+                           'categories.index',
+                           'products.index',
+                           ])] ); ?>">
                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-book-open'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['style' => 'width: 20px; height: 20px; color: gray;','class' => 'me-2']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                           <p>Productos</p>
+                           <span class="caret"></span>
+                       </a>
+                       <div class="collapse <?php if(in_array(Route::currentRouteName(), [
+                                'categories.index',
+                                'products.index',
+                            ])): ?> show <?php endif; ?>" id="products_collapse">
+                           <ul class="nav nav-collapse">
+                               <a href="<?php echo e(route('categories.index')); ?>"
+                                   class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), needles: 'categories.'),
+                                   ]); ?>">
+                                   <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('heroicon-o-table-cells'); ?>
@@ -158,14 +218,12 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                           <span class="sub-item">Categorías</span>
-                       </a>
-                   </li>
-                   <li class="nav-item">
-                       <a href="<?php echo e(route('products.index')); ?>"
-                           class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'products.'),
-                           ]); ?>">
-                           <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                                   <span class="sub-item">Lista categorías</span>
+                               </a>
+                               <a href="<?php echo e(route('products.index')); ?>"
+                                   class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'products.'),
+                                   ]); ?>">
+                                   <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('heroicon-o-rectangle-stack'); ?>
@@ -185,8 +243,10 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                           <span class="sub-item">Productos</span>
-                       </a>
+                                   <span class="sub-item">Lista productos</span>
+                               </a>
+                           </ul>
+                       </div>
                    </li>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">

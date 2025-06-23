@@ -87,6 +87,15 @@ Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboa
 // Rutas de Logs
 Route::get('logs', 'App\Http\Controllers\SystemLogsController@index')->name('logs.index');
 
+// Rutas de Formato de trabajo
+Route::resource('formats', 'App\Http\Controllers\WorkFormatController')->names('formats');
+Route::get('formats/{id}/details', 'App\Http\Controllers\WorkFormatController@work_format_details')->name('formats.format_details');
+
+Route::get('formats/work/print', 'App\Http\Controllers\WorkFormatController@work_format')->name('formats.work_format');
+Route::get('formats/work/form/online/', 'App\Http\Controllers\WorkFormatController@work_format_online_form')->name('formats.work_format_online');
+Route::post('formats/work/form/online/store', 'App\Http\Controllers\WorkFormatController@work_format_online_form_store')->name('formats.work_format_online_store');
+Route::get('formats/work/pdf/download', 'App\Http\Controllers\WorkFormatController@work_format_print')->name('formats.work_format_print');
+
 // Rutas de Banks
 Route::resource('banks', 'App\Http\Controllers\BanksController')->names('banks');
 

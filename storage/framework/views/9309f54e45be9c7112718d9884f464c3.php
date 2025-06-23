@@ -72,7 +72,7 @@ POS
                 REGISTRO DE NUEVA VENTA GRAVADA (G)
             </div>
             <div class="card-body">
-                <form id="pos_creation" action="<?php echo e(route('pos.store')); ?>" method="POST" novalidate autocomplete="off" spellcheck="false">
+                <form id="pos_creation" action="<?php echo e(route('pos.store')); ?>" method="POST" novalidate autocomplete="off"autocomplete="off" spellcheck="false">
                     <?php echo csrf_field(); ?>
                     <input type="hidden" name="sale_discount" id="sale_discount" value="0"> <!-- Controller get this -->
                     <input type="hidden" name="sale_tax" id="sale_tax" value="0"> <!-- Controller get this -->

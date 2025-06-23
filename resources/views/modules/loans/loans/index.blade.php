@@ -63,7 +63,9 @@ Créditos vigentes
                         </thead>
                         <tbody>
                             @foreach ($loans as $loan)
-                            {{ $quote_arrears_counter = App\Models\LoanPayments::where('loan_id', $loan->id)->where('loan_quote_arrears', '>', 0)->count() }}
+                            <span style="display: none;">
+                                {{ $quote_arrears_counter = App\Models\LoanPayments::where('loan_id', $loan->id)->where('loan_quote_arrears', '>', 0)->count() }}
+                            </span>
                             <tr>
                                 <td>
                                     <button class="btn btn-sm {{ $quote_arrears_counter > 0 ? 'btn-danger':'btn-primary'  }} btn-border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

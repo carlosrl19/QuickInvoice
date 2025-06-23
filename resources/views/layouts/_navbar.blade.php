@@ -15,6 +15,35 @@
             <li class="nav-item topbar-icon dropdown hidden-caret">
                 <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <x-heroicon-o-wrench style="width: 20px; height: 20px; color: gray;" class="me-1" />
+                </a>
+                <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+                    <li>
+                        <div class="dropdown-title">
+                            Herramientas
+                        </div>
+                    </li>
+                    <li>
+                        <div class="notif-scroll scrollbar-outer">
+                            <div class="notif-center">
+                                <a href="{{ route('formats.index') }}">
+                                    <div class="notif-icon notif-primary">
+                                        <x-heroicon-o-document-text style="width: 20px; height: 20px;" />
+                                    </div>
+                                    <div class="notif-content">
+                                        <span class="block"> Formato de trabajo </span>
+                                        <span class="text-xs opacity-50 text-muted">Ver formatos hechos en línea</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item topbar-icon dropdown hidden-caret">
+                <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-bell"></i>
                     <span class="notification">4</span>
                 </a>
