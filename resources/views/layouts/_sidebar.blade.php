@@ -7,6 +7,7 @@
        <div class="sidebar-wrapper">
            <div class="sidebar-content">
                <ul class="nav nav-secondary">
+                   @can('dashboard_permission')
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
@@ -21,13 +22,16 @@
                            <span class="sub-item">Dashboard</span>
                        </a>
                    </li>
+                   @endcan
 
+                   @can('rrhh_module_permission')
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
                        </span>
                        <h4 class="text-section">MODULO RR.HH</h4>
                    </li>
+                   @can('clients_permission')
                    <li class="nav-item">
                        <a href="{{ route('clients.index') }}"
                            @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'clients.'),
@@ -36,6 +40,8 @@
                            <span class="sub-item">Clientes</span>
                        </a>
                    </li>
+                   @endcan
+                   @can('sellers_permission')
                    <li class="nav-item">
                        <a href="{{ route('sellers.index') }}"
                            @class([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'sellers.index',
@@ -44,6 +50,8 @@
                            <span class="sub-item">Vendedores</span>
                        </a>
                    </li>
+                   @endcan
+                   @can('consignments_permission')
                    <li class="nav-item">
                        <a href="{{ route('consignments.index') }}"
                            @class([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'consignments.index',
@@ -52,12 +60,17 @@
                            <span class="sub-item">Consignaciones</span>
                        </a>
                    </li>
+                   @endcan
+                   @endcan
+
+                   @can('inventory_module_permission')
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
                        </span>
                        <h4 class="text-section">MODULO INVENTARIO</h4>
                    </li>
+                   @can('services_permission')
                    <li class="nav-item">
                        <a href="{{ route('services.index') }}"
                            @class([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'services.index',
@@ -66,6 +79,8 @@
                            <span class="sub-item">Servicios</span>
                        </a>
                    </li>
+                   @endcan
+                   @can('products_permission')
                    <li class="nav-item">
                        <a data-bs-toggle="collapse" href="#products_collapse"
                            @class(['show'=> in_array(Route::currentRouteName(), [
@@ -81,21 +96,29 @@
                                 'products.index',
                             ])) show @endif" id="products_collapse">
                            <ul class="nav nav-collapse">
+                               @can('categories_permission')
                                <a href="{{ route('categories.index') }}"
                                    @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), needles: 'categories.'),
                                    ])>
                                    <x-heroicon-o-table-cells style="width: 20px; height: 20px; color: gray;" class="me-2" />
                                    <span class="sub-item">Lista categorías</span>
                                </a>
+                               @endcan
+                               @can('products_permission')
                                <a href="{{ route('products.index') }}"
                                    @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'products.'),
                                    ])>
                                    <x-heroicon-o-rectangle-stack style="width: 20px; height: 20px; color: gray;" class="me-2" />
                                    <span class="sub-item">Lista productos</span>
                                </a>
+                               @endcan
                            </ul>
                        </div>
                    </li>
+                   @endcan
+                   @endcan
+
+                   @can('loans_module_permission')
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
@@ -156,7 +179,9 @@
                            </ul>
                        </div>
                    </li>
+                   @endcan
 
+                   @can('pos_module_permission')
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
@@ -216,6 +241,8 @@
                        </a>
                        @endif
                    </li>
+
+                   @can('settings_permission')
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
@@ -239,6 +266,55 @@
                        </a>
                        @endif
                    </li>
+                   @endcan
+                   @endcan
+
+                   @can('sysadmin_permission')
+                   <li class="nav-item">
+                       <a data-bs-toggle="collapse" href="#admin_collapse"
+                           @class(['show'=> in_array(Route::currentRouteName(), [
+                           'roles.index',
+                           'permissions.index',
+                           'users.index',
+                           ])] )>
+                           <x-heroicon-o-book-open style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                           <p>Auth</p>
+                           <span class="caret"></span>
+                       </a>
+                       <div class="collapse @if(in_array(Route::currentRouteName(), [
+                                'roles.index',
+                                'permissions.index',
+                                'users.index',
+                            ])) show @endif" id="admin_collapse">
+                           <ul class="nav nav-collapse">
+                               @can('roles_permission')
+                               <a href="{{ route('roles.index') }}"
+                                   @class([ 'bg-info2 m-1 rounded alert-primary'=> Route::currentRouteName() === 'roles.index',
+                                   ])>
+                                   <x-heroicon-o-viewfinder-circle style="width: 20px; height: 20px; color: lightblue;" class="me-2 op-5" />
+                                   <span class="sub-item">Roles de usuario</span>
+                               </a>
+                               @endcan
+                               @can('permissions_permission')
+                               <a href="{{ route('permissions.index') }}"
+                                   @class([ 'bg-info2 m-1 rounded alert-primary'=> Route::currentRouteName() === 'permissions.index',
+                                   ])>
+                                   <x-heroicon-o-identification style="width: 20px; height: 20px; color: red;" class="me-2 op-5" />
+                                   <span class="sub-item">Permisos</span>
+                               </a>
+                               @endcan
+                               @can('users_permission')
+                               <a href="{{ route('users.index') }}"
+                                   @class([ 'bg-info2 m-1 rounded alert-primary'=> Route::currentRouteName() === 'users.index',
+                                   ])>
+                                   <x-heroicon-o-user style="width: 20px; height: 20px; color: orange;" class="me-2 op-5" />
+                                   <span class="sub-item">Usuarios</span>
+                               </a>
+                               @endcan
+                           </ul>
+                       </div>
+                   </li>
+                   @endcan
                </ul>
            </div>
        </div>

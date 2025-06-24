@@ -49,7 +49,7 @@ Vendedores
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="dt_clients_index" class="display table table-responsive table-striped">
+                    <table id="dt_sellers_index" class="display table table-responsive table-striped">
                         <thead>
                             <tr>
                                 <th>Acciones</th>
@@ -103,7 +103,7 @@ Vendedores
 @section('scripts')
 <!-- Datatables -->
 <script src="{{ Storage::url('assets/js/plugin/datatables/datatables.min.js') }}"></script>
-<script src="{{ Storage::url('customjs/datatables/clients/dt_clients_index.js') }}"></script>
+<script src="{{ Storage::url('customjs/datatables/sellers/dt_sellers_index.js') }}"></script>
 
 <!-- Laravel Javascript validation -->
 <script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>

@@ -7,6 +7,7 @@
        <div class="sidebar-wrapper">
            <div class="sidebar-content">
                <ul class="nav nav-secondary">
+                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('dashboard_permission')): ?>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
@@ -40,13 +41,16 @@
                            <span class="sub-item">Dashboard</span>
                        </a>
                    </li>
+                   <?php endif; ?>
 
+                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('rrhh_module_permission')): ?>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
                        </span>
                        <h4 class="text-section">MODULO RR.HH</h4>
                    </li>
+                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('clients_permission')): ?>
                    <li class="nav-item">
                        <a href="<?php echo e(route('clients.index')); ?>"
                            class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'clients.'),
@@ -74,6 +78,8 @@
                            <span class="sub-item">Clientes</span>
                        </a>
                    </li>
+                   <?php endif; ?>
+                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('sellers_permission')): ?>
                    <li class="nav-item">
                        <a href="<?php echo e(route('sellers.index')); ?>"
                            class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'sellers.index',
@@ -101,6 +107,8 @@
                            <span class="sub-item">Vendedores</span>
                        </a>
                    </li>
+                   <?php endif; ?>
+                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('consignments_permission')): ?>
                    <li class="nav-item">
                        <a href="<?php echo e(route('consignments.index')); ?>"
                            class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'consignments.index',
@@ -128,12 +136,17 @@
                            <span class="sub-item">Consignaciones</span>
                        </a>
                    </li>
+                   <?php endif; ?>
+                   <?php endif; ?>
+
+                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('inventory_module_permission')): ?>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
                        </span>
                        <h4 class="text-section">MODULO INVENTARIO</h4>
                    </li>
+                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('services_permission')): ?>
                    <li class="nav-item">
                        <a href="<?php echo e(route('services.index')); ?>"
                            class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'services.index',
@@ -161,6 +174,8 @@
                            <span class="sub-item">Servicios</span>
                        </a>
                    </li>
+                   <?php endif; ?>
+                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('products_permission')): ?>
                    <li class="nav-item">
                        <a data-bs-toggle="collapse" href="#products_collapse"
                            class="<?php echo \Illuminate\Support\Arr::toCssClasses(['show'=> in_array(Route::currentRouteName(), [
@@ -195,6 +210,7 @@
                                 'products.index',
                             ])): ?> show <?php endif; ?>" id="products_collapse">
                            <ul class="nav nav-collapse">
+                               <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('categories_permission')): ?>
                                <a href="<?php echo e(route('categories.index')); ?>"
                                    class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), needles: 'categories.'),
                                    ]); ?>">
@@ -220,6 +236,8 @@
 <?php endif; ?>
                                    <span class="sub-item">Lista categorías</span>
                                </a>
+                               <?php endif; ?>
+                               <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('products_permission')): ?>
                                <a href="<?php echo e(route('products.index')); ?>"
                                    class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'products.'),
                                    ]); ?>">
@@ -245,9 +263,14 @@
 <?php endif; ?>
                                    <span class="sub-item">Lista productos</span>
                                </a>
+                               <?php endif; ?>
                            </ul>
                        </div>
                    </li>
+                   <?php endif; ?>
+                   <?php endif; ?>
+
+                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('loans_module_permission')): ?>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
@@ -422,7 +445,9 @@
                            </ul>
                        </div>
                    </li>
+                   <?php endif; ?>
 
+                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('pos_module_permission')): ?>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
@@ -615,6 +640,8 @@
                        </a>
                        <?php endif; ?>
                    </li>
+
+                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('settings_permission')): ?>
                    <li class="nav-section">
                        <span class="sidebar-mini-icon">
                            <hr>
@@ -676,6 +703,131 @@
                        </a>
                        <?php endif; ?>
                    </li>
+                   <?php endif; ?>
+                   <?php endif; ?>
+
+                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('sysadmin_permission')): ?>
+                   <li class="nav-item">
+                       <a data-bs-toggle="collapse" href="#admin_collapse"
+                           class="<?php echo \Illuminate\Support\Arr::toCssClasses(['show'=> in_array(Route::currentRouteName(), [
+                           'roles.index',
+                           'permissions.index',
+                           'users.index',
+                           ])] ); ?>">
+                           <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-book-open'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['style' => 'width: 20px; height: 20px; color: gray;','class' => 'me-2']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                           <p>Auth</p>
+                           <span class="caret"></span>
+                       </a>
+                       <div class="collapse <?php if(in_array(Route::currentRouteName(), [
+                                'roles.index',
+                                'permissions.index',
+                                'users.index',
+                            ])): ?> show <?php endif; ?>" id="admin_collapse">
+                           <ul class="nav nav-collapse">
+                               <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('roles_permission')): ?>
+                               <a href="<?php echo e(route('roles.index')); ?>"
+                                   class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-1 rounded alert-primary'=> Route::currentRouteName() === 'roles.index',
+                                   ]); ?>">
+                                   <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-viewfinder-circle'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['style' => 'width: 20px; height: 20px; color: lightblue;','class' => 'me-2 op-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                   <span class="sub-item">Roles de usuario</span>
+                               </a>
+                               <?php endif; ?>
+                               <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('permissions_permission')): ?>
+                               <a href="<?php echo e(route('permissions.index')); ?>"
+                                   class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-1 rounded alert-primary'=> Route::currentRouteName() === 'permissions.index',
+                                   ]); ?>">
+                                   <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-identification'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['style' => 'width: 20px; height: 20px; color: red;','class' => 'me-2 op-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                   <span class="sub-item">Permisos</span>
+                               </a>
+                               <?php endif; ?>
+                               <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('users_permission')): ?>
+                               <a href="<?php echo e(route('users.index')); ?>"
+                                   class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-1 rounded alert-primary'=> Route::currentRouteName() === 'users.index',
+                                   ]); ?>">
+                                   <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-user'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['style' => 'width: 20px; height: 20px; color: orange;','class' => 'me-2 op-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                   <span class="sub-item">Usuarios</span>
+                               </a>
+                               <?php endif; ?>
+                           </ul>
+                       </div>
+                   </li>
+                   <?php endif; ?>
                </ul>
            </div>
        </div>

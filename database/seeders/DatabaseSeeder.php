@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ServicesSeeder::class);
         $this->call(SettingsSeeder::class);
         $this->call(FiscalFolioSeeder::class);
+        $this->call(RolePermissionUserSeeder::class);
     }
 }

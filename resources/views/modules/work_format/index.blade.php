@@ -49,7 +49,7 @@ Formatos de trabajo
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="dt_clients_index" class="display table table-responsive table-striped">
+                    <table id="dt_workformats_index" class="display table table-responsive table-striped">
                         <thead>
                             <tr>
                                 <th>Acciones</th>
@@ -115,7 +115,7 @@ Formatos de trabajo
 
 <!-- Datatables -->
 <script src="{{ Storage::url('assets/js/plugin/datatables/datatables.min.js') }}"></script>
-<script src="{{ Storage::url('customjs/datatables/clients/dt_clients_index.js') }}"></script>
+<script src="{{ Storage::url('customjs/datatables/workformats/dt_workformats_index.js') }}"></script>
 
 <!-- Laravel Javascript validation -->
 <script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>

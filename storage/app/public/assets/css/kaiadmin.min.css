@@ -119,6 +119,7 @@ html {
 
 input[type="text"],
 input[type="file"],
+input[type="email"],
 input[type="date"],
 input[type="datetime-local"],
 input[type="number"],

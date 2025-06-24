@@ -41,32 +41,36 @@
             <li class="nav-item topbar-user dropdown hidden-caret">
                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                     <div class="avatar-sm">
-                        <img src="{{ Storage::url('assets/img/profile.jpg') }}" alt="..."
+                        <img src="{{ Storage::url('uploads/users/' . Auth::user()->profile_photo) ?: Storage::url('assets/img/profile.jpg') }}" alt="..."
                             class="avatar-img rounded-circle" />
                     </div>
                     <span class="profile-username">
-                        <span class="op-7">Hola,</span>
-                        <span class="fw-bold text-muted">Usuario (X)</span>
+                        <span class="op-4 text-muted text-xs">{{ Auth::user()->name }} / {{ Auth::user()->roles->pluck('name') }}</span>
                     </span>
                 </a>
                 <ul class="dropdown-menu dropdown-user animated fadeIn">
                     <div class="dropdown-user-scroll scrollbar-outer">
                         <li>
                             <div class="user-box">
-                                <div class="avatar-lg">
-                                    <img src="{{ Storage::url('assets/img/profile.jpg') }}" alt="image profile"
-                                        class="avatar-img rounded" />
+                                <div class="avatar-sm">
+                                    <img src="{{ Storage::url('uploads/users/' . Auth::user()->profile_photo) ?: Storage::url('assets/img/profile.jpg') }}" alt="image profile" class="avatar-img rounded" />
                                 </div>
                                 <div class="u-text">
-                                    <h4>Usuario (X)</h4>
-                                    <p class="text-muted">hello@example.com</p>
-                                    <a href="/" class="btn btn-xs btn-secondary btn-sm">Ver perfil</a>
+                                    <h4>{{ Auth::user()->name }}</h4>
+                                    <p class="text-muted">{{ Auth::user()->email }}</p>
                                 </div>
                             </div>
                         </li>
                         <li>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Cerrar sesión</a>
+                            <a class="dropdown-item" href="#">
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">
+                                        Cerrar sesión
+                                    </button>
+                                </form>
+                            </a>
                         </li>
                     </div>
                 </ul>
