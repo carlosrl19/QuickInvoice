@@ -158,9 +158,7 @@
                 <span style="display: inline-block; width: 2%;"></span>
 
                 <label>FACTURA:</label>
-                <span style="font-size: 8pt; text-align: center; display: inline-block; width: 35%; border-bottom: 1px solid #000">
-                    {{ $format->worker_name }}
-                </span>
+                <span style="font-size: 8pt; text-align: center; display: inline-block; width: 35%; border-bottom: 1px solid #000"></span>
             </div>
 
             <div class="field-group full-width">

@@ -100,6 +100,11 @@ class SettingsController extends Controller
                     mkdir($folderPath, 0775, true);
                 }
 
+                // Eliminar cualquier archivo que empiece con "logo_company" en la carpeta
+                foreach (glob($folderPath . 'logo_company.*') as $file) {
+                    unlink($file);
+                }
+
                 $logo->move($folderPath, $imageName);
                 $settings->logo_company = $imageName;
             }
@@ -120,6 +125,11 @@ class SettingsController extends Controller
                 $folderPath = storage_path('app/public/sys_config/img/');
                 if (!file_exists($folderPath)) {
                     mkdir($folderPath, 0775, true);
+                }
+
+                // Eliminar cualquier archivo que empiece con "system_icon" en la carpeta
+                foreach (glob($folderPath . 'system_icon.*') as $file) {
+                    unlink($file);
                 }
 
                 $icon->move($folderPath, $iconName);

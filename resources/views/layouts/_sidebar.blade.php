@@ -45,8 +45,8 @@
                        </a>
                    </li>
                    <li class="nav-item">
-                       <a href="{{ route('services.index') }}"
-                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'services.index',
+                       <a href="{{ route('consignments.index') }}"
+                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'consignments.index',
                            ])>
                            <x-heroicon-o-paper-airplane style="width: 20px; height: 20px; color: gray;" class="me-2" />
                            <span class="sub-item">Consignaciones</span>

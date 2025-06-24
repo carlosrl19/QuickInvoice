@@ -133,9 +133,11 @@ class ProductsController extends Controller
                 // Guardar nueva imagen
                 $fileName = uniqid() . '.' . $image->getClientOriginalExtension();
                 $folderPath = storage_path('app/public/uploads/products/');
+                
                 if (!file_exists($folderPath)) {
                     mkdir($folderPath, 0775, true);
                 }
+                
                 $image->move($folderPath, $fileName);
                 $product->product_image = $fileName;
             }

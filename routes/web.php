@@ -99,5 +99,9 @@ Route::get('formats/work/pdf/download', 'App\Http\Controllers\WorkFormatControll
 // Rutas de Banks
 Route::resource('banks', 'App\Http\Controllers\BanksController')->names('banks');
 
+// Rutas de Consignments
+Route::resource('consignments', 'App\Http\Controllers\ConsignmentController')->names('consignments');
+Route::get('consignments/format/print/{id}', 'App\Http\Controllers\ConsignmentController@consignment_format_print')->name('consignments.consignment_format_print');
+
 // Ruta de Exports
 Route::get('exports/products', 'App\Http\Controllers\ExportsController@products_export')->name('exports.products_export');

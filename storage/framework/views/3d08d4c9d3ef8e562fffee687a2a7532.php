@@ -102,8 +102,8 @@
                        </a>
                    </li>
                    <li class="nav-item">
-                       <a href="<?php echo e(route('services.index')); ?>"
-                           class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'services.index',
+                       <a href="<?php echo e(route('consignments.index')); ?>"
+                           class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Route::currentRouteName() === 'consignments.index',
                            ]); ?>">
                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>

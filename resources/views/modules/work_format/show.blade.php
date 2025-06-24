@@ -42,10 +42,13 @@ Formato de trabajo
 
 @section('content')
 <div class="card" style="width: 100%">
-    <div class="card-body">
+    <div class="card-header">
         <a href="{{ route('formats.index') }}" class="btn btn-sm btn-danger mb-1">
             <x-heroicon-o-arrow-uturn-left style="width: 15px; height: 15px; color: white" /> Volver
         </a>
+        <span class="float-end">Formatos / Trabajo / #{{ Carbon\Carbon::parse($format->workformat_date)->format('dmy') }} - {{ $format->id }}</strong>
+    </div>
+    <div class="card-body">
         <iframe frameborder="0" class="iframe-doc" style="width: 100%;" src="{{ route('formats.format_details',$format->id) }}"></iframe>
     </div>
 </div>
