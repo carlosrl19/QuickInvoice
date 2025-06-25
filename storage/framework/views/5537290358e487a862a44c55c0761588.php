@@ -1,7 +1,3 @@
-<?php $__env->startSection('head'); ?>
-<?php $currency = App\Models\Settings::value('default_currency_symbol') ?>
-<?php $__env->stopSection(); ?>
-
 <?php $__env->startSection('title'); ?>
 Dashboard
 <?php $__env->stopSection(); ?>

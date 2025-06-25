@@ -28,6 +28,36 @@ class UpdateRequest extends FormRequest
                         return $query->where('id', '!=', $userId);
                     }),
             ],
+            'user_dni' => [
+                'required',
+                'string',
+                'min:13',
+                'max:13',
+                Rule::unique('users', 'user_dni')->ignore($userId)
+                    ->where(function ($query) use ($userId) {
+                        return $query->where('id', '!=', $userId);
+                    }),
+            ],
+            'user_phone' => [
+                'required',
+                'string',
+                'min:8',
+                'max:8',
+                Rule::unique('users', 'user_phone')->ignore($userId)
+                    ->where(function ($query) use ($userId) {
+                        return $query->where('id', '!=', $userId);
+                    }),
+            ],
+            'user_address' => [
+                'required',
+                'string',
+                'min:3',
+                'max:155',
+                Rule::unique('users', 'user_address')->ignore($userId)
+                    ->where(function ($query) use ($userId) {
+                        return $query->where('id', '!=', $userId);
+                    }),
+            ],
             'email' => [
                 'required',
                 'string',
@@ -39,7 +69,7 @@ class UpdateRequest extends FormRequest
                     }),
             ],
 
-            'profile_photo' => 'nullable', 
+            'profile_photo' => 'nullable',
             'password' => 'nullable|min:8',
             'role' => 'required|exists:roles,name',
         ];
@@ -53,21 +83,42 @@ class UpdateRequest extends FormRequest
             'name.unique' => 'El nombre del usuario ya existe.',
             'name.string' => 'El nombre del usuario solo debe contener letras.',
             'name.regex' => 'El nombre del usuario no puede contener números ni símbolos.',
-            'name.min' => 'El nombre del usuario debe contener al menos 3 letras.',
-            'name.max' => 'El nombre del usuario no puede exceder 55 letras.',
+            'name.min' => 'El nombre del usuario debe contener al menos :min letras.',
+            'name.max' => 'El nombre del usuario no puede exceder :max letras.',
+
+            // User dni messages
+            'user_dni.required' => 'El DNI del usuario es obligatorio.',
+            'user_dni.unique' => 'El DNI del usuario ya existe.',
+            'user_dni.string' => 'El DNI del usuario solo debe contener números.',
+            'user_dni.min' => 'El DNI del usuario debe contener al menos :min letras.',
+            'user_dni.max' => 'El DNI del usuario no puede exceder :max letras.',
+
+            // User phone messages
+            'user_phone.required' => 'El teléfono del usuario es obligatorio.',
+            'user_phone.unique' => 'El teléfono del usuario ya existe.',
+            'user_phone.string' => 'El teléfono del usuario solo debe contener números.',
+            'user_phone.min' => 'El teléfono del usuario debe contener al menos :min letras.',
+            'user_phone.max' => 'El teléfono del usuario no puede exceder :max letras.',
+
+            // User address messages
+            'user_address.required' => 'El domicilio del usuario es obligatorio.',
+            'user_address.string' => 'El domicilio del usuario solo debe contener letras y números.',
+            'user_address.regex' => 'El domicilio del usuario no puede contener símbolos.',
+            'user_address.min' => 'El domicilio del usuario debe contener al menos :min letras.',
+            'user_address.max' => 'El domicilio del usuario no puede exceder :max letras.',
 
             // User email messages
             'email.required' => 'El email del usuario es obligatorio.',
             'email.unique' => 'El email del usuario ya existe.',
             'email.string' => 'El email del usuario solo debe contener números y letras.',
             'email.regex' => 'El email del usuario no puede contener símbolos ni espacios.',
-            'email.max' => 'El email del usuario no puede exceder 55 letras.',
+            'email.max' => 'El email del usuario no puede exceder :max letras.',
 
             // User profile image messages
             'profile_photo.required' => 'La imagen de perfil del usuario es obligatoria.',
 
             // User password messages
-            'password.min' => 'La contraseña del usuario debe contener al menos 8 letras.',
+            'password.min' => 'La contraseña del usuario debe contener al menos :min letras.',
 
             // Role messages
             'role.required' => 'El rol del usuario es obligatorio.',

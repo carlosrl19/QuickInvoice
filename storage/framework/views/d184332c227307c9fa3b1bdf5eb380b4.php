@@ -34,7 +34,7 @@ Clientes
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
-<form method="POST" id="update_client_form" action="<?php echo e(route('clients.update', $client->id)); ?>" novalidate spellcheck="false">
+<form method="POST" id="update_client_form" action="<?php echo e(route('clients.update', $client->id)); ?>" novalidate autocomplete="off"spellcheck="false">
     <?php echo method_field('PUT'); ?>
     <?php echo csrf_field(); ?>
     <div class="row">

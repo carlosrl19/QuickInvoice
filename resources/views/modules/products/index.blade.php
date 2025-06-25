@@ -46,10 +46,12 @@ Productos
 @endsection
 
 @section('create')
+@if($products->count() > 0)
 <a href="{{ route('exports.products_export') }}" class="btn btn-sm btn-success btn-round me-2">
     <x-heroicon-o-document-text style="width: 20px; height: 20px;" class="bg-label-info" />
     Excel inventario
 </a>
+@endif
 
 <a href="#" class="btn btn-sm btn-label-secondary btn-round me-2" data-bs-toggle="modal" data-bs-target="#create_category">
     <x-heroicon-o-plus style="width: 20px; height: 20px;" class="bg-label-info" />

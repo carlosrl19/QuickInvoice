@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Quotes\StoreRequest;
-use App\Http\Requests\Quotes\UpdateRequest;
+use Carbon\Carbon;
 use App\Models\Clients;
-use App\Models\QuoteDetails;
 use App\Models\Quotes;
 use App\Models\Seller;
 use App\Models\Services;
-use App\Models\SystemLogs;
-use Carbon\Carbon;
+use App\Models\QuoteDetails;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Quotes\StoreRequest;
+use App\Http\Requests\Quotes\UpdateRequest;
 
 class QuotesController extends Controller
 {
@@ -100,18 +99,6 @@ class QuotesController extends Controller
                 }
             }
 
-            if ($request->input('sale_exempt_tax') == 1) {
-                SystemLogs::create([
-                    'module_log' => 'Cotizaciones',
-                    'log_description' => 'Nueva cotización exenta ' . $quoteCodeNumber . ' por L. ' . number_format($request->input('quote_total_amount'), 2) . ' registrada.'
-                ]);
-            } else {
-                SystemLogs::create([
-                    'module_log' => 'Cotizaciones',
-                    'log_description' => 'Nueva cotización gravada ' . $quoteCodeNumber . ' por L. ' . number_format($request->input('quote_total_amount') + $request->input('quote_isv_amount'), 2) . ' registrada.'
-                ]);
-            }
-
             DB::commit();
 
             return redirect()->route('quotes.create')->with('success', 'Registro creado exitosamente.');
@@ -171,12 +158,6 @@ class QuotesController extends Controller
                 }
             }
 
-            SystemLogs::create([
-                'module_log' => 'Cotizaciones',
-                'log_description' => 'Nueva cotización exonerada ' . $quoteCodeNumber . ' por L. ' . number_format($request->input('quote_total_amount'), 2) . ' registrada.'
-            ]);
-
-
             DB::commit();
 
             return redirect()->route('quotes.create')->with('success', 'Registro creado exitosamente.');
@@ -197,22 +178,9 @@ class QuotesController extends Controller
             $quote->quote_answer = $request->input('quote_answer');
             $quote->update($request->all());
 
-            SystemLogs::create([
-                'module_log' => 'Cotizaciones',
-                'log_description' => 'Estado de la cotización ' . $quote->quote_code . ' a ' . $request->input('quote_status') . '.'
-            ]);
-
             return redirect()->route("quotes.index")->with("success", "Registro actualizado exitosamente.");
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al crear el registro.")->withInput()->withErrors($e->getMessage());
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Quotes $quotes)
-    {
-        //
     }
 }

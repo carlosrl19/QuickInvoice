@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clients;
-use App\Models\Loans;
-use App\Models\Pos;
-use App\Models\PosDetails;
-use App\Models\SystemLogs;
-use App\Models\Quotes;
-use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 use Carbon\Carbon;
+use App\Models\Pos;
+use App\Models\Loans;
+use App\Models\Quotes;
+use App\Models\Clients;
+use App\Models\Settings;
+use App\Models\PosDetails;
+use App\Models\ActivityLog;
+use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        $currency = Settings::value('default_currency_symbol');
         $todayDate = Carbon::now()->setTimezone('America/Costa_Rica')->locale('es')->translatedFormat('F d - Y');
         $actualMonth = Carbon::now()->setTimezone('America/Costa_Rica')->locale('es')->translatedFormat('F');
         $colorsList = ['secondary', 'success', 'info', 'warning', 'danger', 'primary', 'black'];
@@ -103,15 +105,16 @@ class DashboardController extends Controller
             ->sum('loan_amount');
 
         // Logs
-        $new_logs_actual_month_counter = SystemLogs::whereMonth('created_at', Carbon::now()->month)
+        $new_logs_actual_month_counter = ActivityLog::whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
             ->count();
 
-        $new_logs_actual_month = SystemLogs::whereMonth('created_at', Carbon::now()->month)
+        $new_logs_actual_month = ActivityLog::whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
             ->get();
 
         return view('modules.dashboard.index', compact(
+            'currency',
             'todayDate',
             'actualMonth',
             'colorsList',

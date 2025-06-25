@@ -14,10 +14,6 @@
 <link rel="stylesheet" href="{{ Storage::url('assets/js/plugin/filepond/filepond.css') }}">
 <link rel="stylesheet" href="{{ Storage::url('assets/js/plugin/filepond/filepond-plugin-image-preview.css') }}">
 
-@php
-use Proengsoft\JsValidation\Facades\JsValidatorFacade as JsValidator;
-@endphp
-
 @endsection
 
 @section('title')
@@ -47,7 +43,7 @@ Configuración
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <form method="POST" action="{{ route('settings.update', $setting->id)}}" enctype="multipart/form-data" novalidate autocomplete="off"spellcheck="false">
+                <form method="POST" action="{{ route('settings.update', $setting->id)}}" enctype="multipart/form-data" novalidate autocomplete="off" spellcheck="false">
                     @method('PUT')
                     @csrf
                     <div class="row">
@@ -191,10 +187,11 @@ Configuración
                                     <div class="row text-center mb-3">
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                             <img class="mb-3" style="margin: auto" id="logoPreviewOld" width="100" height="100" src="{{ Storage::url('sys_config/img/' . $setting->logo_company) }}"><br>
-                                            <label for="logoPreviewOld"></label>
+                                            <label for="logoPreviewOld" class="text-xs">Logo de reportes</label>
                                         </div>
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                             <img class="mb-3" style="margin: auto" id="systemIconPreviewOld" width="100" height="100" src="{{ Storage::url('sys_config/img/' . $setting->system_icon) }}"><br>
+                                            <label for="systemIconPreviewOld" class="text-xs">Logo del sistema</label>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -331,7 +328,7 @@ Configuración
 
 <!-- Laravel Javascript validation -->
 <script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
-{!! JsValidator::formRequest('App\Http\Requests\Settings\UpdateRequest') !!}
+{!! $validator !!}
 
 <!-- Filepond -->
 <script src="{{ Storage::url('assets/js/plugin/filepond/filepond.js') }}"></script>

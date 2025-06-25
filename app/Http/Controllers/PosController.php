@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Pos;
+use App\Models\Banks;
+use App\Models\Seller;
+use App\Models\Clients;
+use App\Models\Services;
+use App\Models\PosDetails;
+use App\Models\FiscalFolio;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Pos\StoreRequest;
 use App\Http\Requests\Pos\StoreExoneratedRequest;
-use App\Models\Banks;
-use App\Models\Clients;
-use App\Models\FiscalFolio;
-use App\Models\Pos;
-use App\Models\PosDetails;
-use App\Models\Seller;
-use App\Models\Services;
-use App\Models\SystemLogs;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class PosController extends Controller
 {
@@ -163,17 +163,21 @@ class PosController extends Controller
                 }
             }
 
-            if ($request->input('sale_exempt_tax') == 1) {
-                SystemLogs::create([
-                    'module_log' => 'POS',
-                    'log_description' => 'Nueva venta exenta ' . $folioInvoiceNumber . ' por L. ' . number_format($request->input('sale_total_amount'), 2) . ' registrada.'
-                ]);
-            } else {
-                SystemLogs::create([
-                    'module_log' => 'POS',
-                    'log_description' => 'Nueva venta gravada ' . $folioInvoiceNumber . ' por L. ' . number_format($request->input('sale_total_amount'), 2) . ' registrada.'
-                ]);
-            }
+            // Registro manual de actividad
+            $data = $pos->toArray();
+            unset($data['created_at'], $data['updated_at']); // Excluir campos
+
+            activity()
+                ->causedBy(Auth::user())
+                ->performedOn($pos)
+                ->withProperties([
+                    'attributes' => $data
+                ])
+                ->tap(function ($activity) {
+                    $activity->event = 'created';
+                    $activity->log_name = 'pos';
+                })
+                ->log('POS created');
 
             DB::commit();
 
@@ -308,11 +312,6 @@ class PosController extends Controller
                     ]);
                 }
             }
-
-            SystemLogs::create([
-                'module_log' => 'POS',
-                'log_description' => 'Nueva venta exonerada ' . $folioInvoiceNumber . ' por L. ' . number_format($request->input('sale_total_amount'), 2) . ' registrada.'
-            ]);
 
             DB::commit();
 

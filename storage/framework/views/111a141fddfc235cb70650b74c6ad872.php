@@ -34,7 +34,7 @@ Categorías
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
-<form method="POST" id="update_category_form" action="<?php echo e(route('categories.update', $category->id)); ?>" novalidate spellcheck="false">
+<form method="POST" id="update_category_form" action="<?php echo e(route('categories.update', $category->id)); ?>" novalidate autocomplete="off"spellcheck="false">
     <?php echo method_field('PUT'); ?>
     <?php echo csrf_field(); ?>
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">

@@ -26,6 +26,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     // Rutas de productos
     Route::group(['middleware' => ['permission:products_permission']], function () {
         Route::resource('products', 'App\Http\Controllers\ProductsController')->names('products');
+        Route::get('products/inventory/outflow', 'App\Http\Controllers\ProductsController@inventory_outflow')->name('products.inventory_outflow');
     });
 
     // Rutas de préstamos
@@ -76,6 +77,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('pos-details/{id}/report', 'App\Http\Controllers\PosDetailsController@pos_details_report')->name('pos_details.pos_details_report');
     });
 
+    // Rutas de ventas
+    Route::group(['middleware' => ['permission:sales_permission']], function () {
+        Route::resource('sales', 'App\Http\Controllers\SalesController')->names('sales');
+        Route::get('sale-details/{id}/report', 'App\Http\Controllers\SaleDetailsController@sale_details_report')->name('sales_details.sale_details_report');
+    });
+
     // Rutas de vendedores
     Route::group(['middleware' => ['permission:sellers_permission']], function () {
         Route::resource('sellers', 'App\Http\Controllers\SellerController')->names('sellers');
@@ -109,7 +116,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     // Rutas de Logs
     Route::group(['middleware' => ['permission:logs_permission']], function () {
-        Route::get('logs', 'App\Http\Controllers\SystemLogsController@index')->name('logs.index');
+        Route::get('logs', 'App\Http\Controllers\ActivityLogController@index')->name('logs.index');
     });
 
     // Rutas de Formato de trabajo

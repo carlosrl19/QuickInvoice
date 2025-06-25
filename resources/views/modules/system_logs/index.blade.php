@@ -6,7 +6,7 @@
 @endsection
 
 @section('title')
-Registros
+Registros de actividad
 @endsection
 
 @section('breadcrumb')
@@ -37,22 +37,44 @@ Registros
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="dt_logs_index" class="display table table-responsive table-striped">
+                    <table id="dt_system_logs_index" class="display table table-responsive table-striped">
                         <thead>
                             <tr>
                                 <th>Fecha</th>
-                                <th>Información del registro</th>
+                                <th>Módulo</th>
+                                <th>Usuario</th>
+                                <th>Descripción</th>
+                                <th>Detalles</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($logs as $log)
                             <tr>
                                 <td>{{ $log->created_at }}</td>
-                                <td>{{ $log->log_description }}</td>
+                                <td>{{ $log->log_name }}</td>
+                                <td>{{ $log->user->name }}</td>
+                                <td>{{ $log->description }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="log_properties{{ $log->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <x-heroicon-o-code-bracket style="right: 20px; height: 20px; color: white" />
+                                            JSON
+                                        </button>
+                                        <div class="dropdown-menu p-1" aria-labelledby="log_properties{{ $log->id }}" style="width: 500px; white-space: pre-wrap; font-family: monospace; max-height: 500px; overflow-y: auto;">
+                                            {{ json_encode(json_decode($log->properties), JSON_PRETTY_PRINT) }}
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
+
+                    <div class="row">
+                        <div class="col">
+                            {{ $logs->links() }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,6 +87,6 @@ Registros
 
 <!-- Datatables -->
 <script src="{{ Storage::url('assets/js/plugin/datatables/datatables.min.js') }}"></script>
-<script src="{{ Storage::url('customjs/datatables/system_logs/dt_logs_index.js') }}"></script>
+<script src="{{ Storage::url('customjs/datatables/system_logs/dt_system_logs_index.js') }}"></script>
 
 @endsection

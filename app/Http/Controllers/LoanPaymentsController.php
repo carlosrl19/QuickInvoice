@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoanPayments\StoreRequest;
-use App\Models\Banks;
-use App\Models\LoanPayments;
-use App\Models\Loans;
-use App\Models\SystemLogs;
 use Carbon\Carbon;
+use App\Models\Banks;
+use App\Models\Loans;
+use App\Models\LoanPayments;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\LoanPayments\StoreRequest;
 
 class LoanPaymentsController extends Controller
 {
@@ -133,11 +131,6 @@ class LoanPaymentsController extends Controller
                     'updated_at' => $this->getTodayDate(),
                 ]);
             }
-
-            SystemLogs::create([
-                'module_log' => 'Préstamos',
-                'log_description' => 'Nuevo pago al préstamo ' . $loan->loan_code_number . ' registrado.'
-            ]);
 
             DB::commit();
 

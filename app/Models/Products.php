@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Products extends Model
 {
@@ -25,8 +26,18 @@ class Products extends Model
         'updated_at'
     ];
 
-    public function category()
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(Categories::class, 'category_id');
+        return $this->belongsTo(Categories::class, 'category_id', 'id');
+    }
+
+    public function sale_detail(): HasMany
+    {
+        return $this->HasMany(SaleDetails::class, 'product_id', 'id');
+    }
+
+    public function consignment_details(): HasMany
+    {
+        return $this->hasMany(ConsignmentDetails::class, 'product_id');
     }
 }

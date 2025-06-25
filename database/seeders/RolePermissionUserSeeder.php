@@ -33,7 +33,9 @@ class RolePermissionUserSeeder extends Seeder
         Permission::create(['name' => 'update_permission', 'permission_description' => 'Grants the ability to modify existing records within the system.']);
         Permission::create(['name' => 'delete_permission', 'permission_description' => 'Grants the ability to delete records from the system.']);
 
-        // Clients module
+        // Modules sub permissions
+        Permission::create(['name' => 'pos_permission', 'permission_description' => 'Grants the ability to view existing records of POS within the system.']);
+        Permission::create(['name' => 'sales_permission', 'permission_description' => 'Grants the ability to view existing records of Sales within the system.']);
         Permission::create(['name' => 'clients_permission', 'permission_description' => 'Grants the ability to view existing records of clients within the system.']);
         Permission::create(['name' => 'services_permission', 'permission_description' => 'Grants the ability to view existing records of services within the system.']);
         Permission::create(['name' => 'categories_permission', 'permission_description' => 'Grants the ability to view existing records of categories within the system.']);
@@ -61,6 +63,9 @@ class RolePermissionUserSeeder extends Seeder
         $sysadmin_user = User::create([
             'name' => 'Carlos Rodriguez',
             'email' => 'admin@dev.com',
+            'user_dni' => '0703199903200',
+            'user_address' => 'SAN PEDRO SULA',
+            'user_phone' => '97992867',
             'profile_photo' => '685b0547cc46a.png',
             'password' => bcrypt('Nightmare98'),
         ]);

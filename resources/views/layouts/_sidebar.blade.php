@@ -112,6 +112,14 @@
                                    <span class="sub-item">Lista productos</span>
                                </a>
                                @endcan
+                               @can('sales_permission')
+                               <a href="{{ route('sales.index') }}"
+                                   @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'sales.'),
+                                   ])>
+                                   <x-heroicon-o-arrow-down-on-square-stack style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                                   <span class="sub-item">Salida de inventario</span>
+                               </a>
+                               @endcan
                            </ul>
                        </div>
                    </li>
@@ -250,22 +258,26 @@
                        <h4 class="text-section">AJUSTES DEL SISTEMA</h4>
                    </li>
                    <li class="nav-item">
-                       @if($folio_activated->folio_total_invoices_available == 0)
-                       <a href="{{ route('settings.index') }}" style="background-color: rgba(255,0,11,0.5);" title="Se ha llegado al limite de facturación permitido para el folio actual, agregue un nuevo folio el módulo Configuración/Folios" data-bs-toggle="tooltip" data-bs-placement="right">
-                           <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px; color: #ffe000;" class="mx-2" />
-                           <span class="sub-item">Configuración</span>
-                       </a>
-                       @else
-                       <a href="{{ route('settings.index') }}"
-                           @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'settings.')
-                           || Str::startsWith(Route::currentRouteName(), 'fiscalfolio.')
-                           || Str::startsWith(Route::currentRouteName(), 'banks.')
-                           ])>
-                           <x-heroicon-o-cog-6-tooth style="width: 20px; height: 20px; color: gray;" class="me-2" />
-                           <span class="sub-item">Configuración</span>
-                       </a>
-                       @endif
-                   </li>
+                    @if(!$folio_activated)
+                        <a href="{{ route('fiscalfolio.index') }}" style="background-color: rgba(255,0,11,0.5);" title="No hay folio fiscal activo, agregue y active un folio en el módulo Configuración/Folios" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px; color: #ffe000;" class="mx-2" />
+                            <span class="sub-item">Configuración</span>
+                        </a>
+                    @elseif($folio_activated->folio_total_invoices_available == 0)
+                        <a href="{{ route('settings.index') }}" style="background-color: rgba(255,0,11,0.5);" title="Se ha llegado al limite de facturación permitido para el folio actual, agregue un nuevo folio el módulo Configuración/Folios" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <x-heroicon-o-exclamation-triangle style="width: 20px; height: 20px; color: #ffe000;" class="mx-2" />
+                            <span class="sub-item">Configuración</span>
+                        </a>
+                    @else
+                        <a href="{{ route('settings.index') }}"
+                            @class([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'settings.')
+                            || Str::startsWith(Route::currentRouteName(), 'fiscalfolio.')
+                            || Str::startsWith(Route::currentRouteName(), 'banks.')
+                            ])>
+                            <x-heroicon-o-cog-6-tooth style="width: 20px; height: 20px; color: gray;" class="me-2" />
+                            <span class="sub-item">Configuración</span>
+                        </a>
+                    @endif   </li>
                    @endcan
                    @endcan
 

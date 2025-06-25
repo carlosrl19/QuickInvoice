@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Clients;
+use Illuminate\Http\Request;
 use App\Http\Requests\Clients\StoreRequest;
 use App\Http\Requests\Clients\UpdateRequest;
-use App\Models\Clients;
-use App\Models\SystemLogs;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Proengsoft\JsValidation\Facades\JsValidatorFacade;
 
 class ClientsController extends Controller
@@ -70,11 +69,6 @@ class ClientsController extends Controller
                 'updated_at' => $this->getTodayDate(),
             ]);
 
-            SystemLogs::create([
-                'module_log' => 'Clientes',
-                'log_description' => 'Nuevo cliente ' . $request->input('client_name') . ' registrado.'
-            ]);
-
             return back()->with("success", "Registro creado exitosamente.");
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al crear el registro.")->withInput()->withErrors($e->getMessage());
@@ -116,11 +110,6 @@ class ClientsController extends Controller
 
             $client->update($data); // Guarda solo los campos permitidos
 
-            SystemLogs::create([
-                'module_log' => 'Clientes',
-                'log_description' => 'Cliente ' . $request->input('client_name') . ' modificado.'
-            ]);
-
             return redirect()->route("clients.index")->with("success", "Registro actualizado exitosamente.");
         } catch (\Exception $e) {
             return back()
@@ -142,10 +131,6 @@ class ClientsController extends Controller
         try {
             $client->delete();
 
-            SystemLogs::create([
-                'module_log' => 'Clientes',
-                'log_description' => 'Cliente ' . $client->client_name . ' eliminado.'
-            ]);
             return redirect()->route("clients.index")->with("success", "Registro eliminado exitosamente.");
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al eliminar el registro.")->withInput()->withErrors($e->getMessage());

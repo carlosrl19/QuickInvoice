@@ -44,6 +44,7 @@ Productos
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('create'); ?>
+<?php if($products->count() > 0): ?>
 <a href="<?php echo e(route('exports.products_export')); ?>" class="btn btn-sm btn-success btn-round me-2">
     <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
@@ -67,6 +68,7 @@ Productos
 <?php endif; ?>
     Excel inventario
 </a>
+<?php endif; ?>
 
 <a href="#" class="btn btn-sm btn-label-secondary btn-round me-2" data-bs-toggle="modal" data-bs-target="#create_category">
     <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>

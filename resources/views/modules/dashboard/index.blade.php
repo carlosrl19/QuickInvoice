@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@section('head')
-@php $currency = App\Models\Settings::value('default_currency_symbol') @endphp
-@endsection
-
 @section('title')
 Dashboard
 @endsection

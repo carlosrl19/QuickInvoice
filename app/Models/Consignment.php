@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Consignment extends Model
 {
     protected $fillable = [
+        'user_id',
         'product_quantity',
         'person_name',
         'person_dni',
@@ -20,6 +21,7 @@ class Consignment extends Model
         'updated_at',
     ];
 
+    // Relationships
     public function consigment_details()
     {
         return $this->hasMany(ConsignmentDetails::class);

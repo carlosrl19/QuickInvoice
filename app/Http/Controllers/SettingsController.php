@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Settings\StoreRequest;
-use App\Http\Requests\Settings\UpdateRequest;
 use App\Models\Seller;
 use App\Models\Settings;
-use App\Models\SystemLogs;
 use RahulHaque\Filepond\Filepond;
+use App\Http\Requests\Settings\StoreRequest;
+use App\Http\Requests\Settings\UpdateRequest;
+use Proengsoft\JsValidation\Facades\JsValidatorFacade;
 
 class SettingsController extends Controller
 {
@@ -27,7 +27,9 @@ class SettingsController extends Controller
     {
         $setting = Settings::findOrFail($id);
         $sellers = Seller::get();
-        return view('modules.settings.update', compact('setting', 'sellers'));
+        $validator = JsValidatorFacade::formRequest(UpdateRequest::class);
+
+        return view('modules.settings.update', compact('setting', 'sellers', 'validator'));
     }
 
     public function store(StoreRequest $request)
@@ -69,11 +71,6 @@ class SettingsController extends Controller
                 'company_short_address' => $request->input('company_short_address'),
                 'default_currency_symbol' => $request->input('default_currency_symbol'),
                 'default_seller_id' => $request->input('default_seller_id'),
-            ]);
-
-            SystemLogs::create([
-                'module_log' => 'Configuración',
-                'log_description' => 'Configuración del sistema creada.'
             ]);
 
             return redirect()->route('settings.index')->with('success', 'Configuración guardada correctamente');
@@ -149,11 +146,6 @@ class SettingsController extends Controller
             $settings->default_seller_id = $request->input('default_seller_id');
 
             $settings->save();
-
-            SystemLogs::create([
-                'module_log' => 'Configuración',
-                'log_description' => 'Configuración del sistema actualizada.'
-            ]);
 
             return back()->with('success', 'Configuración actualizada correctamente');
         } catch (\Exception $e) {

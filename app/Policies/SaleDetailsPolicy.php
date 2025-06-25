@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\SystemLogs;
+use App\Models\SaleDetails;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class SystemLogsPolicy
+class SaleDetailsPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class SystemLogsPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, SystemLogs $systemLogs): bool
+    public function view(User $user, SaleDetails $saleDetails): bool
     {
         return false;
     }
@@ -35,7 +35,7 @@ class SystemLogsPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, SystemLogs $systemLogs): bool
+    public function update(User $user, SaleDetails $saleDetails): bool
     {
         return false;
     }
@@ -43,7 +43,7 @@ class SystemLogsPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, SystemLogs $systemLogs): bool
+    public function delete(User $user, SaleDetails $saleDetails): bool
     {
         return false;
     }
@@ -51,7 +51,7 @@ class SystemLogsPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, SystemLogs $systemLogs): bool
+    public function restore(User $user, SaleDetails $saleDetails): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class SystemLogsPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, SystemLogs $systemLogs): bool
+    public function forceDelete(User $user, SaleDetails $saleDetails): bool
     {
         return false;
     }

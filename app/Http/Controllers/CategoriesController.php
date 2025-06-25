@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Categories;
 use App\Http\Requests\Categories\StoreRequest;
 use App\Http\Requests\Categories\UpdateRequest;
-use App\Models\Categories;
-use App\Models\SystemLogs;
-use Carbon\Carbon;
 use Proengsoft\JsValidation\Facades\JsValidatorFacade;
 
 class CategoriesController extends Controller
@@ -35,11 +34,6 @@ class CategoriesController extends Controller
                 'updated_at' => $this->getTodayDate(),
             ]);
 
-            SystemLogs::create([
-                'module_log' => 'Categorias',
-                'log_description' => 'Nuevo categoría ' . $request->input('category_name') . ' registrada.'
-            ]);
-
             return back()->with("success", "Registro creado exitosamente.");
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al crear el registro.")->withInput()->withErrors($e->getMessage());
@@ -62,11 +56,6 @@ class CategoriesController extends Controller
             $category->updated_at = $this->getTodayDate();
             $category->update($request->all());
 
-            SystemLogs::create([
-                'module_log' => 'Categorías',
-                'log_description' => 'Categoría ' . $request->input('category_name') . ' modificada.'
-            ]);
-
             return redirect()->route("categories.index")->with("success", "Registro actualizado exitosamente.");
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al actualizar el registro.")->withInput()->withErrors($e->getMessage());
@@ -85,10 +74,6 @@ class CategoriesController extends Controller
         try {
             $category->delete();
 
-            SystemLogs::create([
-                'module_log' => 'Categorías',
-                'log_description' => 'Categoría ' . $category->category_name . ' eliminada.'
-            ]);
             return redirect()->route("categories.index")->with("success", "Registro eliminado exitosamente.");
         } catch (\Exception $e) {
             return back()->with("error", "Ocurrió un error al eliminar el registro.")->withInput()->withErrors($e->getMessage());

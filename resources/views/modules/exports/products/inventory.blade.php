@@ -23,6 +23,9 @@
         <!-- Header table -->
         <tr>
             <td style="height: 40px"></td>
+            <td style="border: 1px solid #000; color: #ffffff; background-color: #D70654; font-size: 14pt; font-weight: bold; text-align: center; width: 120px;">
+                STOCK
+            </td>
             <td style="border: 1px solid #000; color: #ffffff; background-color: #D70654; font-size: 14pt; font-weight: bold; text-align: center; width: 300px;">
                 NOMBRE
             </td>
@@ -46,6 +49,7 @@
         @foreach($inventories as $inventory)
         <tr>
             <td style="height: 30px;"></td>
+            <td style="border: 1px solid #000; text-align: center; font-size: 12pt;">{{ $inventory->product_stock }}</td>
             <td style="border: 1px solid #000; text-align: center; font-size: 12pt;">{{ $inventory->product_name }}</td>
             <td style="border: 1px solid #000; text-align: center; font-size: 12pt;">{{ $inventory->product_nomenclature }}</td>
             <td style="border: 1px solid #000; text-align: center; font-size: 12pt;">{{ $inventory->product_brand }}</td>

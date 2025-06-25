@@ -264,6 +264,33 @@
                                    <span class="sub-item">Lista productos</span>
                                </a>
                                <?php endif; ?>
+                               <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('sales_permission')): ?>
+                               <a href="<?php echo e(route('sales.index')); ?>"
+                                   class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'sales.'),
+                                   ]); ?>">
+                                   <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-arrow-down-on-square-stack'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['style' => 'width: 20px; height: 20px; color: gray;','class' => 'me-2']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                   <span class="sub-item">Salida de inventario</span>
+                               </a>
+                               <?php endif; ?>
                            </ul>
                        </div>
                    </li>
@@ -649,9 +676,9 @@
                        <h4 class="text-section">AJUSTES DEL SISTEMA</h4>
                    </li>
                    <li class="nav-item">
-                       <?php if($folio_activated->folio_total_invoices_available == 0): ?>
-                       <a href="<?php echo e(route('settings.index')); ?>" style="background-color: rgba(255,0,11,0.5);" title="Se ha llegado al limite de facturación permitido para el folio actual, agregue un nuevo folio el módulo Configuración/Folios" data-bs-toggle="tooltip" data-bs-placement="right">
-                           <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                    <?php if(!$folio_activated): ?>
+                        <a href="<?php echo e(route('fiscalfolio.index')); ?>" style="background-color: rgba(255,0,11,0.5);" title="No hay folio fiscal activo, agregue y active un folio en el módulo Configuración/Folios" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('heroicon-o-exclamation-triangle'); ?>
@@ -671,15 +698,39 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                           <span class="sub-item">Configuración</span>
-                       </a>
-                       <?php else: ?>
-                       <a href="<?php echo e(route('settings.index')); ?>"
-                           class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'settings.')
-                           || Str::startsWith(Route::currentRouteName(), 'fiscalfolio.')
-                           || Str::startsWith(Route::currentRouteName(), 'banks.')
-                           ]); ?>">
-                           <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                            <span class="sub-item">Configuración</span>
+                        </a>
+                    <?php elseif($folio_activated->folio_total_invoices_available == 0): ?>
+                        <a href="<?php echo e(route('settings.index')); ?>" style="background-color: rgba(255,0,11,0.5);" title="Se ha llegado al limite de facturación permitido para el folio actual, agregue un nuevo folio el módulo Configuración/Folios" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('heroicon-o-exclamation-triangle'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['style' => 'width: 20px; height: 20px; color: #ffe000;','class' => 'mx-2']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                            <span class="sub-item">Configuración</span>
+                        </a>
+                    <?php else: ?>
+                        <a href="<?php echo e(route('settings.index')); ?>"
+                            class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'bg-info2 m-2 rounded alert-primary'=> Str::startsWith(Route::currentRouteName(), 'settings.')
+                            || Str::startsWith(Route::currentRouteName(), 'fiscalfolio.')
+                            || Str::startsWith(Route::currentRouteName(), 'banks.')
+                            ]); ?>">
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('heroicon-o-cog-6-tooth'); ?>
@@ -699,10 +750,9 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                           <span class="sub-item">Configuración</span>
-                       </a>
-                       <?php endif; ?>
-                   </li>
+                            <span class="sub-item">Configuración</span>
+                        </a>
+                    <?php endif; ?>   </li>
                    <?php endif; ?>
                    <?php endif; ?>
 

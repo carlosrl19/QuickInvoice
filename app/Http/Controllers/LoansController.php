@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Loans\StoreRequest;
-use App\Http\Requests\Loans\ConfirmRequest;
-use App\Models\Clients;
-use App\Models\LoanPayments;
-use App\Models\Loans;
-use App\Models\Seller;
-use App\Models\Settings;
-use App\Models\SystemLogs;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
+use App\Models\Loans;
+use App\Models\Seller;
+use App\Models\Clients;
+use App\Models\Settings;
+use App\Models\LoanPayments;
 use Luecano\NumeroALetras\NumeroALetras;
+use App\Http\Requests\Loans\StoreRequest;
+use App\Http\Requests\Loans\ConfirmRequest;
 
 class LoansController extends Controller
 {
@@ -251,11 +248,6 @@ class LoansController extends Controller
             $loan->updated_at = $this->getTodayDate();
             $loan->update();
 
-            SystemLogs::create([
-                'module_log' => 'Préstamos',
-                'log_description' => 'Solicitud de nuevo préstamo ' . $loan->loan_code_number . ' aceptada.'
-            ]);
-
             return redirect()->route("loans.index")->with("success_request_confirmation", "Registro confirmado exitosamente.");
         } catch (\Exception $e) {
             return back()->with('error', 'Ocurrió un error al confirmar el registro: ' . $e->getMessage());
@@ -271,11 +263,6 @@ class LoansController extends Controller
             $loan->loan_status = 0;
             $loan->updated_at = $this->getTodayDate();
             $loan->update();
-
-            SystemLogs::create([
-                'module_log' => 'Préstamos',
-                'log_description' => 'Solicitud de nuevo préstamo ' . $loan->loan_code_number . ' rechazada.'
-            ]);
 
             return redirect()->route("loans.loans_rejected_index")->with("success_reject_confirmation", "Registro rechazado exitosamente.");
         } catch (\Exception $e) {
@@ -297,11 +284,6 @@ class LoansController extends Controller
             $loan->updated_at = $this->getTodayDate();
             $loan->update();
 
-            SystemLogs::create([
-                'module_log' => 'Préstamos',
-                'log_description' => 'Préstamo ' . $loan->loan_code_number . ' anulado.'
-            ]);
-
             return redirect()->route("loans.index")->with("success", "Registro anulado exitosamente.");
         } catch (\Exception $e) {
             return back()->with('error', 'Ocurrió un error al anular el registro: ' . $e->getMessage());
@@ -318,11 +300,6 @@ class LoansController extends Controller
 
         try {
             $loan->delete();
-
-            SystemLogs::create([
-                'module_log' => 'Préstamos',
-                'log_description' => 'Solicitud de nuevo préstamo ' . $loan->loan_code_number . ' eliminada.'
-            ]);
 
             return redirect()->route("loans.loans_request")->with("success_delete_confirmation", "Registro eliminado exitosamente.");
         } catch (\Exception $e) {
@@ -384,7 +361,7 @@ class LoansController extends Controller
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'inline; filename="' . $fileName . '"');
     }
-
+    
     public function loan_receipt_delivery_show($id)
     {
         $loan = Loans::findOrFail($id);

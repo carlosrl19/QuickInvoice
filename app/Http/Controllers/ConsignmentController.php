@@ -2,22 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Consignment\StoreRequest;
-use App\Models\Consignment;
-use App\Models\ConsignmentDetails;
-use App\Models\Products;
-use App\Models\Settings;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use App\Models\Products;
+use App\Models\Settings;
+use App\Models\Consignment;
+use Illuminate\Support\Str;
+use App\Models\ConsignmentDetails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Luecano\NumeroALetras\NumeroALetras;
-use Illuminate\Support\Str;
+use App\Http\Requests\Consignment\StoreRequest;
 use Proengsoft\JsValidation\Facades\JsValidatorFacade;
 
 class ConsignmentController extends Controller
 {
+    private function getUser()
+    {
+        return Auth::user()->id;
+    }
+
     public function index()
     {
         $consignments = Consignment::all();
@@ -56,6 +61,7 @@ class ConsignmentController extends Controller
 
             // Crear la consignación principal
             $consignment = Consignment::create([
+                'user_id' => $this->getUser(),
                 'person_name' => $request->person_name,
                 'person_dni' => $request->person_dni,
                 'person_phone' => $request->person_phone,
@@ -98,6 +104,22 @@ class ConsignmentController extends Controller
 
             // Actualizar el monto total en la consignación principal
             $consignment->update(['consignment_amount' => $totalAmount]);
+
+            // Registro manual de actividad
+            $data = $consignment->toArray();
+            unset($data['created_at'], $data['updated_at']); // Excluir campos
+
+            activity()
+                ->causedBy(Auth::user())
+                ->performedOn($consignment)
+                ->withProperties([
+                    'attributes' => $data
+                ])
+                ->tap(function ($activity) {
+                    $activity->event = 'created';
+                    $activity->log_name = 'consignments';
+                })
+                ->log('Consignación created');
 
             DB::commit();
 
